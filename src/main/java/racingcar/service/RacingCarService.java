@@ -1,11 +1,11 @@
-package service;
+package racingcar.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import domain.Car;
-import view.RacingInputCarView;
-import view.RacingResultView;
+import racingcar.domain.Car;
+import racingcar.view.RacingInputCarView;
+import racingcar.view.RacingResultView;
 
 public class RacingCarService {
     public void startRacing(List<String> carNames, int targetDistance) {

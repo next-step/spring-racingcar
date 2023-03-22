@@ -1,7 +1,7 @@
-package service;
+package racingcar.service;
 
 import java.util.List;
-import view.RacingInputCarView;
+import racingcar.view.RacingInputCarView;
 
 public class RacingCarMain {
 
