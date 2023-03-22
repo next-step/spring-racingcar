@@ -1,9 +1,29 @@
 package racingcar.domain;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+
+import javax.annotation.Generated;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "Cars")
 public class Car {
-    String name;
-    int distance;
-    final int RANDOM_PIVOT_NUMBER = 4;
+    @Id
+    private String name;
+
+    private int position;
+
+    private LocalDateTime createAt;
+
+    public Car() {
+    }
 
     public Car(String name) {
         this.name = name;
@@ -13,23 +33,24 @@ public class Car {
         return name;
     }
 
-    public int getDistance() {
-        return distance;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void move() {
-        if (isMove(CarRandom.getRandomNumber()))
+        if (CarRandom.isMove())
             moveForward();
     }
 
     public void moveForward() {
-        distance++;
-    }
-
-    public boolean isMove(int randomNumber) {
-        if (randomNumber >= RANDOM_PIVOT_NUMBER)
-            return true;
-
-        return false;
+        position++;
     }
 }

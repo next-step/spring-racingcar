@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import racingcar.domain.Car;
+import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingInputCarView;
 import racingcar.view.RacingResultView;
 
@@ -20,6 +21,10 @@ public class RacingCarService {
         RacingResultView.printResult(getWinnerNames(cars));
     }
 
+    public void startRacing(String carNames, int targetDistance) {
+        startRacing(RacingCarUtils.stringToList(carNames), targetDistance);
+    }
+
     public String getWinnerNames(List<Car> cars) {
         int maxDistance = getMaxDistance(cars);
         List<String> winners = getWinnerCars(cars, maxDistance);
@@ -29,21 +34,21 @@ public class RacingCarService {
 
     public int getMaxDistance(List<Car> cars) {
         return cars.stream()
-                .map(Car::getDistance)
+                .map(Car::getPosition)
                 .max(Integer::compareTo)
                 .get();
     }
 
     public List<String> getWinnerCars(List<Car> cars, int maxDistance) {
         return cars.stream()
-                .filter(car -> car.getDistance() == maxDistance)
+                .filter(car -> car.getPosition() == maxDistance)
                 .map(Car::getName)
                 .collect(Collectors.toList());
     }
 
     public void printCars(List<Car> cars) {
         cars.stream()
-                .forEach(car -> RacingResultView.printNameAndDistance(car.getName(), car.getDistance()));
+                .forEach(car -> RacingResultView.printNameAndDistance(car.getName(), car.getPosition()));
     }
 
     public List<Car> makeCars(List<String> carNames) {
