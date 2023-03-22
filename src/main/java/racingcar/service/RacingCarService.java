@@ -4,11 +4,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import racingcar.domain.Car;
+import racingcar.model.RacingRequest;
+import racingcar.model.RacingResponse;
 import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingInputCarView;
 import racingcar.view.RacingResultView;
 
 public class RacingCarService {
+
+    public RacingResponse startRacing(RacingRequest racingRequest) {
+
+        String winners = null;
+        List<Car> cars = null;
+
+        return new RacingResponse(winners, cars);
+    }
+
     public void startRacing(List<String> carNames, int targetDistance) {
         // make cars
         List<Car> cars = makeCars(carNames);

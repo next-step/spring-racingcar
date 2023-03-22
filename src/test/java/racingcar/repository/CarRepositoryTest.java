@@ -12,12 +12,12 @@ import racingcar.domain.Car;
 
 @SpringBootTest
 @Rollback(false)
-public class SpringDataCarRepositoryTest {
+public class CarRepositoryTest {
 
     private final CarRepository carRepository;
 
     @Autowired
-    public SpringDataCarRepositoryTest(CarRepository carRepository) {
+    public CarRepositoryTest(CarRepository carRepository) {
         this.carRepository = carRepository;
     }
 

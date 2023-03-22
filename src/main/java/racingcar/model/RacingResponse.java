@@ -2,6 +2,8 @@ package racingcar.model;
 
 import java.util.List;
 
+import racingcar.domain.Car;
+
 public class RacingResponse {
     private String winners;
 

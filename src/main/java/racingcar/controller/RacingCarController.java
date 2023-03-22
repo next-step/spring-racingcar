@@ -22,12 +22,7 @@ public abstract class RacingCarController {
 
     @PostMapping("/plays")
     public ResponseEntity<RacingResponse> racingGame(@RequestBody RacingRequest racingRequest) {
-        racingCarService.startRacing(racingRequest.getName(), racingRequest.getCount());
-
-        String winners;
-        List<Car> cars;
-
-        return ResponseEntity.ok(new RacingResponse(winners, cars));
+        return ResponseEntity.ok(racingCarService.startRacing(racingRequest));
     }
 
 }

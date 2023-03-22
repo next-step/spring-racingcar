@@ -27,4 +27,25 @@ public class PlayResult {
     private String winners;
 
     private LocalDateTime createdAt;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setWinners(String winners) {
+        this.winners = winners;
+    }
+
+    public String getWinners() {
+        return winners;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
 }
