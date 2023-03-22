@@ -14,7 +14,7 @@ public class RacingCarService {
 
     public RacingResponse startRacing(RacingRequest racingRequest) {
 
-        String winners = null;
+        String winners = "test";
         List<Car> cars = null;
 
         return new RacingResponse(winners, cars);
