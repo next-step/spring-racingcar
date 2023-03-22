@@ -27,7 +27,7 @@
 <script>
   const tbody = document.getElementById("gameHistory");
 
-  fetch('/plays')
+  fetch('/playsList')
       .then(response => response.json())
       .then(results => {
         results.forEach(result => {
