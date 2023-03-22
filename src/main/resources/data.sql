@@ -19,3 +19,10 @@ CREATE TABLE PLAY_HISTORY (
     created_at  DATETIME    NOT NULL default current_timestamp,
     PRIMARY KEY (id)
 );
+
+
+-- INSERT INTO PLAY_RESULT (id, winners, trial_count) VALUES (1, 'apple', 10);
+-- INSERT INTO PLAY_RESULT (id, winners, trial_count) VALUES (2, 'banana', 10);
+
+-- INSERT INTO PLAY_HISTORY(id, turn, name, position) VALUES (1, 1, 'apple', 10);
+-- INSERT INTO PLAY_HISTORY(id, turn, name, position) VALUES (2, 1, 'banana', 10);

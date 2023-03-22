@@ -1,7 +1,5 @@
 package racingcar.model;
 
-import racingcar.Name;
-
 import java.util.Random;
 
 public class Car {
