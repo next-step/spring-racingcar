@@ -7,18 +7,18 @@ import racingcar.domain.Car;
 public class RacingResponse {
     private String winners;
 
-    private List<Car> cars;
+    private List<Car> racingCars;
 
-    public RacingResponse(String winners, List<Car> cars) {
+    public RacingResponse(String winners, List<Car> racingCars) {
         this.winners = winners;
-        this.cars = cars;
+        this.racingCars = racingCars;
     }
 
     public String getWinners() {
         return winners;
     }
 
-    public List<Car> getCars() {
-        return cars;
+    public List<Car> getRacingCars() {
+        return racingCars;
     }
 }

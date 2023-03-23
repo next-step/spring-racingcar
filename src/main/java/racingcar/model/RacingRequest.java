@@ -1,12 +1,12 @@
 package racingcar.model;
 
 public class RacingRequest {
-    private String name;
+    private String names;
 
     private int count;
 
-    public String getName() {
-        return name;
+    public String getNames() {
+        return names;
     }
 
     public int getCount() {

@@ -22,8 +22,7 @@ public class PlayResultRepositoryTest {
 
     @Test
     void repositoryTest() {
-        PlayResult playResult = new PlayResult();
-        playResult.setWinners("firstCar");
+        PlayResult playResult = PlayResult.builder().winners("firstCar").build();
         playResultRepository.save(playResult);
 
         PlayResult findplayResult = playResultRepository.findById(1L).orElse(null);
