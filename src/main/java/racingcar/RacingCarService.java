@@ -23,9 +23,10 @@ public class RacingCarService {
 
         Racing racing = new Racing(names, count);
 
-        while (!racing.isEnd()) {
-            racing.startRacing();
-        }
+        racing.race();
+//        while (!racing.isEnd()) {
+//            racing.startRacing();
+//        }
 
         String winners = racing.getWinnerNames();
 

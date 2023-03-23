@@ -1,6 +1,5 @@
 package racingcar;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import racingcar.model.PlayHistoryDao;
@@ -12,6 +11,17 @@ import java.util.List;
 public class RacingCarRepository {
 
     private JdbcTemplate jdbcTemplate;
+
+    private static final String ID = "id";
+    private static final String WINNERS = "winners";
+    private static final String TRIAL_COUNT = "trial_count";
+    private static final String CREATED_AT = "created_at";
+    private static final String TURN = "turn";
+    private static final String NAME = "name";
+    private static final String POSITION = "position";
+
+
+
 
     public RacingCarRepository(JdbcTemplate jdbcTemplate) {
 
@@ -38,10 +48,10 @@ public class RacingCarRepository {
         return jdbcTemplate.query(
                 winnersSql, (rs, rowNum) -> {
                     PlayResultDao playResultDao = new PlayResultDao(
-                            rs.getInt("id"),
-                            rs.getString("winners"),
-                            rs.getInt("trial_count"),
-                            rs.getDate("created_at")
+                            rs.getInt(ID),
+                            rs.getString(WINNERS),
+                            rs.getInt(TRIAL_COUNT),
+                            rs.getDate(CREATED_AT)
                     );
                     return playResultDao;
                 });
@@ -53,11 +63,11 @@ public class RacingCarRepository {
         return jdbcTemplate.query(
                 playHistorySql, (rs, rowNum) -> {
                     PlayHistoryDao playHistoryDao = new PlayHistoryDao(
-                            rs.getInt("id"),
-                            rs.getInt("turn"),
-                            rs.getString("name"),
-                            rs.getInt("position"),
-                            rs.getDate("created_at")
+                            rs.getInt(ID),
+                            rs.getInt(TURN),
+                            rs.getString(NAME),
+                            rs.getInt(POSITION),
+                            rs.getDate(CREATED_AT)
                     );
                     return playHistoryDao;
                 }, turn);

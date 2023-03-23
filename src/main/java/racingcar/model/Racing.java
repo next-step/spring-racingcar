@@ -54,4 +54,10 @@ public class Racing {
                 .map(it -> new CarResponse(it.getName(), it.getPosition()))
                 .collect(Collectors.toUnmodifiableList());
     }
+
+    public void race() {
+        while (!isEnd()) {
+            startRacing();
+        }
+    }
 }
