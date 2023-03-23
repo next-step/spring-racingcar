@@ -1,9 +1,8 @@
 package racingcar;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import racingcar.model.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,6 @@ public class RacingCarService {
         Racing racing = new Racing(names, count);
 
         racing.race();
-//        while (!racing.isEnd()) {
-//            racing.startRacing();
-//        }
 
         String winners = racing.getWinnerNames();
 
