@@ -3,6 +3,7 @@ package racingcar.model;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class RacingResponse {
 
     private String winners;
@@ -19,6 +20,7 @@ public class RacingResponse {
     }
 
     public List<CarResponse> getRacingCars() {
+
         return racingCars;
     }
 }

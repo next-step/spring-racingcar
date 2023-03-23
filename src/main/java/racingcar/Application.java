@@ -1,5 +1,6 @@
 package racingcar;
 
+
 import racingcar.model.Racing;
 
 public class Application {

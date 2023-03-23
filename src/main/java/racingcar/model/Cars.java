@@ -1,6 +1,8 @@
 package racingcar.model;
 
+
 import java.util.Arrays;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,6 @@ public class Cars {
     }
 
     public void run() {
-
         cars.stream().forEach(Car::move);
     }
 
