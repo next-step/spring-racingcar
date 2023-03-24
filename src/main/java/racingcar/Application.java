@@ -1,29 +1,36 @@
 package racingcar;
 
 
-import racingcar.model.Racing;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import racingcar.model.RacingResponse;
 
-public class Application {
+@SpringBootApplication
+public class Application implements CommandLineRunner {
+
+    private RacingCarService racingCarService;
+
+    public Application (RacingCarService racingCarService) {
+        this.racingCarService = racingCarService;
+    }
 
     public static void main(String[] args) {
+        new SpringApplicationBuilder(Application.class)
+                .web(WebApplicationType.NONE)
+                .run(args);
+    }
+
+    @Override
+    public void run(String[] args) {
         InputView inputView = new InputView();
         ResultView resultView = new ResultView();
 
-        String carNames;
-        int count;
+        RacingResponse racingResponse = racingCarService.racingGame(
+                inputView.getCarNames(),
+                inputView.getTryNo());
 
-        carNames = inputView.getCarNames();
-        count = inputView.getTryNo();
-
-        Racing racing = new Racing(carNames, count);
-
-        System.out.println("실행 결과");
-
-        while (!racing.isEnd()) {
-            racing.startRacing();
-            resultView.printCars(racing.getCars());
-        }
-
-        resultView.printWinners(racing.getWinners());
+        resultView.printResult(racingResponse);
     }
 }
