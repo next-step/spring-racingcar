@@ -1,6 +1,4 @@
-package racingcar.service;
-
-import racingcar.domain.Car;
+package racingcar.domain;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +10,10 @@ public class RacingCarGame {
     private List<Car> racingCars;
     private int totalTry;
     private int DEFAULT_MAX_POSITION = 0;
+
+    public void setWinners(String winners) {
+        this.winners = winners;
+    }
 
     private String winners;
 
@@ -31,9 +33,14 @@ public class RacingCarGame {
         return winners;
     }
 
-    public RacingCarGame(String[] carNames, int num){
+    public RacingCarGame(String[] carNames, int num) {
         this.racingCars = Arrays.stream(carNames).map(Car::new).collect(Collectors.toList());
         this.totalTry = num;
+    }
+
+    public RacingCarGame(String winners, int conut) {
+        this.winners = winners;
+        this.totalTry = conut;
     }
 
     public RacingCarGame start() {
@@ -65,14 +72,14 @@ public class RacingCarGame {
     }
 
     // 최종우승자 리스트로 리턴
-    private List<String> printWinner(int maxPosition){
-        return racingCars.stream().filter(car->car.getPosition() == maxPosition).map(Car::getName).collect(Collectors.toList());
+    private List<String> printWinner(int maxPosition) {
+        return racingCars.stream().filter(car -> car.getPosition() == maxPosition).map(Car::getName).collect(Collectors.toList());
     }
 
 
     // 제일 많이 움직인 포지션 리턴
-    private int getMaxPosition(List<Car> cars ){
-        cars.stream().map(Car::getPosition).filter(position->position > DEFAULT_MAX_POSITION).forEach(position-> DEFAULT_MAX_POSITION = position); //  최고 맥스값 선정
+    private int getMaxPosition(List<Car> cars) {
+        cars.stream().map(Car::getPosition).filter(position -> position > DEFAULT_MAX_POSITION).forEach(position -> DEFAULT_MAX_POSITION = position); //  최고 맥스값 선정
         return DEFAULT_MAX_POSITION;
     }
 
