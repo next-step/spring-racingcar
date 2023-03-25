@@ -12,7 +12,7 @@ import racingcar.domain.Car;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingRequest;
 import racingcar.model.RacingResponse;
-import racingcar.repository.CarRepository;
+import racingcar.repository.CarsRepository;
 import racingcar.repository.PlayResultRepository;
 import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingResultView;
@@ -21,29 +21,31 @@ import racingcar.view.RacingResultView;
 public class RacingCarService {
 
     @Autowired
-    private CarRepository carRepository;
+    private CarsRepository carsRepository;
     @Autowired
     private PlayResultRepository playResultRepository;
 
     public RacingCarService() {
     }
 
-    public RacingCarService(CarRepository carRepository, PlayResultRepository playResultRepository) {
-        this.carRepository = carRepository;
+    public RacingCarService(CarsRepository carsRepository, PlayResultRepository playResultRepository) {
+        this.carsRepository = carsRepository;
         this.playResultRepository = playResultRepository;
     }
 
     @Transactional
     public RacingResponse startRacing(RacingRequest racingRequest) {
 
-        List<Car> cars = makeCars(RacingCarUtils.stringToList(racingRequest.getNames()));
-        moveCars(cars, racingRequest.getCount());
-        cars.forEach(car -> carRepository.save(car));
+        // List<Car> cars =
+        // makeCars(RacingCarUtils.stringToList(racingRequest.getNames()));
+        // moveCars(cars, racingRequest.getCount());
+        // cars.forEach(car -> carRepository.save(car));
 
-        playResultRepository.save(PlayResult.builder()
-                .winners(getWinnerNames(cars))
-                .build());
-        return new RacingResponse(getWinnerNames(cars), cars);
+        // playResultRepository.save(PlayResult.builder()
+        // .winners(getWinnerNames(cars))
+        // .build());
+        // return new RacingResponse(getWinnerNames(cars), cars);
+        return new RacingResponse(null, null);
     }
 
     public void startRacing(List<String> carNames, int targetDistance) {
