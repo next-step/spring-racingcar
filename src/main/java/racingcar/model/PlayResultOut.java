@@ -16,15 +16,8 @@ public class PlayResultOut {
         return winners;
     }
 
-    public void setWinners(String winners) {
-        this.winners = winners;
-    }
-
     public List<RacingCar> getRacingCars() {
         return racingCars;
     }
 
-    public void setRacingCars(List<RacingCar> racingCars) {
-        this.racingCars = racingCars;
-    }
 }

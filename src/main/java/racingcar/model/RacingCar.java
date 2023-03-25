@@ -28,48 +28,25 @@ public class RacingCar {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
 
     public int getPersonId() {
         return personId;
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     public String getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
 }

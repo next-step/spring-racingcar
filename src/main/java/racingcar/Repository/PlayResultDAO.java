@@ -66,7 +66,7 @@ public class PlayResultDAO {
      * @param playResult
      * @return id
      */
-    public int insertPlayResult(PlayResult playResult) {
+    public PlayResult insertPlayResult(PlayResult playResult) {
         String sql = "insert into play_result (group_id, trial_count, winners) values (?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -78,7 +78,8 @@ public class PlayResultDAO {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().intValue();
+        return new PlayResult(keyHolder.getKey().intValue(), playResult.getGroupId(),
+            playResult.getTrialCount(), playResult.getWinners());
     }
 
     /**

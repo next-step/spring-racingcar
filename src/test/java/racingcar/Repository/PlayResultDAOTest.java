@@ -55,7 +55,7 @@ class PlayResultDAOTest {
     @Test
     void insertPlayResult() {
         PlayResult insert = new PlayResult(333, 1, "lars");
-        int id = dao.insertPlayResult(insert);
+        insert = dao.insertPlayResult(insert);
 
         List<PlayResult> data = dao.findPlayResultByGroupId(333);
         assertThat(data).hasSize(1);

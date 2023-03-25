@@ -15,18 +15,22 @@ import racingcar.model.PlayResultOut;
 @RestController
 public class RacingCarController {
 
-    @Autowired
-    RacingService svc;
+    final
+    RacingService racingService;
+
+    public RacingCarController(RacingService racingService) {
+        this.racingService = racingService;
+    }
 
     @PostMapping("/plays")
-    public ResponseEntity<PlayResultOut> racingStart(@RequestBody PlayResultIn pri) {
-        return new ResponseEntity<>(svc.racing(pri.getNames(), pri.getCount()),
+    public ResponseEntity<PlayResultOut> racingStart(@RequestBody PlayResultIn playResultIn) {
+        return new ResponseEntity<>(racingService.racing(playResultIn.getNames(), playResultIn.getCount()),
             HttpStatus.OK);
     }
 
     @GetMapping("playsList")
     public ResponseEntity<List<PlayResultOut>> racingStart() {
-        return new ResponseEntity<>(svc.playList(),
+        return new ResponseEntity<>(racingService.playList(),
             HttpStatus.OK);
     }
 }

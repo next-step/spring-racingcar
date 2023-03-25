@@ -76,4 +76,10 @@ class RacingCarDAOTest {
         List<RacingCar> data = dao.findRacingCarByGroupId(33);
         assertThat(data.get(0).getPersonId()).isEqualTo(123);
     }
+
+    @Test
+    void getGroupIdTest() {
+        int id = dao.getGroupId();
+        assertThat(id).isEqualTo(3);
+    }
 }

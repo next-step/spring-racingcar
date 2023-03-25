@@ -3,6 +3,8 @@ package racingcar.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import racingcar.Repository.PersonDAO;
@@ -25,8 +27,11 @@ public class RacingService {
     @Autowired
     RacingCarDAO racingCarDAO;
 
+    private static final Logger logger = LogManager.getLogger(RacingService.class);
+
     /**
      * 경기 기록 가져오기
+     *
      * @return List<PlayResultOut>
      */
     public List<PlayResultOut> playList() {
@@ -43,6 +48,7 @@ public class RacingService {
 
     /**
      * 경기 시작 및 기록하기
+     *
      * @param inputName
      * @param inputTryNumber
      * @return PlayResultOut
@@ -59,7 +65,7 @@ public class RacingService {
         }
 
         PlayResult playResult = new PlayResult(groupId, inputTryNumber, "");
-        playResult.setId(playResultDAO.insertPlayResult(playResult));
+        playResult = playResultDAO.insertPlayResult(playResult);
 
         for (int i = 0; i < inputTryNumber; i++) {
             playRound(groupId);
@@ -80,6 +86,7 @@ public class RacingService {
 
     /**
      * 실제 1경기 진행하기
+     *
      * @param groupId
      */
     public void playRound(int groupId) {
@@ -87,7 +94,7 @@ public class RacingService {
         Random random = new Random();
         for (RacingCar rc : racingCarList) {
             int randomNumber = random.nextInt(10);
-            System.out.println(rc.getName() + ":" + rc.getGroupId() + "/" + randomNumber);
+            logger.debug(rc.getName() + ":" + rc.getGroupId() + "/" + randomNumber);
             racingCarDAO.updatePosition(rc, randomNumber);
         }
     }

@@ -33,24 +33,13 @@ public class PlayResult {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
     public int getTrialCount() {
         return trialCount;
-    }
-
-    public void setTrialCount(int trialCount) {
-        this.trialCount = trialCount;
     }
 
     public String getWinners() {
@@ -65,7 +54,4 @@ public class PlayResult {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
 }
