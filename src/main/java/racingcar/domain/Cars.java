@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import racingcar.repository.CarRepository;
+import racingcar.view.RacingResultView;
 
 @Service
 public class Cars {
@@ -66,5 +67,9 @@ public class Cars {
                 .filter(car -> car.getPosition() == maxDistance)
                 .map(Car::getName)
                 .collect(Collectors.toList());
+    }
+
+    public void printResult() {
+        RacingResultView.printResult(getWinnerNames(), cars);
     }
 }

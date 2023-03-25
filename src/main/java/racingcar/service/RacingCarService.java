@@ -13,6 +13,7 @@ import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingRequest;
 import racingcar.model.RacingResponse;
+import racingcar.repository.CarRepository;
 import racingcar.repository.PlayResultRepository;
 import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingResultView;
@@ -36,7 +37,6 @@ public class RacingCarService {
     @Transactional
     public RacingResponse startRacing(RacingRequest racingRequest) {
         PlayResult playResult = new PlayResult();
-
         cars.makeCars(playResult, RacingCarUtils.stringToList(racingRequest.getNames()));
         cars.moveCars(racingRequest.getCount());
         cars.save();
@@ -47,15 +47,13 @@ public class RacingCarService {
     }
 
     public void startRacing(List<String> carNames, int targetDistance) {
-        // make cars
-        List<Car> cars = makeCars(carNames);
+        Cars cars = new Cars(null);
+        PlayResult playResult = new PlayResult();
+        cars.makeCars(playResult, carNames);
+        cars.moveCars(targetDistance);
 
-        // move cars
-        RacingResultView.printStartRacing();
-        moveCars(cars, targetDistance);
-
-        // print winner
-        RacingResultView.printResult(getWinnerNames(cars));
+        playResult.setWinners(cars.getWinnerNames());
+        cars.printResult();
     }
 
     public String getWinnerNames(List<Car> cars) {
