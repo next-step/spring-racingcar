@@ -11,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import racingcar.domain.Car;
 
 @SpringBootTest
-@Rollback(false)
 public class CarRepositoryTest {
 
     private final CarRepository carRepository;
