@@ -1,9 +1,11 @@
-package racingcar;
+package racingcar.model;
 
 import racingcar.model.Car;
+import racingcar.model.CarResponse;
 import racingcar.model.Cars;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Racing {
 
@@ -14,14 +16,8 @@ public class Racing {
     private int tryCount;
 
     public Racing (String input, int count) {
-        String[] carNames = input.split(",");
 
-        List<Car> values = new ArrayList<>();
-        for (String carName : carNames) {
-            values.add(new Car(Name.of(carName)));
-        }
-
-        this.cars = Cars.of(values);
+        this.cars = Cars.from(input);
         this.count = count;
         this.tryCount = 0;
     }
@@ -45,5 +41,23 @@ public class Racing {
 
     public List<Car> getWinners() {
         return cars.getWinners();
+    }
+
+    public String getWinnerNames() {
+        return getWinners().stream()
+                .map(Car::getName)
+                .collect(Collectors.joining(", "));
+    }
+
+    public List<CarResponse> getCarResponses() {
+        return getCars().stream()
+                .map(it -> new CarResponse(it.getName(), it.getPosition()))
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public void race() {
+        while (!isEnd()) {
+            startRacing();
+        }
     }
 }
