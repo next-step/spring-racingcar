@@ -48,7 +48,11 @@ public class Car {
     }
 
     public void move() {
-        if (CarRandom.isMove())
+        move(CarRandom.isMove());
+    }
+
+    public void move(boolean bool) {
+        if (bool == true)
             moveForward();
     }
 
