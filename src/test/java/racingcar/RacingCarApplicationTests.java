@@ -96,7 +96,7 @@ class RacingCarApplicationTests {
 	@Transactional
 	@Test
 	public void makeCarsAndfindAllTest() {
-		List<String> names = List.of("kia", "volov", "bmw");
+		String names = "kia, volov, bmw";
 		cars.makeCars(null, names);
 		cars.save();
 

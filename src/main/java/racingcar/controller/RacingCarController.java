@@ -19,7 +19,8 @@ public class RacingCarController {
 
     @PostMapping("/plays")
     public ResponseEntity<RacingResponse> racingGame(@RequestBody RacingRequest racingRequest) {
-        RacingResponse racingResponse = racingCarService.startRacing(racingRequest);
+        RacingResponse racingResponse = racingCarService.startRacing(racingRequest.getNames(),
+                racingRequest.getCount());
         return ResponseEntity.ok().body(racingResponse);
     }
 
