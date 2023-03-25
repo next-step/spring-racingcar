@@ -1,22 +1,17 @@
 package racingcar.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingRequest;
 import racingcar.model.RacingResponse;
-import racingcar.repository.CarRepository;
 import racingcar.repository.PlayResultRepository;
 import racingcar.utils.RacingCarUtils;
-import racingcar.view.RacingResultView;
 
 @Service
 public class RacingCarService {
