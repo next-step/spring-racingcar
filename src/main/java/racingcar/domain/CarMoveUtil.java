@@ -1,10 +1,10 @@
 package racingcar.domain;
 
-public class CarRandom {
+public class CarMoveUtil {
 
-    final static int RANDOM_PIVOT_NUMBER = 4;
+    private final static int RANDOM_PIVOT_NUMBER = 4;
 
-    private CarRandom() {
+    private CarMoveUtil() {
     }
 
     public static int getRandomNumber() {

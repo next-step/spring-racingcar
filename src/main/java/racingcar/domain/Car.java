@@ -48,7 +48,7 @@ public class Car {
     }
 
     public void move() {
-        move(CarRandom.isMove());
+        move(CarMoveUtil.isMove());
     }
 
     public void move(boolean bool) {
