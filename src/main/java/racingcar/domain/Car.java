@@ -52,7 +52,7 @@ public class Car {
             moveForward();
     }
 
-    public void moveForward() {
+    private void moveForward() {
         position++;
     }
 
