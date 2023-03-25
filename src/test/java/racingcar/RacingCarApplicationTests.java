@@ -2,14 +2,11 @@ package racingcar;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
 import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
@@ -52,11 +49,11 @@ class RacingCarApplicationTests {
 		Car car = new Car("kia");
 		car.setPosition(1);
 		carRepository.save(car);
-		assertThat(carRepository.findById(1L).get().getPosition(), is(1));
+		assertThat(carRepository.findAll().get(0).getPosition(), is(1));
 
 		car.setPosition(10);
 		carRepository.save(car);
-		assertThat(carRepository.findById(1L).get().getPosition(), is(10));
+		assertThat(carRepository.findAll().get(0).getPosition(), is(10));
 	}
 
 	@Transactional
@@ -65,11 +62,11 @@ class RacingCarApplicationTests {
 		PlayResult playResult = new PlayResult();
 		playResult.setWinners("kia");
 		playResultRepository.save(playResult);
-		assertThat(playResultRepository.findById(1L).get().getWinners(), is("kia"));
+		assertThat(playResultRepository.findAll().get(0).getWinners(), is("kia"));
 
 		playResult.setWinners("volvo");
 		playResultRepository.save(playResult);
-		assertThat(playResultRepository.findById(1L).get().getWinners(), is("volvo"));
+		assertThat(playResultRepository.findAll().get(0).getWinners(), is("volvo"));
 	}
 
 	@Transactional
@@ -78,7 +75,7 @@ class RacingCarApplicationTests {
 		Car car = new Car("kia");
 		car.setPosition(1);
 		carRepository.save(car);
-		assertThat(carRepository.findById(1L).get().getPosition(), is(1));
+		assertThat(carRepository.findAll().get(0).getPosition(), is(1));
 
 		carRepository.delete(car);
 		assertThat(carRepository.count(), is(0L));
@@ -90,7 +87,7 @@ class RacingCarApplicationTests {
 		PlayResult playResult = new PlayResult();
 		playResult.setWinners("kia");
 		playResultRepository.save(playResult);
-		assertThat(playResultRepository.findById(1L).get().getWinners(), is("kia"));
+		assertThat(playResultRepository.findAll().get(0).getWinners(), is("kia"));
 
 		playResultRepository.delete(playResult);
 		assertThat(playResultRepository.count(), is(0L));

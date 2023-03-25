@@ -11,10 +11,6 @@ public class RacingResultView {
         System.out.println("최종 우승자: " + carNames);
     }
 
-    public static void printNameAndDistance(String name, int distance) {
-        System.out.println(name + " : " + "-".repeat(distance));
-    }
-
     public static void printNewLine() {
         System.out.println("");
     }

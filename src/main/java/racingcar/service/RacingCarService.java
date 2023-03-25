@@ -46,10 +46,6 @@ public class RacingCarService {
         return new RacingResponse(cars.getWinnerNames(), cars.getCars());
     }
 
-    public long getPlayResultId() {
-        return playResultRepository.count() + 1;
-    }
-
     public void startRacing(List<String> carNames, int targetDistance) {
         // make cars
         List<Car> cars = makeCars(carNames);
@@ -83,11 +79,6 @@ public class RacingCarService {
                 .collect(Collectors.toList());
     }
 
-    public void printCars(List<Car> cars) {
-        cars.stream()
-                .forEach(car -> RacingResultView.printNameAndDistance(car.getName(), car.getPosition()));
-    }
-
     public List<Car> makeCars(List<String> carNames) {
         return carNames.stream()
                 .map(Car::new)
@@ -97,7 +88,6 @@ public class RacingCarService {
     public void moveCarsCli(List<Car> cars, int targetDistance) {
         for (int i = 0; i < targetDistance; i++) {
             moveCars(cars);
-            printCars(cars);
             RacingResultView.printNewLine();
         }
     }
