@@ -10,8 +10,8 @@ public class RacingCarMain {
             List<String> carNames = RacingInputCarView.getCarNames();
             int targetDistance = RacingInputCarView.getTargetDistance();
 
-            // RacingCarService racingCarService = new RacingCarService();
-            // racingCarService.startRacing(carNames, targetDistance);
+            RacingCarService racingCarService = new RacingCarService();
+            racingCarService.startRacing(carNames, targetDistance);
         }
     }
 

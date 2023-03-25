@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
 import racingcar.domain.Car;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingRequest;
@@ -18,11 +18,20 @@ import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingResultView;
 
 @Service
-@RequiredArgsConstructor
 public class RacingCarService {
 
-    private final CarRepository carRepository;
-    private final PlayResultRepository playResultRepository;
+    @Autowired
+    private CarRepository carRepository;
+    @Autowired
+    private PlayResultRepository playResultRepository;
+
+    public RacingCarService() {
+    }
+
+    public RacingCarService(CarRepository carRepository, PlayResultRepository playResultRepository) {
+        this.carRepository = carRepository;
+        this.playResultRepository = playResultRepository;
+    }
 
     @Transactional
     public RacingResponse startRacing(RacingRequest racingRequest) {
