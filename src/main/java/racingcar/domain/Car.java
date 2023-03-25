@@ -2,28 +2,48 @@ package racingcar.domain;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.Hibernate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.Getter;
 
+@Entity
 @Getter
-@Embeddable
+@EntityListeners(AuditingEntityListener.class)
 public class Car {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String name;
 
     private int position;
 
+    @ManyToOne
+    @JoinColumn(name = "play_result_id")
+    private PlayResult playResult;
+
+    @CreatedDate
+    private LocalDateTime createAt;
+
     public Car() {
     }
 
-    public Car(String name) {
+    public Car(PlayResult playResult, String name) {
+        this.playResult = playResult;
         this.name = name;
     }
 
-    public void setName(String name) {
+    public Car(String name) {
         this.name = name;
     }
 
@@ -44,4 +64,18 @@ public class Car {
         position++;
     }
 
+    @Override
+    public int hashCode() {
+        return (int) id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || Hibernate.getClass(this) != Hibernate.getClass(obj))
+            return false;
+        Car car = (Car) obj;
+        return id == car.id;
+    }
 }

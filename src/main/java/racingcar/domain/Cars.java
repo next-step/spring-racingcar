@@ -1,51 +1,70 @@
 package racingcar.domain;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import org.hibernate.Hibernate;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import racingcar.repository.CarRepository;
 
-import lombok.Getter;
-
-@Entity
-@Getter
-@EntityListeners(AuditingEntityListener.class)
+@Service
 public class Cars {
-    @Id
-    private long id;
 
-    @Embedded
-    private List<Car> cars = new ArrayList<>();
+    private final CarRepository carRepository;
 
-    @ManyToOne
-    @JoinColumn(name = "play_result_id")
-    private PlayResult playResult;
+    private List<Car> cars;
 
-    @CreatedDate
-    private LocalDateTime createAt;
-
-    @Override
-    public int hashCode() {
-        return (int) id;
+    public Cars(CarRepository carRepository) {
+        this.carRepository = carRepository;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || Hibernate.getClass(this) != Hibernate.getClass(obj))
-            return false;
-        Cars cars = (Cars) obj;
-        return id == cars.id;
+    public List<Car> getCars() {
+        return this.cars;
+    }
+
+    public void makeCars(PlayResult playResult, List<String> carNames) {
+        this.cars = carNames.stream()
+                .map(name -> new Car(playResult, name))
+                .collect(Collectors.toList());
+    }
+
+    public void moveCars(int targetDistance) {
+        IntStream.range(0, targetDistance)
+                .forEach(it -> {
+                    moveCars(cars);
+                });
+    }
+
+    private void moveCars(List<Car> cars) {
+        cars.stream()
+                .forEach(Car::move);
+    }
+
+    @Transactional
+    public void save() {
+        cars.forEach(car -> carRepository.save(car));
+    }
+
+    public String getWinnerNames() {
+        int maxDistance = getMaxDistance(cars);
+        List<String> winners = getWinnerCars(cars, maxDistance);
+
+        return String.join(", ", winners);
+    }
+
+    private int getMaxDistance(List<Car> cars) {
+        return cars.stream()
+                .map(Car::getPosition)
+                .max(Integer::compareTo)
+                .get();
+    }
+
+    private List<String> getWinnerCars(List<Car> cars, int maxDistance) {
+        return cars.stream()
+                .filter(car -> car.getPosition() == maxDistance)
+                .map(Car::getName)
+                .collect(Collectors.toList());
     }
 }

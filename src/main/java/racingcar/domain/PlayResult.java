@@ -34,14 +34,13 @@ public class PlayResult {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PLAY_RESULT_SEQ_GENERATOR")
     private long id;
 
-    @Column(name = "WINNERS", nullable = false, length = 100)
     private String winners;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "playResult")
-    private List<Cars> cars;
+    private List<Car> car;
 
     public void setWinners(String winners) {
         this.winners = winners;
