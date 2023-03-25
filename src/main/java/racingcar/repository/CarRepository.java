@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import racingcar.domain.Car;
 
 public interface CarRepository extends JpaRepository<Car, String> {
-    // Car move(Car car);
 
     Car save(Car car);
 
