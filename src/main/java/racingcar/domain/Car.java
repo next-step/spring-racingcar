@@ -7,6 +7,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -53,6 +54,21 @@ public class Car {
 
     public void moveForward() {
         position++;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || Hibernate.getClass(this) != Hibernate.getClass(obj))
+            return false;
+        Car car = (Car) obj;
+        return name.equals(car.getName());
     }
 
 }
