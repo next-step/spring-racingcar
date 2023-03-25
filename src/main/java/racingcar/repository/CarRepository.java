@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import racingcar.domain.Car;
 
-public interface CarRepository extends JpaRepository<Car, String> {
+public interface CarRepository extends JpaRepository<Car, Long> {
 
     Car save(Car car);
 
-    Optional<Car> findByName(String name);
+    Optional<Car> findById(Long id);
 
     List<Car> findAll();
 }

@@ -1,6 +1,7 @@
 package racingcar.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -32,11 +34,13 @@ public class PlayResult {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PLAY_RESULT_SEQ_GENERATOR")
     private long id;
 
-    @Column(name = "WINNERS", nullable = false, length = 100)
     private String winners;
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "playResult")
+    private List<Car> car;
 
     public void setWinners(String winners) {
         this.winners = winners;

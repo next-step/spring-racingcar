@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import racingcar.domain.Car;
+import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingRequest;
 import racingcar.model.RacingResponse;
-import racingcar.repository.CarRepository;
 import racingcar.repository.PlayResultRepository;
 import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingResultView;
@@ -21,29 +21,33 @@ import racingcar.view.RacingResultView;
 public class RacingCarService {
 
     @Autowired
-    private CarRepository carRepository;
+    private Cars cars;
     @Autowired
     private PlayResultRepository playResultRepository;
 
     public RacingCarService() {
     }
 
-    public RacingCarService(CarRepository carRepository, PlayResultRepository playResultRepository) {
-        this.carRepository = carRepository;
+    public RacingCarService(Cars cars, PlayResultRepository playResultRepository) {
+        this.cars = cars;
         this.playResultRepository = playResultRepository;
     }
 
     @Transactional
     public RacingResponse startRacing(RacingRequest racingRequest) {
+        PlayResult playResult = new PlayResult();
 
-        List<Car> cars = makeCars(RacingCarUtils.stringToList(racingRequest.getNames()));
-        moveCars(cars, racingRequest.getCount());
-        cars.forEach(car -> carRepository.save(car));
+        cars.makeCars(playResult, RacingCarUtils.stringToList(racingRequest.getNames()));
+        cars.moveCars(racingRequest.getCount());
+        cars.save();
 
-        playResultRepository.save(PlayResult.builder()
-                .winners(getWinnerNames(cars))
-                .build());
-        return new RacingResponse(getWinnerNames(cars), cars);
+        playResult.setWinners(cars.getWinnerNames());
+        playResultRepository.save(playResult);
+        return new RacingResponse(cars.getWinnerNames(), cars.getCars());
+    }
+
+    public long getPlayResultId() {
+        return playResultRepository.count() + 1;
     }
 
     public void startRacing(List<String> carNames, int targetDistance) {

@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.Getter;
@@ -17,30 +19,32 @@ import lombok.Getter;
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "Car")
 public class Car {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String name;
 
     private int position;
 
+    @ManyToOne
+    @JoinColumn(name = "play_result_id")
+    private PlayResult playResult;
+
     @CreatedDate
-    @LastModifiedDate
     private LocalDateTime createAt;
 
     public Car() {
     }
 
+    public Car(PlayResult playResult, String name) {
+        this.playResult = playResult;
+        this.name = name;
+    }
+
     public Car(String name) {
         this.name = name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
     }
 
     public void setPosition(int position) {
@@ -62,7 +66,7 @@ public class Car {
 
     @Override
     public int hashCode() {
-        return this.name.hashCode();
+        return (int) id;
     }
 
     @Override
@@ -72,7 +76,6 @@ public class Car {
         if (obj == null || Hibernate.getClass(this) != Hibernate.getClass(obj))
             return false;
         Car car = (Car) obj;
-        return name.equals(car.getName());
+        return id == car.id;
     }
-
 }
