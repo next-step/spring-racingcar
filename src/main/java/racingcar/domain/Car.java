@@ -16,7 +16,7 @@ import lombok.Getter;
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "Cars")
+@Table(name = "Car")
 public class Car {
     @Id
     private String name;
