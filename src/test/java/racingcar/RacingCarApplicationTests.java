@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import racingcar.domain.Car;
@@ -17,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class RacingCarApplicationTests {
 	@Autowired
 	private Cars cars;
@@ -27,7 +29,10 @@ class RacingCarApplicationTests {
 	@Autowired
 	private PlayResultRepository playResultRepository;
 
-	@Transactional
+	@Test
+	void contextLoads() {
+	}
+
 	@Test
 	public void insertCarTest() {
 		Car car = new Car("kia");
@@ -73,9 +78,8 @@ class RacingCarApplicationTests {
 	@Test
 	public void deleteCarTest() {
 		Car car = new Car("kia");
-		car.setPosition(1);
 		carRepository.save(car);
-		assertThat(carRepository.findAll().get(0).getPosition(), is(1));
+		assertThat(carRepository.count(), is(1L));
 
 		carRepository.delete(car);
 		assertThat(carRepository.count(), is(0L));
