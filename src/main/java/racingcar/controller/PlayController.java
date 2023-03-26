@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
-import racingcar.service.PlayGame;
+import racingcar.service.RacingService;
+import racingcar.repository.InsertDao;
 
 import java.util.List;
 
@@ -15,8 +16,9 @@ public class PlayController {
 
     @PostMapping(value = "/plays", consumes = "application/json")
     public ResponseEntity startGame(@RequestBody PlayInput playInput){
-        List<RacingCar> racingCars = PlayGame.playgame(playInput);
-        List<String> winners = PlayGame.getWinner();
-        return ResponseEntity.ok(new PlayResult(winners, racingCars));
+        List<RacingCar> racingCars = RacingService.playgame(playInput);
+        List<String> winners = RacingService.getWinner();
+        PlayResult playResult = new PlayResult(playInput.getCount(), winners, racingCars);
+        return ResponseEntity.ok(InsertDao.insertWithMap(playResult));
     }
 }

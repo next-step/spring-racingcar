@@ -1,6 +1,8 @@
 package racingcar.domain;
 
-public class RacingCar {
+import java.io.Serializable;
+
+public class RacingCar implements Serializable {
     private final String name;
     private int position;
 

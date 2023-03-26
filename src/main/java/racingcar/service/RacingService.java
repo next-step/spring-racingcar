@@ -1,5 +1,6 @@
 package racingcar.service;
 
+import org.springframework.stereotype.Service;
 import racingcar.controller.PlayInput;
 import racingcar.domain.RacingCar;
 
@@ -9,7 +10,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class PlayGame {
+@Service
+public class RacingService {
 
     private static List<RacingCar> racingCars;
 
