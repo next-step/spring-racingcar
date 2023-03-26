@@ -31,7 +31,13 @@ class RacingCarApplicationTests {
 
 	@Transactional
 	@Test
-	void contextLoads() {
+	public void makeCarsAndfindAllTest() {
+		String names = "kia, volov, bmw";
+		cars.makeCars(null, names);
+		cars.save();
+
+		List<Car> findCars = carRepository.findAll();
+		assertThat(findCars.size(), is(3));
 	}
 
 	@Transactional
