@@ -1,4 +1,8 @@
-package racingcar.domain;
+package racingcar.application;
+
+import racingcar.domain.Car;
+import racingcar.domain.CarCollection;
+import racingcar.dto.RacingCarResultDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -7,7 +11,6 @@ public class Stadium {
     private final CarCollection carCollection;
     private final int totalRound;
     private final StadiumMoveOption stadiumMoveOption;
-
     private int round;
 
     // 이름리스트를 초기값으로 받는 버전
@@ -23,8 +26,6 @@ public class Stadium {
 
         this.round = 0;
     }
-
-
 
     public List<Car> racingCars(){
 
@@ -64,14 +65,11 @@ public class Stadium {
                 .collect(Collectors.toList());
     }
 
-
     public int getRound() {
         return round;
     }
 
-
-    public RacingCarResult playRacingCar(){
-
+    public RacingCarResultDto playRacingCar(){
         // 경기를 돌리는리는거고
         while(!isRacingEnd()){
             racingCars();
@@ -84,9 +82,11 @@ public class Stadium {
 
         List<Car> cars = carCollection.getCars();
 
-        return new RacingCarResult(winners, cars);
+        return new RacingCarResultDto(winners, cars);
     }
 
-
+    public List<Car> getCars(){
+        return carCollection.getCars();
+    }
 
 }

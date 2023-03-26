@@ -1,6 +1,7 @@
 package racingcar.view;
 
 import racingcar.domain.Car;
+import racingcar.dto.RacingCarResultDto;
 
 import java.util.List;
 import java.util.Scanner;
@@ -48,12 +49,10 @@ public class CarRacingConsoleView {
         return sb.toString();
     }
 
-    public void showWinners(List<Car> winnerCars){
-        String winnerStringFormat = winnerCars.stream()
-                        .map(Car::getName)
-                        .collect(Collectors.joining(", "));
+    public void showRacingResult(RacingCarResultDto resultDto){
+        showRacing(resultDto.getRacingCars());
 
-        System.out.println(String.format("최종 우승자 : %s", winnerStringFormat));
+        System.out.println(String.format("최종 우승자 : %s", resultDto.getWinners()));
     }
 
 }

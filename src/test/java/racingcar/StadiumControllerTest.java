@@ -8,10 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import racingcar.test.User;
+import racingcar.dto.PlaysDto;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StadiumControllerTest {
@@ -31,19 +34,16 @@ public class StadiumControllerTest {
     @DisplayName("plays test")
     @Test
     void playsTest() {
-        Map<String, Object> map = new HashMap<>();
 
-        map.put("names","lucas,cyan");
-        map.put("count", 50);
-
+        PlaysDto playsDto = new PlaysDto("lucas,cyan", 5);
 
         RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(map)
+                .body(playsDto)
                 .when().post("/plays")
                 .then().log().all()
-                .statusCode(HttpStatus.CREATED.value())
-                .header("Location", "/users/1");
+                .statusCode(HttpStatus.OK.value())
+                .body("cars.name", hasItems("lucas","cyan"));
     }
 
 }
