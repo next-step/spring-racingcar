@@ -1,6 +1,10 @@
 package racingcar.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import racingcar.domain.Cars;
@@ -15,6 +19,7 @@ public class RacingCarService {
 
     private final PlayResultRepository playResultRepository;
 
+    @Transactional
     public RacingResponse startRacing(String names, int targetDistance) {
         PlayResult playResult = new PlayResult();
         cars.makeCars(playResult, names);
@@ -25,5 +30,17 @@ public class RacingCarService {
         cars.save();
         cars.printResult();
         return new RacingResponse(cars.getWinnerNames(), cars.getCars());
+    }
+
+    @Transactional
+    public List<RacingResponse> getRacingHistory() {
+        List<RacingResponse> racingHistory = new ArrayList<>();
+
+        playResultRepository.findAll().forEach(playResult -> {
+            RacingResponse response = new RacingResponse(playResult.getWinners(), playResult.getCar());
+            racingHistory.add(response);
+        });
+
+        return racingHistory;
     }
 }

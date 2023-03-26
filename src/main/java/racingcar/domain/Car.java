@@ -14,10 +14,9 @@ import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import lombok.Getter;
+import lombok.ToString;
 
 @Entity
-@Getter
 @EntityListeners(AuditingEntityListener.class)
 public class Car {
     @Id
@@ -30,6 +29,7 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "play_result_id")
+    @ToString.Exclude
     private PlayResult playResult;
 
     @CreatedDate
@@ -41,10 +41,20 @@ public class Car {
     public Car(PlayResult playResult, String name) {
         this.playResult = playResult;
         this.name = name;
+        this.position = 0;
     }
 
     public Car(String name) {
         this.name = name;
+        this.position = 0;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getPosition() {
+        return this.position;
     }
 
     public void setPosition(int position) {

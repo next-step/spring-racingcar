@@ -29,10 +29,12 @@ class RacingCarApplicationTests {
 	@Autowired
 	private PlayResultRepository playResultRepository;
 
+	@Transactional
 	@Test
 	void contextLoads() {
 	}
 
+	@Transactional
 	@Test
 	public void insertCarTest() {
 		Car car = new Car("kia");
@@ -121,5 +123,63 @@ class RacingCarApplicationTests {
 
 		List<PlayResult> playResults = playResultRepository.findAll();
 		assertThat(playResults.size(), is(2));
+	}
+
+	@Test
+	public void carToStringTest() {
+		cars.makeCars("kia, volvo");
+		assertThat(cars.toString(), is("[kia, volvo]"));
+	}
+
+	@Test
+	public void makeCarsTest() {
+		cars.makeCars("kia, volvo, bmw");
+		assertThat(cars.getCars().size(), is(3));
+	}
+
+	@Test
+	public void makeCarTest() {
+		Car car = new Car("volvo");
+		assertThat(car.getName(), is("volvo"));
+	}
+
+	@Test
+	public void moveTest() {
+		Car car = new Car("volvo");
+		car.move(true);
+		car.move(true);
+		assertThat(car.getPosition(), is(2));
+	}
+
+	@Test
+	public void getWinnerNamesTest() {
+		cars.makeCars("kia, volvo");
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(1).move(true);
+		assertThat(cars.getWinnerNames(), is("kia"));
+	}
+
+	@Test
+	public void getMaxDistanceTest() {
+		cars.makeCars("kia, volvo");
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(1).move(true);
+		assertThat(cars.getMaxDistance(), is(3));
+	}
+
+	@Test
+	public void getWinnerCarsTest() {
+		cars.makeCars("kia, volvo, bmw");
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(0).move(true);
+		cars.getCars().get(1).move(true);
+		cars.getCars().get(1).move(true);
+		cars.getCars().get(1).move(true);
+		assertThat(cars.getWinnerCars().size(), is(2));
 	}
 }

@@ -7,17 +7,21 @@ import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import racingcar.repository.CarRepository;
 import racingcar.utils.RacingCarUtils;
 import racingcar.view.RacingResultView;
 
 @Service
-@RequiredArgsConstructor
 public class Cars {
     private final CarRepository carRepository;
 
+    @ToString.Exclude
     private List<Car> cars;
+
+    public Cars(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
 
     public List<Car> getCars() {
         return this.cars;
@@ -27,6 +31,11 @@ public class Cars {
         this.cars = RacingCarUtils.stringToList(carNames).stream()
                 .map(name -> new Car(playResult, name))
                 .collect(Collectors.toList());
+    }
+
+    public void makeCars(String carNames) {
+        PlayResult playResult = new PlayResult();
+        makeCars(playResult, carNames);
     }
 
     public void moveCars(int targetDistance) {
@@ -47,22 +56,20 @@ public class Cars {
     }
 
     public String getWinnerNames() {
-        int maxDistance = getMaxDistance(cars);
-        List<String> winners = getWinnerCars(cars, maxDistance);
-
+        List<String> winners = getWinnerCars();
         return String.join(", ", winners);
     }
 
-    private int getMaxDistance(List<Car> cars) {
+    public int getMaxDistance() {
         return cars.stream()
                 .map(Car::getPosition)
                 .max(Integer::compareTo)
                 .get();
     }
 
-    private List<String> getWinnerCars(List<Car> cars, int maxDistance) {
+    public List<String> getWinnerCars() {
         return cars.stream()
-                .filter(car -> car.getPosition() == maxDistance)
+                .filter(car -> car.getPosition() == getMaxDistance())
                 .map(Car::getName)
                 .collect(Collectors.toList());
     }
@@ -70,4 +77,10 @@ public class Cars {
     public void printResult() {
         RacingResultView.printResult(getWinnerNames(), cars);
     }
+
+    @Override
+    public String toString() {
+        return cars.stream().map(car -> car.getName()).toList().toString();
+    }
+
 }

@@ -3,12 +3,12 @@ package racingcar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.stereotype.Component;
 
 import racingcar.service.RacingCarService;
 import racingcar.view.RacingInputCarView;
 
-@EnableJpaAuditing
+@Component
 @Profile("!test")
 public class RacingCarCliApplication implements CommandLineRunner {
 	@Autowired
