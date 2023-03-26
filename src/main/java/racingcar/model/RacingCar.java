@@ -4,22 +4,18 @@ public class RacingCar {
 
     private int id;
     private int groupId;
-    private int personId;
     private String name;
     private int position;
-    private String createdAt;
 
-    public RacingCar(int id, int groupId, int personId, String name, int position) {
+    public RacingCar(int id, int groupId, String name, int position) {
         this.id = id;
         this.groupId = groupId;
-        this.personId = personId;
         this.name = name;
         this.position = position;
     }
 
-    public RacingCar(int groupId, int personId, String name, int position) {
+    public RacingCar(int groupId, String name, int position) {
         this.groupId = groupId;
-        this.personId = personId;
         this.name = name;
         this.position = position;
     }
@@ -32,11 +28,6 @@ public class RacingCar {
         return groupId;
     }
 
-
-    public int getPersonId() {
-        return personId;
-    }
-
     public String getName() {
         return name;
     }
@@ -45,8 +36,9 @@ public class RacingCar {
         return position;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public void move(int randomNumber) {
+        if (randomNumber >= 4) {
+            this.position += 1;
+        }
     }
-
 }

@@ -5,29 +5,29 @@ import java.util.List;
 import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import racingcar.Repository.PersonDAO;
 import racingcar.Repository.PlayResultDAO;
 import racingcar.Repository.RacingCarDAO;
-import racingcar.model.Person;
 import racingcar.model.PlayResult;
-import racingcar.model.PlayResultOut;
+import racingcar.dto.PlayResultOut;
 import racingcar.model.RacingCar;
 
 @Service
 public class RacingService {
 
-    @Autowired
-    PersonDAO personDAO;
-
-    @Autowired
+    final
     PlayResultDAO playResultDAO;
 
-    @Autowired
+    final
     RacingCarDAO racingCarDAO;
 
     private static final Logger logger = LogManager.getLogger(RacingService.class);
+
+    public RacingService(PlayResultDAO playResultDAO,
+        RacingCarDAO racingCarDAO) {
+        this.playResultDAO = playResultDAO;
+        this.racingCarDAO = racingCarDAO;
+    }
 
     /**
      * 경기 기록 가져오기
@@ -37,10 +37,10 @@ public class RacingService {
     public List<PlayResultOut> playList() {
         List<PlayResultOut> result = new ArrayList<>();
         List<PlayResult> list = playResultDAO.findAllPlayResult();
-        for (PlayResult pr : list) {
+        for (PlayResult playResult : list) {
             List<RacingCar> racingCarByGroupId = racingCarDAO.findRacingCarByGroupId(
-                pr.getGroupId());
-            PlayResultOut pro = new PlayResultOut(pr.getWinners(), racingCarByGroupId);
+                playResult.getGroupId());
+            PlayResultOut pro = new PlayResultOut(playResult.getWinners(), racingCarByGroupId);
             result.add(pro);
         }
         return result;
@@ -57,19 +57,18 @@ public class RacingService {
         int groupId = racingCarDAO.getGroupId();
         String[] names = inputName.split(",");
         for (String name : names) {
-            Person person = new Person(name);
-            int personId = personDAO.insertPerson(person);
-            person.setId(personId);
-            RacingCar racingCar = new RacingCar(groupId, personId, name, 0);
+            RacingCar racingCar = new RacingCar(groupId, name, 0);
             racingCarDAO.insertRacingCar(racingCar);
         }
 
         PlayResult playResult = new PlayResult(groupId, inputTryNumber, "");
         playResult = playResultDAO.insertPlayResult(playResult);
 
+        List<RacingCar> racingCarList = racingCarDAO.findRacingCarByGroupId(groupId);
         for (int i = 0; i < inputTryNumber; i++) {
-            playRound(groupId);
+            playRound(racingCarList, groupId);
         }
+        racingCarDAO.updateRacingCarList(racingCarList);
 
         List<RacingCar> winnerList = racingCarDAO.getWinner(groupId);
         List<String> winners = new ArrayList<>();
@@ -87,15 +86,16 @@ public class RacingService {
     /**
      * 실제 1경기 진행하기
      *
+     * @param racingCarList
      * @param groupId
      */
-    public void playRound(int groupId) {
-        List<RacingCar> racingCarList = racingCarDAO.findRacingCarByGroupId(groupId);
+    public void playRound(List<RacingCar> racingCarList, int groupId) {
         Random random = new Random();
-        for (RacingCar rc : racingCarList) {
+        for (RacingCar racingCar : racingCarList) {
             int randomNumber = random.nextInt(10);
-            logger.debug(rc.getName() + ":" + rc.getGroupId() + "/" + randomNumber);
-            racingCarDAO.updatePosition(rc, randomNumber);
+            logger.debug(racingCar.getName() + ":" + racingCar.getGroupId() + "/" + randomNumber);
+            racingCar.move(randomNumber);
+            //racingCarDAO.updatePosition(rc, randomNumber);
         }
     }
 }

@@ -17,7 +17,6 @@ public class RacingCarDAO {
         RacingCar racingCar = new RacingCar(
             resultSet.getInt("id"),
             resultSet.getInt("group_id"),
-            resultSet.getInt("person_id"),
             resultSet.getString("name"),
             resultSet.getInt("position")
         );
@@ -34,7 +33,7 @@ public class RacingCarDAO {
      * @return List<RacingCar>
      */
     public List<RacingCar> findAllRacingCar() {
-        String sql = "select id, group_id, person_id, c, position, created_at from racing_car";
+        String sql = "select id, group_id, name, position, created_at from racing_car";
         return jdbcTemplate.query(sql, actorRowMapper);
     }
 
@@ -46,7 +45,7 @@ public class RacingCarDAO {
      * @return List<RacingCar>
      */
     public List<RacingCar> findRacingCarById(int id) {
-        String sql = "select id, group_id, person_id, name, position, created_at from racing_car where id = ?";
+        String sql = "select id, group_id, name, position, created_at from racing_car where id = ?";
         return jdbcTemplate.query(sql, actorRowMapper, id);
     }
 
@@ -57,7 +56,7 @@ public class RacingCarDAO {
      * @return List<RacingCar>
      */
     public List<RacingCar> findRacingCarByGroupId(int groupId) {
-        String sql = "select id, group_id, person_id, name, position, created_at from racing_car where group_id = ?";
+        String sql = "select id, group_id, name, position, created_at from racing_car where group_id = ?";
         return jdbcTemplate.query(sql, actorRowMapper, groupId);
     }
 
@@ -68,15 +67,14 @@ public class RacingCarDAO {
      * @return id
      */
     public int insertRacingCar(RacingCar racingCar) {
-        String sql = "insert into racing_car (group_id, person_id, name, position) values (?,?,?,?)";
+        String sql = "insert into racing_car (group_id, name, position) values (?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setInt(1, racingCar.getGroupId());
-            ps.setInt(2, racingCar.getPersonId());
-            ps.setString(3, racingCar.getName());
-            ps.setInt(4, racingCar.getPosition());
+            ps.setString(2, racingCar.getName());
+            ps.setInt(3, racingCar.getPosition());
             return ps;
         }, keyHolder);
 
@@ -89,23 +87,9 @@ public class RacingCarDAO {
      * @param racingCar
      */
     public void updateRacingCar(RacingCar racingCar) {
-        String sql = "update racing_car set group_id = ? , person_id = ? , name = ? , position = ? where id = ?";
-        this.jdbcTemplate.update(sql, racingCar.getGroupId(), racingCar.getPersonId(),
+        String sql = "update racing_car set group_id = ? , name = ? , position = ? where id = ?";
+        this.jdbcTemplate.update(sql, racingCar.getGroupId(),
             racingCar.getName(), racingCar.getPosition(), racingCar.getId());
-    }
-
-    /**
-     * 위치 업데이트
-     *
-     * @param racingCar
-     * @param randomNumber
-     */
-    public void updatePosition(RacingCar racingCar, int randomNumber) {
-        if (randomNumber >= 4) {
-            String sql = "update racing_car set position = ? where group_id = ? and person_id = ?";
-            this.jdbcTemplate.update(sql, racingCar.getPosition() + 1, racingCar.getGroupId(),
-                racingCar.getPersonId());
-        }
     }
 
     /**
@@ -125,7 +109,20 @@ public class RacingCarDAO {
      * @return List<RacingCar>
      */
     public List<RacingCar> getWinner(int groupId) {
-        String sql = "select id, group_id, person_id, name, position, created_at from racing_car where group_id = ? and position = (select max(position) from racing_car where group_id = ?)";
+        String sql = "select id, group_id, name, position, created_at from racing_car where group_id = ? and position = (select max(position) from racing_car where group_id = ?)";
         return jdbcTemplate.query(sql, actorRowMapper, groupId, groupId);
+    }
+
+    /**
+     * 위치 업데이트
+     *
+     * @param racingCarList
+     */
+    public void updateRacingCarList(List<RacingCar> racingCarList) {
+        for (RacingCar racingCar : racingCarList) {
+            String sql = "update racing_car set position = ? where group_id = ? and name = ?";
+            this.jdbcTemplate.update(sql, racingCar.getPosition(), racingCar.getGroupId(),
+                racingCar.getName());
+        }
     }
 }

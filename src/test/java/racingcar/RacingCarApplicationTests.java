@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import racingcar.Service.RacingService;
-import racingcar.model.PlayResultOut;
+import racingcar.dto.PlayResultOut;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

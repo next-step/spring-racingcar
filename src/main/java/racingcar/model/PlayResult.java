@@ -6,14 +6,12 @@ public class PlayResult {
     private int groupId;
     private int trialCount;
     private String winners;
-    private String createdAt;
 
     public PlayResult(int id, int groupId, int trialCount, String winners, String createdAt) {
         this.id = id;
         this.groupId = groupId;
         this.trialCount = trialCount;
         this.winners = winners;
-        this.createdAt = createdAt;
     }
 
     public PlayResult(int id, int groupId, int trialCount, String winners) {
@@ -48,10 +46,6 @@ public class PlayResult {
 
     public void setWinners(String winners) {
         this.winners = winners;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
     }
 
 }

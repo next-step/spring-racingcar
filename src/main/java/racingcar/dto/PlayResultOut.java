@@ -1,6 +1,7 @@
-package racingcar.model;
+package racingcar.dto;
 
 import java.util.List;
+import racingcar.model.RacingCar;
 
 public class PlayResultOut {
 
