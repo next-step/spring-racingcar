@@ -17,15 +17,8 @@ public class PlaysDto {
         return names;
     }
 
-    public void setNames(String names) {
-        this.names = names;
-    }
-
     public Integer getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
-    }
 }

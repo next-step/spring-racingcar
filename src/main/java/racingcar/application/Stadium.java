@@ -42,11 +42,11 @@ public class Stadium {
         return carCollection.getCars();
     }
 
-    public boolean isRacingEnd() {
+    private boolean isRacingEnd() {
         return totalRound <= round;
     }
 
-    public List<Car> getWinner() {
+    private List<Car> getWinner() {
         final int maxPosition = getMaxCarPosition();
 
         return getSpecificLocationCars(maxPosition);
@@ -61,7 +61,7 @@ public class Stadium {
 
     public List<Car> getSpecificLocationCars(int position) {
         return carCollection.getCars().stream()
-                .filter(car -> car.getPosition() == position)
+                .filter(car -> car.equalsPosition(position))
                 .collect(Collectors.toList());
     }
 
