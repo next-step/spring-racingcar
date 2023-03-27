@@ -18,7 +18,7 @@ public class RacingcarController {
     }
 
     @PostMapping("/plays")
-    public ResponseEntity<RacingCarGame> requestParam(@RequestBody Device device) {
+    public ResponseEntity<RacingCarGame> plays(@RequestBody Device device) {
         RacingCarGame result = racingCarService.play(device.getNames(), device.getCount());
         return ResponseEntity.ok().body(result);
     }

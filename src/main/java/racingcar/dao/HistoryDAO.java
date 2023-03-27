@@ -16,7 +16,7 @@ public class HistoryDAO {
     }
 
 
-    public int insert(Car car, int trialCount, String winners) {
+    public int insertPlayResult(Car car, int trialCount, String winners) {
         String sql = "insert into PLAY_RESULT (winners, trialCount,name,position) values (?, ?, ?, ?)";
         return jdbcTemplate.update(sql, winners, trialCount, car.getName(), car.getPosition());
     }

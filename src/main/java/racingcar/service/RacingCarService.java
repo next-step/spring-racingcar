@@ -23,7 +23,7 @@ public class RacingCarService {
         RacingCarGame result = carGame.start();
         for (Car car : result.getRacingCars()) {
             System.out.println(car.getName());
-            historyDAO.insert(car, result.getTotalTry(), result.getWinners());
+            historyDAO.insertPlayResult(car, result.getTotalTry(), result.getWinners());
         }
         return result;
     }
