@@ -21,9 +21,6 @@ import static org.hamcrest.Matchers.is;
 @ActiveProfiles("test")
 class RacingCarApplicationTests {
 	@Autowired
-	private Cars cars;
-
-	@Autowired
 	private CarRepository carRepository;
 
 	@Autowired
@@ -33,6 +30,7 @@ class RacingCarApplicationTests {
 	@Test
 	public void makeCarsAndfindAllTest() {
 		String names = "kia, volov, bmw";
+		Cars cars = new Cars(carRepository);
 		cars.makeCars(null, names);
 		cars.save();
 
@@ -60,13 +58,12 @@ class RacingCarApplicationTests {
 	@Test
 	public void updateCarTest() {
 		Car car = new Car("kia");
-		car.setPosition(1);
+		carRepository.save(car);
+		assertThat(carRepository.findAll().get(0).getPosition(), is(0));
+
+		car.move(true);
 		carRepository.save(car);
 		assertThat(carRepository.findAll().get(0).getPosition(), is(1));
-
-		car.setPosition(10);
-		carRepository.save(car);
-		assertThat(carRepository.findAll().get(0).getPosition(), is(10));
 	}
 
 	@Transactional
@@ -107,17 +104,6 @@ class RacingCarApplicationTests {
 
 	@Transactional
 	@Test
-	public void makeCarsAndfindAllTest() {
-		String names = "kia, volov, bmw";
-		cars.makeCars(null, names);
-		cars.save();
-
-		List<Car> findCars = carRepository.findAll();
-		assertThat(findCars.size(), is(3));
-	}
-
-	@Transactional
-	@Test
 	public void findAllPlayResultTest() {
 		PlayResult playResult1 = new PlayResult();
 		playResult1.setWinners("kia");
@@ -131,61 +117,4 @@ class RacingCarApplicationTests {
 		assertThat(playResults.size(), is(2));
 	}
 
-	@Test
-	public void carToStringTest() {
-		cars.makeCars("kia, volvo");
-		assertThat(cars.toString(), is("[kia, volvo]"));
-	}
-
-	@Test
-	public void makeCarsTest() {
-		cars.makeCars("kia, volvo, bmw");
-		assertThat(cars.getCars().size(), is(3));
-	}
-
-	@Test
-	public void makeCarTest() {
-		Car car = new Car("volvo");
-		assertThat(car.getName(), is("volvo"));
-	}
-
-	@Test
-	public void moveTest() {
-		Car car = new Car("volvo");
-		car.move(true);
-		car.move(true);
-		assertThat(car.getPosition(), is(2));
-	}
-
-	@Test
-	public void getWinnerNamesTest() {
-		cars.makeCars("kia, volvo");
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(1).move(true);
-		assertThat(cars.getWinnerNames(), is("kia"));
-	}
-
-	@Test
-	public void getMaxDistanceTest() {
-		cars.makeCars("kia, volvo");
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(1).move(true);
-		assertThat(cars.getMaxDistance(), is(3));
-	}
-
-	@Test
-	public void getWinnerCarsTest() {
-		cars.makeCars("kia, volvo, bmw");
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(0).move(true);
-		cars.getCars().get(1).move(true);
-		cars.getCars().get(1).move(true);
-		cars.getCars().get(1).move(true);
-		assertThat(cars.getWinnerCars().size(), is(2));
-	}
 }

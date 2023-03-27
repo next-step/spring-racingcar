@@ -4,15 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.ToString;
 import racingcar.repository.CarRepository;
 import racingcar.utils.RacingCarUtils;
-import racingcar.view.RacingResultView;
 
-@Service
 public class Cars {
     private final CarRepository carRepository;
 
@@ -69,18 +66,9 @@ public class Cars {
 
     public List<String> getWinnerCars() {
         return cars.stream()
-                .filter(car -> car.getPosition() == getMaxDistance())
+                .filter(car -> car.isAtPosition(getMaxDistance()))
                 .map(Car::getName)
                 .collect(Collectors.toList());
-    }
-
-    public void printResult() {
-        RacingResultView.printResult(getWinnerNames(), cars);
-    }
-
-    @Override
-    public String toString() {
-        return cars.stream().map(car -> car.getName()).toList().toString();
     }
 
 }

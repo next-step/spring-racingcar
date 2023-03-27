@@ -10,25 +10,26 @@ import lombok.RequiredArgsConstructor;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingResponse;
+import racingcar.repository.CarRepository;
 import racingcar.repository.PlayResultRepository;
 
 @Service
 @RequiredArgsConstructor
 public class RacingCarService {
-    private final Cars cars;
+    private final CarRepository carRepository;
 
     private final PlayResultRepository playResultRepository;
 
     @Transactional
     public RacingResponse startRacing(String names, int targetDistance) {
         PlayResult playResult = new PlayResult();
+        Cars cars = new Cars(carRepository);
         cars.makeCars(playResult, names);
         cars.moveCars(targetDistance);
 
         playResult.setWinners(cars.getWinnerNames());
         playResultRepository.save(playResult);
         cars.save();
-        cars.printResult();
         return new RacingResponse(cars.getWinnerNames(), cars.getCars());
     }
 
@@ -36,10 +37,9 @@ public class RacingCarService {
     public List<RacingResponse> getRacingHistory() {
         List<RacingResponse> racingHistory = new ArrayList<>();
 
-        playResultRepository.findAll().forEach(playResult -> {
-            RacingResponse response = new RacingResponse(playResult.getWinners(), playResult.getCar());
-            racingHistory.add(response);
-        });
+        playResultRepository.findAll().stream()
+                .map(playResult -> new RacingResponse(playResult.getWinners(), playResult.getCar()))
+                .forEach(racingResponse -> racingHistory.add(racingResponse));
 
         return racingHistory;
     }

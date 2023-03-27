@@ -57,10 +57,6 @@ public class Car {
         return this.position;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     public void move() {
         move(CarMoveUtil.isMove());
     }
@@ -72,6 +68,10 @@ public class Car {
 
     private void moveForward() {
         position++;
+    }
+
+    public boolean isAtPosition(int position) {
+        return this.position == position;
     }
 
     @Override
