@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
-import racingcar.repository.CarRepository;
+import racingcar.repository.CarsConsoleRepository;
+import racingcar.repository.CarsRepository;
+import racingcar.repository.CarWebRepository;
+import racingcar.repository.PlayResultCliRepository;
 import racingcar.repository.PlayResultRepository;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,20 +24,43 @@ import static org.hamcrest.Matchers.is;
 @ActiveProfiles("test")
 class RacingCarApplicationTests {
 	@Autowired
-	private CarRepository carRepository;
+	private CarWebRepository carWebRepository;
 
 	@Autowired
 	private PlayResultRepository playResultRepository;
+
+	@Autowired
+	private CarsConsoleRepository carsConsoleRepository;
+
+	@Autowired
+	private PlayResultCliRepository playResultCliRepository;
+
+	private CarsRepository carsRepository;
+
+	@Transactional
+	@Test
+	public void carCliRepositoryTest() {
+		Cars cars = Cars.makeCars("kia, bmw");
+		carsRepository = new CarsRepository(carsConsoleRepository);
+		carsRepository.save(cars);
+	}
+
+	@Transactional
+	@Test
+	public void playResultCliRepositoryTest() {
+		PlayResult playResult = new PlayResult();
+		playResultCliRepository.save(playResult);
+	}
 
 	@Transactional
 	@Test
 	public void makeCarsAndfindAllTest() {
 		String names = "kia, volov, bmw";
-		Cars cars = new Cars(carRepository);
-		cars.makeCars(null, names);
-		cars.save();
+		Cars cars = Cars.makeCars(null, names);
+		carsRepository = new CarsRepository(carWebRepository);
+		carsRepository.save(cars);
 
-		List<Car> findCars = carRepository.findAll();
+		List<Car> findCars = carWebRepository.findAll();
 		assertThat(findCars.size(), is(3));
 	}
 
@@ -42,8 +68,8 @@ class RacingCarApplicationTests {
 	@Test
 	public void insertCarTest() {
 		Car car = new Car("kia");
-		carRepository.save(car);
-		assertThat(carRepository.count(), is(1L));
+		carWebRepository.save(car);
+		assertThat(carWebRepository.count(), is(1L));
 	}
 
 	@Transactional
@@ -58,12 +84,12 @@ class RacingCarApplicationTests {
 	@Test
 	public void updateCarTest() {
 		Car car = new Car("kia");
-		carRepository.save(car);
-		assertThat(carRepository.findAll().get(0).getPosition(), is(0));
+		carWebRepository.save(car);
+		assertThat(carWebRepository.findAll().get(0).getPosition(), is(0));
 
 		car.move(true);
-		carRepository.save(car);
-		assertThat(carRepository.findAll().get(0).getPosition(), is(1));
+		carWebRepository.save(car);
+		assertThat(carWebRepository.findAll().get(0).getPosition(), is(1));
 	}
 
 	@Transactional
@@ -83,11 +109,11 @@ class RacingCarApplicationTests {
 	@Test
 	public void deleteCarTest() {
 		Car car = new Car("kia");
-		carRepository.save(car);
-		assertThat(carRepository.count(), is(1L));
+		carWebRepository.save(car);
+		assertThat(carWebRepository.count(), is(1L));
 
-		carRepository.delete(car);
-		assertThat(carRepository.count(), is(0L));
+		carWebRepository.delete(car);
+		assertThat(carWebRepository.count(), is(0L));
 	}
 
 	@Transactional

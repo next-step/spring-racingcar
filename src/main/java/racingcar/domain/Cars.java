@@ -4,35 +4,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import lombok.ToString;
-import racingcar.repository.CarRepository;
 import racingcar.utils.RacingCarUtils;
 
 public class Cars {
-    private final CarRepository carRepository;
-
     @ToString.Exclude
     private List<Car> cars;
 
-    public Cars(CarRepository carRepository) {
-        this.carRepository = carRepository;
+    private Cars(List<Car> cars) {
+        this.cars = cars;
     }
 
     public List<Car> getCars() {
         return this.cars;
     }
 
-    public void makeCars(PlayResult playResult, String carNames) {
-        this.cars = RacingCarUtils.stringToList(carNames).stream()
-                .map(name -> new Car(playResult, name))
-                .collect(Collectors.toList());
+    public static Cars makeCars(String carNames) {
+        PlayResult playResult = new PlayResult();
+        return makeCars(playResult, carNames);
     }
 
-    public void makeCars(String carNames) {
-        PlayResult playResult = new PlayResult();
-        makeCars(playResult, carNames);
+    public static Cars makeCars(PlayResult playResult, String carNames) {
+        return new Cars(RacingCarUtils.stringToList(carNames).stream()
+                .map(name -> new Car(playResult, name))
+                .collect(Collectors.toList()));
     }
 
     public void moveCars(int targetDistance) {
@@ -45,11 +40,6 @@ public class Cars {
     private void moveCars(List<Car> cars) {
         cars.stream()
                 .forEach(Car::move);
-    }
-
-    @Transactional
-    public void save() {
-        cars.forEach(car -> carRepository.save(car));
     }
 
     public String getWinnerNames() {

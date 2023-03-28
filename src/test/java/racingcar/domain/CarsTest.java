@@ -8,15 +8,13 @@ import static org.hamcrest.Matchers.is;
 public class CarsTest {
     @Test
     public void makeCarsTest() {
-        Cars cars = new Cars(null);
-        cars.makeCars("kia, volvo, bmw");
+        Cars cars = Cars.makeCars("kia, volvo, bmw");
         assertThat(cars.getCars().size(), is(3));
     }
 
     @Test
     public void getWinnerNamesTest() {
-        Cars cars = new Cars(null);
-        cars.makeCars("kia, volvo");
+        Cars cars = Cars.makeCars("kia, volvo");
         cars.getCars().get(0).move(true);
         cars.getCars().get(0).move(true);
         cars.getCars().get(0).move(true);
@@ -26,8 +24,7 @@ public class CarsTest {
 
     @Test
     public void getMaxDistanceTest() {
-        Cars cars = new Cars(null);
-        cars.makeCars("kia, volvo");
+        Cars cars = Cars.makeCars("kia, volvo");
         cars.getCars().get(0).move(true);
         cars.getCars().get(0).move(true);
         cars.getCars().get(0).move(true);
@@ -37,8 +34,7 @@ public class CarsTest {
 
     @Test
     public void getWinnerCarsTest() {
-        Cars cars = new Cars(null);
-        cars.makeCars("kia, volvo, bmw");
+        Cars cars = Cars.makeCars("kia, volvo, bmw");
         cars.getCars().get(0).move(true);
         cars.getCars().get(0).move(true);
         cars.getCars().get(0).move(true);

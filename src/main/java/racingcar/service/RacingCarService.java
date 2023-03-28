@@ -3,33 +3,29 @@ package racingcar.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingResponse;
-import racingcar.repository.CarRepository;
-import racingcar.repository.PlayResultRepository;
+import racingcar.repository.CarsRepository;
 
-@Service
 @RequiredArgsConstructor
 public class RacingCarService {
-    private final CarRepository carRepository;
-
-    private final PlayResultRepository playResultRepository;
+    private final CarsRepository carsRepository;
+    private final JpaRepository<PlayResult, Long> playResultRepository;
 
     @Transactional
     public RacingResponse startRacing(String names, int targetDistance) {
         PlayResult playResult = new PlayResult();
-        Cars cars = new Cars(carRepository);
-        cars.makeCars(playResult, names);
+        Cars cars = Cars.makeCars(playResult, names);
         cars.moveCars(targetDistance);
 
         playResult.setWinners(cars.getWinnerNames());
         playResultRepository.save(playResult);
-        cars.save();
+        carsRepository.save(cars);
         return new RacingResponse(cars.getWinnerNames(), cars.getCars());
     }
 

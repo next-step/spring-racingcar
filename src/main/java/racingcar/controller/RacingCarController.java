@@ -8,20 +8,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import racingcar.model.RacingResponse;
+import racingcar.repository.CarsConsoleRepository;
+import racingcar.repository.CarsRepository;
+import racingcar.repository.CarWebRepository;
+import racingcar.repository.PlayResultCliRepository;
+import racingcar.repository.PlayResultRepository;
 import racingcar.model.RacingRequest;
 import racingcar.service.RacingCarService;
+import racingcar.view.RacingResultView;
 
 @RestController
+@RequiredArgsConstructor
 public class RacingCarController {
-    private final RacingCarService racingCarService;
-
-    public RacingCarController(RacingCarService racingCarService) {
-        this.racingCarService = racingCarService;
-    }
+    private final CarWebRepository carsWebRepository;
+    private final CarsConsoleRepository carConsoleRepository;
+    private final PlayResultRepository playResultRepository;
+    private final PlayResultCliRepository playResultCliRepository;
 
     @PostMapping("/plays")
     public ResponseEntity<RacingResponse> racingGame(@RequestBody RacingRequest racingRequest) {
+        CarsRepository carsRepository = new CarsRepository(carsWebRepository);
+        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultRepository);
         RacingResponse racingResponse = racingCarService.startRacing(racingRequest.getNames(),
                 racingRequest.getCount());
         return ResponseEntity.ok().body(racingResponse);
@@ -29,7 +38,17 @@ public class RacingCarController {
 
     @GetMapping("/plays")
     public ResponseEntity<List<RacingResponse>> racingHistory() {
+        CarsRepository carsRepository = new CarsRepository(carsWebRepository);
+        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultRepository);
         List<RacingResponse> racingHistory = racingCarService.getRacingHistory();
         return ResponseEntity.ok().body(racingHistory);
     }
+
+    public void consoleRacingGame(String carNames, int targetDistance) {
+        CarsRepository carsRepository = new CarsRepository(carConsoleRepository);
+        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultCliRepository);
+        RacingResponse racingResponse = racingCarService.startRacing(carNames, targetDistance);
+        RacingResultView.printRacingResponse(racingResponse);
+    }
+
 }
