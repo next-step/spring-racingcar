@@ -1,17 +1,18 @@
 package racingcar.reponse;
 
 import lombok.Getter;
-import racingcar.domain.RacingCar;
+import racingcar.domain.Car;
+import racingcar.domain.Cars;
 
 import java.util.List;
 
 @Getter
 public class RacingResultResponse {
     private final String winners;
-    private final List<RacingCar> racingCars;
+    private final List<Car> racingCars;
 
-    public RacingResultResponse(String winners, List<RacingCar> racingCars) {
+    public RacingResultResponse(String winners, Cars cars) {
         this.winners = winners;
-        this.racingCars = racingCars;
+        this.racingCars = cars.getCars();
     }
  }

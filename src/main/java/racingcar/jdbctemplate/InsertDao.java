@@ -1,16 +1,12 @@
 package racingcar.jdbctemplate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import racingcar.domain.RacingCar;
-import racingcar.domain.RacingHistory;
+import racingcar.domain.Car;
 
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class InsertDao {
@@ -22,15 +18,14 @@ public class InsertDao {
                 .usingGeneratedKeyColumns("id");
     }
 
-    public static RacingCar insertWithMap(RacingCar racingCar, int count) {
+    public static void insertWithMap(Car car, int count, String winners) {
         long systemTime = System.currentTimeMillis();
         Map<String, Object> parameters = new HashMap<String, Object>(3);
         parameters.put("trial_count", count);
-        parameters.put("name", racingCar.getName());
-        parameters.put("position", racingCar.getPosition());
-        parameters.put("winners", "senna");
+        parameters.put("name", car.getName());
+        parameters.put("position", car.getPosition());
+        parameters.put("winners", winners);
         parameters.put("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(systemTime));
-        Long id = insertActor.executeAndReturnKey(parameters).longValue();
-        return new RacingCar(id, racingCar.getName());
+        insertActor.execute(parameters);
     }
 }

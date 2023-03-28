@@ -21,7 +21,6 @@ public class RacingCarApplication implements CommandLineRunner {
 		jdbcTemplate.execute("DROP TABLE racinghistory IF EXISTS");
 		jdbcTemplate.execute("CREATE TABLE racinghistory(" +
 				"id SERIAL, " +
-				"round INTEGER" +
 				"trial_count INTEGER default 0, " +
 				"name VARCHAR(255), " +
 				"position INTEGER, " +
