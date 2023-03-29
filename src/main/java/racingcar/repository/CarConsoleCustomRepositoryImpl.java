@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.Car;
 
 @Transactional
-public class CarsConsoleCustomRepositoryImpl implements CarsConsoleCustomRepository<Car> {
+public class CarConsoleCustomRepositoryImpl implements CarConsoleCustomRepository<Car> {
     private final EntityManager em;
 
-    public CarsConsoleCustomRepositoryImpl(EntityManager em) {
+    public CarConsoleCustomRepositoryImpl(EntityManager em) {
         this.em = em;
     }
 

@@ -1,5 +1,5 @@
 package racingcar.repository;
 
-public interface CarsConsoleCustomRepository<Car> {
+public interface CarConsoleCustomRepository<Car> {
     Car save(Car car);
 }

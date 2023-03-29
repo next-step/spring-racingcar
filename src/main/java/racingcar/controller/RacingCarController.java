@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import racingcar.model.RacingResponse;
-import racingcar.repository.CarsConsoleRepository;
+import racingcar.repository.CarConsoleRepository;
 import racingcar.repository.CarsRepository;
 import racingcar.repository.CarWebRepository;
 import racingcar.repository.PlayResultCliRepository;
@@ -23,7 +23,7 @@ import racingcar.view.RacingResultView;
 @RequiredArgsConstructor
 public class RacingCarController {
     private final CarWebRepository carsWebRepository;
-    private final CarsConsoleRepository carConsoleRepository;
+    private final CarConsoleRepository carConsoleRepository;
     private final PlayResultRepository playResultRepository;
     private final PlayResultCliRepository playResultCliRepository;
 

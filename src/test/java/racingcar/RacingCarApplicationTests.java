@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
-import racingcar.repository.CarsConsoleRepository;
+import racingcar.repository.CarConsoleRepository;
 import racingcar.repository.CarsRepository;
 import racingcar.repository.CarWebRepository;
 import racingcar.repository.PlayResultCliRepository;
@@ -30,7 +30,7 @@ class RacingCarApplicationTests {
 	private PlayResultRepository playResultRepository;
 
 	@Autowired
-	private CarsConsoleRepository carsConsoleRepository;
+	private CarConsoleRepository carsConsoleRepository;
 
 	@Autowired
 	private PlayResultCliRepository playResultCliRepository;
