@@ -1,13 +1,21 @@
 package racingcar;
 
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import racingcar.domain.RacingCarRequest;
 
-@SpringBootTest
-class RacingCarApplicationTests {
+public class RacingCarApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+        RestAssured
+                .given().log().all()
+                .body(new RacingCarRequest("sean, rose, jay", 8))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .post("/plays")
+                .then()
+                .log().all()
+                .extract();
+    }
 }
