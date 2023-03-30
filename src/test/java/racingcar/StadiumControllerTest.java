@@ -43,7 +43,7 @@ public class StadiumControllerTest {
                 .when().post("/plays")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("cars.name", hasItems("lucas","cyan"));
+                .body("racingCars.name", hasItems("lucas","cyan"));
     }
 
 }
