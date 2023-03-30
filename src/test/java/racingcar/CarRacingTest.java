@@ -1,0 +1,38 @@
+package racingcar;
+
+import org.junit.jupiter.api.Test;
+import racingcar.domain.Car;
+import racingcar.domain.CarList;
+import racingcar.domain.CarRacing;
+
+import java.util.Arrays;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+class CarRacingTest {
+
+    private int carRacingCheck(CarList carList, int playNumber) {
+        CarRacing carRacing = new CarRacing(carList, playNumber);
+        carRacing.playAll();
+        int maxPosition = 0;
+
+        for (int i = 0; i < carRacing.getCarList().getCars().size(); i++) {
+            if (maxPosition < carRacing.getCarList().getCars().get(i).getPosition()) {
+                maxPosition = carRacing.getCarList().getCars().get(i).getPosition();
+            }
+        }
+
+        return maxPosition;
+    }
+
+    @Test
+    void 자동차_전진은_플레이_수보다_더_많을_수_없다() {
+        CarList carList = new CarList(Arrays.asList(new Car("woo")));
+        int playNumber = 3;
+        Boolean playCheck = true;
+        if (playNumber < carRacingCheck(carList, playNumber)) {
+            playCheck = false;
+        }
+        assertThat(playCheck).isTrue();
+    }
+}
