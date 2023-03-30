@@ -5,11 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import racingcar.application.StadiumService;
-import racingcar.domain.CarCollection;
-import racingcar.application.Stadium;
+
 import racingcar.dto.PlaysDto;
 import racingcar.dto.RacingCarResultDto;
-import racingcar.view.CarRacingConsoleView;
 
 import java.util.List;
 
@@ -18,26 +16,11 @@ import java.util.List;
 @RequestMapping("/")
 public class StadiumController {
 
-    @Autowired
-    private StadiumService stadiumService;
+    private final StadiumService stadiumService;
 
-    public static void main(String[] args) {
-
-        CarRacingConsoleView view = new CarRacingConsoleView();
-
-        String carNames = view.inputCarNames();
-        int round = view.inputRound();
-
-        // 경기를 만든다.
-        Stadium stadium = new Stadium(new CarCollection(CarCollection.initCars(carNames)), round);
-
-        view.beforeRacing();
-        RacingCarResultDto resultDto = stadium.playRacingCar();
-
-        // 끝난 경기에서 승자를 출력한다.
-        view.showRacingResult(resultDto);
+    public StadiumController(StadiumService stadiumService) {
+        this.stadiumService = stadiumService;
     }
-
 
     @PostMapping(value = "/plays", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RacingCarResultDto> plays(@RequestBody PlaysDto playsDto) {

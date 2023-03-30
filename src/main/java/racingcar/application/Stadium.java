@@ -13,12 +13,10 @@ public class Stadium {
     private final StadiumMoveOption stadiumMoveOption;
     private int round;
 
-    // 이름리스트를 초기값으로 받는 버전
     public Stadium(CarCollection carCollection, int totalRound){
         this(carCollection, totalRound, new RandomStadiumMoveOptionImpl());
     }
 
-    // 차 리스트를 초기로 받는 버전
     public Stadium(CarCollection carCollection, int totalRound, StadiumMoveOption stadiumMoveOption){
         this.carCollection = carCollection;
         this.totalRound = totalRound;

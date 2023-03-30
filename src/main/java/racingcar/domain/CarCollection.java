@@ -19,9 +19,9 @@ public class CarCollection {
     }
 
     public void validateDulicate(List<Car> list) {
-        Set<String> set = list.stream().map(c -> c.getName()).collect(Collectors.toSet());
+        Set<String> collectCarNames = list.stream().map(c -> c.getName()).collect(Collectors.toSet());
 
-        if (set.size() != list.size())
+        if (collectCarNames.size() != list.size())
             throw new IllegalArgumentException("중복된 차이름이 존재합니다.");
 
     }
