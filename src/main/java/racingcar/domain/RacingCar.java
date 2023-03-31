@@ -1,8 +1,11 @@
-package racingcar;
+package racingcar.domain;
 
-class RacingCar {
-    private final String name;
-    private int position;
+public class RacingCar {
+    public  String name;
+    public int position;
+
+    public RacingCar() {
+    }
 
     public RacingCar(String name) {
         this.name = name;
