@@ -15,6 +15,7 @@ import racingcar.repository.CarsRepository;
 import racingcar.repository.CarWebRepository;
 import racingcar.repository.PlayResultCliRepository;
 import racingcar.repository.PlayResultRepository;
+import racingcar.repository.PlayResultWrapperRepository;
 import racingcar.model.RacingRequest;
 import racingcar.service.RacingCarService;
 import racingcar.view.RacingResultView;
@@ -30,7 +31,8 @@ public class RacingCarController {
     @PostMapping("/plays")
     public ResponseEntity<RacingResponse> racingGame(@RequestBody RacingRequest racingRequest) {
         CarsRepository carsRepository = new CarsRepository(carsWebRepository);
-        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultRepository);
+        PlayResultWrapperRepository playResultWrapperRepository = new PlayResultWrapperRepository(playResultRepository);
+        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultWrapperRepository);
         RacingResponse racingResponse = racingCarService.startRacing(racingRequest.getNames(),
                 racingRequest.getCount());
         return ResponseEntity.ok().body(racingResponse);
@@ -39,14 +41,17 @@ public class RacingCarController {
     @GetMapping("/plays")
     public ResponseEntity<List<RacingResponse>> racingHistory() {
         CarsRepository carsRepository = new CarsRepository(carsWebRepository);
-        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultRepository);
+        PlayResultWrapperRepository playResultWrapperRepository = new PlayResultWrapperRepository(playResultRepository);
+        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultWrapperRepository);
         List<RacingResponse> racingHistory = racingCarService.getRacingHistory();
         return ResponseEntity.ok().body(racingHistory);
     }
 
     public void consoleRacingGame(String carNames, int targetDistance) {
         CarsRepository carsRepository = new CarsRepository(carConsoleRepository);
-        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultCliRepository);
+        PlayResultWrapperRepository playResultWrapperRepository = new PlayResultWrapperRepository(
+                playResultCliRepository);
+        RacingCarService racingCarService = new RacingCarService(carsRepository, playResultWrapperRepository);
         RacingResponse racingResponse = racingCarService.startRacing(carNames, targetDistance);
         RacingResultView.printRacingResponse(racingResponse);
     }
