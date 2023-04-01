@@ -3,7 +3,6 @@ package racingcar.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -20,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -40,6 +40,7 @@ public class PlayResult {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "playResult")
+    @ToString.Exclude
     private List<Car> car;
 
     public void setWinners(String winners) {

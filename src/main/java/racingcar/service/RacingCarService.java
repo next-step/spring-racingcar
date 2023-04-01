@@ -1,29 +1,43 @@
 package racingcar.service;
 
-import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import racingcar.domain.Cars;
 import racingcar.domain.PlayResult;
 import racingcar.model.RacingResponse;
-import racingcar.repository.PlayResultRepository;
+import racingcar.repository.CarsRepository;
+import racingcar.repository.PlayResultWrapperRepository;
 
-@Service
 @RequiredArgsConstructor
 public class RacingCarService {
-    private final Cars cars;
+    private final CarsRepository carsRepository;
+    // private final JpaRepository<PlayResult, Long> playResultRepository;
+    private final PlayResultWrapperRepository playResultWarpperRepository;
 
-    private final PlayResultRepository playResultRepository;
-
+    @Transactional
     public RacingResponse startRacing(String names, int targetDistance) {
         PlayResult playResult = new PlayResult();
-        cars.makeCars(playResult, names);
+        Cars cars = Cars.makeCars(playResult, names);
         cars.moveCars(targetDistance);
 
         playResult.setWinners(cars.getWinnerNames());
-        playResultRepository.save(playResult);
-        cars.save();
-        cars.printResult();
+        playResultWarpperRepository.save(playResult);
+        carsRepository.save(cars);
         return new RacingResponse(cars.getWinnerNames(), cars.getCars());
+    }
+
+    @Transactional
+    public List<RacingResponse> getRacingHistory() {
+        List<RacingResponse> racingHistory = new ArrayList<>();
+
+        playResultWarpperRepository.findAll().stream()
+                .map(playResult -> new RacingResponse(playResult.getWinners(), playResult.getCar()))
+                .forEach(racingResponse -> racingHistory.add(racingResponse));
+
+        return racingHistory;
     }
 }

@@ -4,29 +4,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
-import racingcar.repository.CarRepository;
+import lombok.ToString;
 import racingcar.utils.RacingCarUtils;
-import racingcar.view.RacingResultView;
 
-@Service
-@RequiredArgsConstructor
 public class Cars {
-    private final CarRepository carRepository;
-
+    @ToString.Exclude
     private List<Car> cars;
+
+    private Cars(List<Car> cars) {
+        this.cars = cars;
+    }
 
     public List<Car> getCars() {
         return this.cars;
     }
 
-    public void makeCars(PlayResult playResult, String carNames) {
-        this.cars = RacingCarUtils.stringToList(carNames).stream()
+    public static Cars makeCars(String carNames) {
+        PlayResult playResult = new PlayResult();
+        return makeCars(playResult, carNames);
+    }
+
+    public static Cars makeCars(PlayResult playResult, String carNames) {
+        return new Cars(RacingCarUtils.stringToList(carNames).stream()
                 .map(name -> new Car(playResult, name))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public void moveCars(int targetDistance) {
@@ -41,33 +42,23 @@ public class Cars {
                 .forEach(Car::move);
     }
 
-    @Transactional
-    public void save() {
-        cars.forEach(car -> carRepository.save(car));
-    }
-
     public String getWinnerNames() {
-        int maxDistance = getMaxDistance(cars);
-        List<String> winners = getWinnerCars(cars, maxDistance);
-
+        List<String> winners = getWinnerCars();
         return String.join(", ", winners);
     }
 
-    private int getMaxDistance(List<Car> cars) {
+    public int getMaxDistance() {
         return cars.stream()
                 .map(Car::getPosition)
                 .max(Integer::compareTo)
                 .get();
     }
 
-    private List<String> getWinnerCars(List<Car> cars, int maxDistance) {
+    public List<String> getWinnerCars() {
         return cars.stream()
-                .filter(car -> car.getPosition() == maxDistance)
+                .filter(car -> car.isAtPosition(getMaxDistance()))
                 .map(Car::getName)
                 .collect(Collectors.toList());
     }
 
-    public void printResult() {
-        RacingResultView.printResult(getWinnerNames(), cars);
-    }
 }
