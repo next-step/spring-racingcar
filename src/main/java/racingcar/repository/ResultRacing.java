@@ -1,10 +1,11 @@
-package racingcar;
+package racingcar.repository;
+
+import racingcar.Car;
 
 import java.util.List;
 
 public class ResultRacing {
     private final String winners;
-
     private final List<Car> racingCars;
 
     public ResultRacing(String winners, List<Car> racingCars) {
