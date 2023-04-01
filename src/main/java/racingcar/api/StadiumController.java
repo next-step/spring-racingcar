@@ -28,7 +28,7 @@ public class StadiumController {
         return ResponseEntity.ok(stadiumService.playRacingResult(playsDto));
     }
 
-    @GetMapping(value = "/allPlays", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/plays", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RacingCarResultDto>> allPlays(){
 
         return ResponseEntity.ok(stadiumService.allPlays());
