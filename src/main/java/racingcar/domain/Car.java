@@ -1,10 +1,12 @@
-package racingcar;
+package racingcar.domain;
 
-class RacingCar {
+import java.io.Serializable;
+
+public class Car implements Serializable {
     private final String name;
     private int position;
 
-    public RacingCar(String name) {
+    public Car(String name) {
         this.name = name;
         this.position = 0;
     }
