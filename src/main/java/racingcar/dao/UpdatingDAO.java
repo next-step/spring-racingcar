@@ -11,9 +11,11 @@ public class UpdatingDAO {
     private JdbcTemplate jdbcTemplate;
 
     public void insert(PlayResult playResult) {
-        String sql = "insert into PLAY_RESULT (trial_count, name, position, winners) values(?, ?, ?, ?)";
+        String sql = "insert into PLAY_RESULT (round, trial_count, name, position, winners) values(?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, playResult.getTrialCount()
+        jdbcTemplate.update(sql
+                , playResult.getRound()
+                , playResult.getTrialCount()
                 , playResult.getName()
                 , playResult.getPosition()
                 , playResult.getWinners());
