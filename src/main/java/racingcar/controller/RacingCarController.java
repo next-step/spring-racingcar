@@ -16,7 +16,7 @@ import java.util.List;
 public class RacingCarController {
 
     @PostMapping(value = "/plays", consumes = "application/json")
-    public ResponseEntity startGame(@RequestBody RacingInput racingInput){
+    public ResponseEntity<RacingResult> startGame(@RequestBody RacingInput racingInput){
         List<Car> racingCars = RacingCar.racingGame(racingInput);
         List<String> winners = RacingCar.getWinner();
         RacingResult racingResult = new RacingResult(racingInput.getCount(), winners, racingCars);

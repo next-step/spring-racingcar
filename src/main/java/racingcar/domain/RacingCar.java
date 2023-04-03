@@ -41,17 +41,22 @@ public class RacingCar {
         int maxPosition = 0;
 
         List<String> winners = new ArrayList<>();
+        maxPosition = getMaxPosition();
         for (Car racingCar : racingCars) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
             if (racingCar.getPosition() >= maxPosition) {
                 winners.add(racingCar.getName());
             }
         }
-
         return winners;
     }
+
+    // 최대 위치를 찾는 메서드
+    private static int getMaxPosition() {
+        return racingCars.stream()
+                .mapToInt(Car::getPosition)
+                .max()
+                .orElse(0);
+    }
+
 
 }
