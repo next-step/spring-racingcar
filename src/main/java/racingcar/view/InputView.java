@@ -2,9 +2,10 @@ package racingcar.view;
 
 import racingcar.domain.Car;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class InputView {
     private static final Scanner scanner = new Scanner(System.in);
@@ -21,10 +22,6 @@ public class InputView {
     }
 
     private static List<Car> makeCars(String[] namesArray) {
-        List<Car> cars = new ArrayList<>();
-        for (String name : namesArray) {
-            cars.add(new Car(name));
-        }
-        return cars;
+        return Arrays.stream(namesArray).map(Car::new).collect(Collectors.toList());
     }
 }
