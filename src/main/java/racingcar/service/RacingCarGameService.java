@@ -14,8 +14,13 @@ public class RacingCarGameService {
         this.racingCarGameRepository = racingCarGameRepository;
     }
 
-    public void saveResult(RacingGame racingGame, int count) {
-        long playId = racingCarGameRepository.saveResult(count, racingGame);
+    public void play(RacingGame racingGame, int count) {
+        racingGame.startGame(count);
+        this.saveResult(racingGame);
+    }
+
+    private void saveResult(RacingGame racingGame) {
+        long playId = racingCarGameRepository.saveResult(racingGame);
         racingCarGameRepository.saveDetailResult(playId, racingGame);
     }
 }

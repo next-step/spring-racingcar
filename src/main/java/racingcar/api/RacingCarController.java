@@ -25,11 +25,7 @@ public class RacingCarController {
     public ResponseEntity<PlayResponse> plays(@RequestBody PlayRequest request) {
 
         RacingGame racingGame = new RacingGame(request.makeCars(), new Random());
-        for (int i = 0; i < request.getCount(); i++) {
-            racingGame.startRace();
-        }
-
-        racingCarGameService.saveResult(racingGame, request.getCount());
+        racingCarGameService.play(racingGame, request.getCount());
 
         return ResponseEntity.ok(PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners()));
     }

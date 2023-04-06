@@ -9,14 +9,23 @@ import java.util.stream.Collectors;
 public class RacingGame {
     private final List<Car> participationCars;
     private final Random random;
+    private int trialCount;
 
     public RacingGame(List<Car> participationCars, Random random) {
         this.participationCars = participationCars;
         this.random = random;
+        this.trialCount = 0;
     }
 
-    public void startRace() {
+    public void move() {
         participationCars.forEach(c -> c.move(random));
+    }
+
+    public void startGame(int moveCount) {
+        for (int i = 0; i < moveCount; i++) {
+            this.trialCount++;
+            this.move();
+        }
     }
 
     public List<Car> getParticipationCars() {
@@ -31,5 +40,9 @@ public class RacingGame {
 
     public boolean isWinner(Car participationCar) {
         return getRacingWinners().stream().anyMatch(car -> car == participationCar);
+    }
+
+    public int getTrialCount() {
+        return this.trialCount;
     }
 }

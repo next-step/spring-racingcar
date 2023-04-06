@@ -16,7 +16,7 @@ public class RacingConsoleApplication {
 
         RacingGame racingGame = new RacingGame(cars, new Random());
         for (int i = 0; i < count; i++) {
-            racingGame.startRace();
+            racingGame.move();
             ResultView.printCarsLocation(racingGame);
         }
 
