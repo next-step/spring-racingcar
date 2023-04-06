@@ -56,7 +56,6 @@ public class RacingCarDao {
 
     public PlayResult getPlayResult(int id) {
         String sql = "SELECT round, winners FROM PLAY_RESULT where id = ?";
-        System.out.println("sql: " + sql + id);
         return jdbcTemplate.queryForObject(
                 sql,
                 (resultSet, rowNum) -> {
@@ -71,7 +70,6 @@ public class RacingCarDao {
 
     public List<PlayResult> getAllPlayResult() {
         String sql = "SELECT id,round, winners FROM PLAY_RESULT";
-
         return jdbcTemplate.query(sql
                 , (resultSet, rowNum) -> new PlayResult(
                         resultSet.getInt("round"),
@@ -81,8 +79,6 @@ public class RacingCarDao {
 
     public List<Car> getPlayDto(int id) {
         String sql = "SELECT name, position FROM PLAY_CAR_HISTORY where id = ? ";
-        System.out.println("sql: " + sql + id);
-
         return jdbcTemplate.query(sql
                 , (resultSet, rowNum) -> new Car(
                         resultSet.getString("name")

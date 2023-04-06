@@ -50,11 +50,8 @@ public class RacingCar {
                 winners.add(racingCar.getName());
             }
         }
-
-        String str = String.join(",", winners);
-        System.out.println(str);
-
-        return str;
+        String winnerStr = String.join(",", winners);
+        return winnerStr;
     }
 
 }
