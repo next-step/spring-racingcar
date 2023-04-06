@@ -3,22 +3,21 @@ package racingcar.domain;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class RacingGame {
     private final List<Car> participationCars;
-    private final Random random;
+    private final CarMoveEntropy carMoveEntropy;
     private int trialCount;
 
-    public RacingGame(List<Car> participationCars, Random random) {
+    public RacingGame(List<Car> participationCars, CarMoveEntropy carMoveEntropy) {
         this.participationCars = participationCars;
-        this.random = random;
+        this.carMoveEntropy = carMoveEntropy;
         this.trialCount = 0;
     }
 
     public void move() {
-        participationCars.forEach(c -> c.move(random));
+        participationCars.forEach(c -> c.move(carMoveEntropy));
     }
 
     public void startGame(int moveCount) {

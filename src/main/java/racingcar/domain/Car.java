@@ -1,13 +1,11 @@
 package racingcar.domain;
 
 import java.util.Objects;
-import java.util.Random;
 
 public class Car implements Comparable<Car> {
 
     private static final int MAX_NAME_LENGTH = 5;
     private static final int INITIAL_LOCATION = 0;
-    private static final int CHECK_MAX_RANDOM_NUMBER = 10;
     private static final int MOVABLE_MIN_NUMBER = 4;
 
     private final String name;
@@ -25,8 +23,8 @@ public class Car implements Comparable<Car> {
         this.position = position;
     }
 
-    public void move(Random random) {
-        if (random.nextInt(CHECK_MAX_RANDOM_NUMBER) >= MOVABLE_MIN_NUMBER) {
+    public void move(CarMoveEntropy carMoveEntropy) {
+        if (carMoveEntropy.getInt() >= MOVABLE_MIN_NUMBER) {
             position++;
         }
     }

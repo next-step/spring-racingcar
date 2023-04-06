@@ -2,6 +2,7 @@ package racingcar;
 
 import racingcar.domain.Car;
 import racingcar.domain.RacingGame;
+import racingcar.domain.RandomCarMoveEntropy;
 import racingcar.view.InputView;
 import racingcar.view.ResultView;
 
@@ -14,7 +15,7 @@ public class RacingConsoleApplication {
         int count = InputView.getTryNo();
 
 
-        RacingGame racingGame = new RacingGame(cars, new Random());
+        RacingGame racingGame = new RacingGame(cars, new RandomCarMoveEntropy());
         for (int i = 0; i < count; i++) {
             racingGame.move();
             ResultView.printCarsLocation(racingGame);
