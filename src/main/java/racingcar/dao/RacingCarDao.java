@@ -54,6 +54,7 @@ public class RacingCarDao {
         }
     }
 
+    //실행결과
     public PlayResult getPlayResult(int id) {
         String sql = "SELECT round, winners FROM PLAY_RESULT where id = ?";
         return jdbcTemplate.queryForObject(
@@ -62,22 +63,24 @@ public class RacingCarDao {
                     PlayResult result = new PlayResult(
                             resultSet.getInt("round"),
                             resultSet.getString("winners"),
-                            getPlayDto(id)
+                            getCars(id)
                     );
                     return result;
                 }, id);
     }
 
+    //모든 실행결과
     public List<PlayResult> getAllPlayResult() {
         String sql = "SELECT id,round, winners FROM PLAY_RESULT";
         return jdbcTemplate.query(sql
                 , (resultSet, rowNum) -> new PlayResult(
                         resultSet.getInt("round"),
                         resultSet.getString("winners"),
-                        getPlayDto(resultSet.getInt("id"))));
+                        getCars(resultSet.getInt("id"))));
     }
 
-    public List<Car> getPlayDto(int id) {
+    //해당 게임에 참여한 차정보
+    public List<Car> getCars(int id) {
         String sql = "SELECT name, position FROM PLAY_CAR_HISTORY where id = ? ";
         return jdbcTemplate.query(sql
                 , (resultSet, rowNum) -> new Car(
