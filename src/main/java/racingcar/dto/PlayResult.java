@@ -7,11 +7,11 @@ import java.util.List;
 
 public class PlayResult implements Serializable {
 
-    private final Integer count;
-    private final List<String> winners;
-    private final List<Car> racingCars;
+    private Integer count;
+    private String winners;
+    private List<Car> racingCars;
 
-    public PlayResult(Integer count, List<String> winners, List<Car> racingCars) {
+    public PlayResult(Integer count, String winners, List<Car> racingCars) {
         this.count = count;
         this.winners = winners;
         this.racingCars = racingCars;
@@ -21,7 +21,7 @@ public class PlayResult implements Serializable {
         return count;
     }
 
-    public List<String> getWinners() {
+    public String getWinners() {
         return winners;
     }
 

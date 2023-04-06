@@ -37,7 +37,7 @@ public class RacingCar {
                 .collect(Collectors.toList());
     }
 
-    public static List<String> getWinner() {
+    public static String getWinner() {
         int maxPosition = 0;
 
         List<String> winners = new ArrayList<>();
@@ -51,7 +51,10 @@ public class RacingCar {
             }
         }
 
-        return winners;
+        String str = String.join(",", winners);
+        System.out.println(str);
+
+        return str;
     }
 
 }
