@@ -1,6 +1,7 @@
-package racingcar.domain;
+package racingcar.service;
 
 import org.springframework.stereotype.Service;
+import racingcar.domain.Car;
 import racingcar.dto.PlayInput;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
-public class RacingCar {
+public class RacingCarService {
 
     private List<Car> racingCars = new ArrayList<>();
 

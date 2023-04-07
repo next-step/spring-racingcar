@@ -10,24 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 import racingcar.domain.Car;
 import racingcar.dto.PlayInput;
 import racingcar.dto.PlayResult;
-import racingcar.domain.RacingCar;
+import racingcar.service.RacingCarService;
 import racingcar.dao.RacingCarDao;
 
 import java.util.List;
-
-
 
 @RestController
 public class RacingCarController {
     @Autowired
     private RacingCarDao racingCarDao;
 
-    private RacingCar racingCar = new RacingCar();
+    private RacingCarService racingCarService = new RacingCarService();
 
     @PostMapping(value = "/plays", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity startGame(@RequestBody PlayInput playInput){
-        List<Car> racingCars = racingCar.startgame(playInput);
-        String winners = racingCar.getWinner();
+        List<Car> racingCars = racingCarService.startgame(playInput);
+        String winners = racingCarService.getWinner();
         int id = racingCarDao.insertPlayResult(playInput.getCount(), winners);
         racingCarDao.insertPlayCarHistory(id, racingCars);
         return ResponseEntity.ok(racingCarDao.getPlayResult(id));
