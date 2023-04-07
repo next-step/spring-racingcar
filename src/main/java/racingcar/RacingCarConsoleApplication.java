@@ -35,7 +35,7 @@ public class RacingCarConsoleApplication {
         String winners = racingCarService.getWinner();
 
         //출력값 설정
-        PlayResult playResult = new PlayResult(count, winners, racingCars);
+        PlayResult playResult = new PlayResult(winners, racingCars);
 
         ObjectMapper mapper = new ObjectMapper();
         try {

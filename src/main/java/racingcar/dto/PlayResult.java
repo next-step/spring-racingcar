@@ -11,7 +11,7 @@ public class PlayResult implements Serializable {
     private String winners;
     private List<Car> racingCars;
 
-    public PlayResult(Integer count, String winners, List<Car> racingCars) {
+    public PlayResult(String winners, List<Car> racingCars) {
         this.winners = winners;
         this.racingCars = racingCars;
     }

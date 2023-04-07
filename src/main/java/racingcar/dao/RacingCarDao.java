@@ -61,7 +61,6 @@ public class RacingCarDao {
                 sql,
                 (resultSet, rowNum) -> {
                     PlayResult result = new PlayResult(
-                            resultSet.getInt("round"),
                             resultSet.getString("winners"),
                             getCars(id)
                     );
@@ -74,7 +73,6 @@ public class RacingCarDao {
         String sql = "SELECT id,round, winners FROM PLAY_RESULT";
         return jdbcTemplate.query(sql
                 , (resultSet, rowNum) -> new PlayResult(
-                        resultSet.getInt("round"),
                         resultSet.getString("winners"),
                         getCars(resultSet.getInt("id"))));
     }
