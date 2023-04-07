@@ -15,9 +15,9 @@ import java.util.Map;
 @Repository
 public class RacingCarDao {
 
-    private static JdbcTemplate jdbcTemplate;
-    private static SimpleJdbcInsert insertPlayResult;
-    private static SimpleJdbcInsert insertPlayCarHistory;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert insertPlayResult;
+    private final SimpleJdbcInsert insertPlayCarHistory;
 
     public RacingCarDao(DataSource dataSource) {
 

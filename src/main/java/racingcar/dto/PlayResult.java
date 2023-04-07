@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PlayResult implements Serializable {
 
-    private Integer count;
+    private int count;
     private String winners;
     private List<Car> racingCars;
 

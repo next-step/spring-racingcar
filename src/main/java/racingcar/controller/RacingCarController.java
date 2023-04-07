@@ -22,10 +22,12 @@ public class RacingCarController {
     @Autowired
     private RacingCarDao racingCarDao;
 
-    @PostMapping(value = "/plays", consumes = "application/json")
+    private RacingCar racingCar = new RacingCar();
+
+    @PostMapping(value = "/plays", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity startGame(@RequestBody PlayInput playInput){
-        List<Car> racingCars = RacingCar.startgame(playInput);
-        String winners = RacingCar.getWinner();
+        List<Car> racingCars = racingCar.startgame(playInput);
+        String winners = racingCar.getWinner();
         int id = racingCarDao.insertPlayResult(playInput.getCount(), winners);
         racingCarDao.insertPlayCarHistory(id, racingCars);
         return ResponseEntity.ok(racingCarDao.getPlayResult(id));
