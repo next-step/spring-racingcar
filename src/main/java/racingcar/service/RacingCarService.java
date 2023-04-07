@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class RacingCarService {
 
-    private List<Car> racingCars = new ArrayList<>();
+    public List<Car> racingCars = new ArrayList<>();
 
     public List<Car> startgame(PlayInput playInput) {
         setCars(playInput.getNames());
