@@ -14,9 +14,6 @@ import java.util.List;
 @RestController
 public class RacingCarController {
     @Autowired
-    private RacingCarDao racingCarDao;
-
-    @Autowired
     private RacingCarService racingCarService;
 
     @PostMapping(value = "/plays", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -28,6 +25,6 @@ public class RacingCarController {
 
     @GetMapping(value = "/plays", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PlayResult>> allPlayResult() {
-        return ResponseEntity.ok(racingCarDao.getAllPlayResult());
+        return ResponseEntity.ok(racingCarService.getAllResult());
     }
 }

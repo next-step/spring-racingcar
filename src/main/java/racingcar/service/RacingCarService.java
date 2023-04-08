@@ -33,6 +33,10 @@ public class RacingCarService {
         racingCarDao.insertPlayCarHistory(id, racingCars);
     }
 
+    public List<PlayResult> getAllResult(){
+        return racingCarDao.getAllPlayResult();
+    }
+
     private void playRound() {
         Random random = new Random();
         for (Car racingCar : racingCars) {
