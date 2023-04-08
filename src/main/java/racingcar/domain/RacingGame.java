@@ -10,12 +10,15 @@ public class RacingGame {
     private final CarMoveEntropy carMoveEntropy;
     private int trialCount;
 
-    public RacingGame(List<Car> participationCars, CarMoveEntropy carMoveEntropy) {
+    public RacingGame(int trialCount, List<Car> participationCars, CarMoveEntropy carMoveEntropy) {
         this.participationCars = participationCars;
         this.carMoveEntropy = carMoveEntropy;
-        this.trialCount = 0;
+        this.trialCount = trialCount;
     }
 
+    public RacingGame(List<Car> participationCars, CarMoveEntropy carMoveEntropy) {
+        this(0, participationCars, carMoveEntropy);
+    }
     public void move() {
         participationCars.forEach(c -> c.move(carMoveEntropy));
     }
