@@ -12,44 +12,41 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-
 @Service
 public class RacingCarService {
-
-    private List<Car> racingCars = new ArrayList<>();
     @Autowired
     private RacingCarDao racingCarDao;
+
+    static List<Car> racingCars = new ArrayList<>();
 
     public PlayResult startgame(PlayInput playInput) {
         setCars(playInput.getNames());
         for (int i = 0; i < playInput.getCount(); i++) {
             playRound();
         }
+        PlayResult playResult =  new PlayResult(getWinner(), racingCars);
+        return playResult;
+    }
 
-        String winners = getWinner();
-        int id = racingCarDao.insertPlayResult(playInput.getCount(), winners);
+    public void recordResult(PlayInput playInput){
+        int id = racingCarDao.insertPlayResult(playInput.getCount(), getWinner());
         racingCarDao.insertPlayCarHistory(id, racingCars);
-        return racingCarDao.getPlayResult(id);
     }
 
     private void playRound() {
         Random random = new Random();
-
         for (Car racingCar : racingCars) {
             int randomNumber = random.nextInt(10);
             racingCar.move(randomNumber);
         }
     }
-
     public void setCars(String names) {
         racingCars = Arrays.stream(names.split(","))
                 .map(it -> new Car(it.trim()))
                 .collect(Collectors.toList());
     }
-
     public String getWinner() {
         int maxPosition = 0;
-
         List<String> winners = new ArrayList<>();
         for (Car racingCar : racingCars) {
             if (racingCar.getPosition() > maxPosition) {
@@ -62,5 +59,4 @@ public class RacingCarService {
         }
         return String.join(",", winners);
     }
-
 }

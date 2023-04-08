@@ -15,9 +15,9 @@ import java.util.Map;
 @Repository
 public class RacingCarDao {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert insertPlayResult;
-    private final SimpleJdbcInsert insertPlayCarHistory;
+    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert insertPlayResult;
+    private SimpleJdbcInsert insertPlayCarHistory;
 
     public RacingCarDao(DataSource dataSource) {
 
@@ -33,6 +33,7 @@ public class RacingCarDao {
                 .withTableName("PLAY_CAR_HISTORY");
 
     }
+
     public int insertPlayResult(int round, String winners){
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("round", round);
