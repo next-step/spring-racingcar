@@ -9,16 +9,14 @@ import racingcar.view.ResultView;
 import java.util.List;
 
 public class RacingConsoleApplication {
+
     public static void main(String[] args) {
         List<Car> cars = InputView.getCarNames();
         int count = InputView.getTryNo();
 
         RacingGame racingGame = new RacingGame(cars, new RandomCarMoveEntropy());
-        for (int i = 0; i < count; i++) {
-            racingGame.move();
-        }
+        racingGame.startGame(count);
 
-        ResultView.printRacingWinners(racingGame.getRacingWinners());
-        ResultView.printCarsLocation(racingGame.getParticipationCars());
+        ResultView.printCarsLocation(racingGame);
     }
 }

@@ -47,7 +47,8 @@ public class Car implements Comparable<Car> {
 
     @Override
     public String toString() {
-        return this.name;
+        return "name='" + name + '\'' +
+                ", position=" + position;
     }
 
     @Override

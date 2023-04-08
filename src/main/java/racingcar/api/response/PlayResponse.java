@@ -23,8 +23,13 @@ public class PlayResponse {
     }
 
     public static PlayResponse extract(List<Car> participationCars, List<Car> racingWinners) {
-        String winnersForPrint = racingWinners.stream().map(Car::toString).collect(Collectors.joining(", "));
+        String winnersForPrint = racingWinners.stream().map(Car::getName).collect(Collectors.joining(", "));
         return new PlayResponse(winnersForPrint, participationCars);
     }
 
+    @Override
+    public String toString() {
+        return "winners='" + winners + '\'' +
+                ", racingCars=" + racingCars;
+    }
 }

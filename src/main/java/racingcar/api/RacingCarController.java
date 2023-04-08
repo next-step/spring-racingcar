@@ -38,8 +38,7 @@ public class RacingCarController {
     @GetMapping(value = "/plays", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PlayResponse>> getAllRacingGames() {
         List<PlayResponse> allResult = racingCarGameService.getAllRacingGames().stream()
-                .map((racingGame) -> PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners()))
-                .collect(Collectors.toList());
+                .map((racingGame) -> PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners())).collect(Collectors.toList());
         return ResponseEntity.ok(allResult);
     }
 }
