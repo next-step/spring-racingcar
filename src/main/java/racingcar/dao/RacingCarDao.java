@@ -55,20 +55,6 @@ public class RacingCarDao {
         }
     }
 
-    //실행결과
-    public PlayResult getPlayResult(int id) {
-        String sql = "SELECT round, winners FROM PLAY_RESULT where id = ?";
-        return jdbcTemplate.queryForObject(
-                sql,
-                (resultSet, rowNum) -> {
-                    PlayResult result = new PlayResult(
-                            resultSet.getString("winners"),
-                            getCars(id)
-                    );
-                    return result;
-                }, id);
-    }
-
     //모든 실행결과
     public List<PlayResult> getAllPlayResult() {
         String sql = "SELECT id,round, winners FROM PLAY_RESULT";

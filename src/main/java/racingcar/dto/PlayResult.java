@@ -1,10 +1,5 @@
 package racingcar.dto;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import racingcar.domain.Car;
-
-import java.io.Serializable;
 import java.util.List;
 
 public class PlayResult {
