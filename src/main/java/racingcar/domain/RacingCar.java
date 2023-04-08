@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Service
 public class RacingCar {
 
-    private static List<Car> racingCars = new ArrayList<>();
+    public List<Car> racingCars = new ArrayList<>();
 
-    public static List<Car> racingGame(RacingInput racingInput) {
+    public List<Car> racingGame(RacingInput racingInput) {
         setCars(racingInput.getNames());
         for (int i = 0; i < racingInput.getCount(); i++) {
             playRandomRound();
@@ -22,7 +22,7 @@ public class RacingCar {
         return racingCars;
     }
 
-    private static void playRandomRound() {
+    public void playRandomRound() {
         Random random = new Random();
 
         for (Car racingCar : racingCars) {
@@ -31,13 +31,13 @@ public class RacingCar {
         }
     }
 
-    public static void setCars(String names) {
+    public void setCars(String names) {
         racingCars = Arrays.stream(names.split(","))
                 .map(it -> new Car(it.trim()))
                 .collect(Collectors.toList());
     }
 
-    public static List<String> getWinner() {
+    public List<String> getWinner() {
         int maxPosition = 0;
 
         List<String> winners = new ArrayList<>();
@@ -51,7 +51,7 @@ public class RacingCar {
     }
 
     // 최대 위치를 찾는 메서드
-    private static int getMaxPosition() {
+    public int getMaxPosition() {
         return racingCars.stream()
                 .mapToInt(Car::getPosition)
                 .max()
