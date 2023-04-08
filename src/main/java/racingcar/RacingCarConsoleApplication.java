@@ -2,6 +2,8 @@ package racingcar;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import racingcar.dao.RacingCarDao;
 import racingcar.domain.Car;
 import racingcar.dto.PlayInput;
 import racingcar.dto.PlayResult;
@@ -14,6 +16,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class RacingCarConsoleApplication {
+
     public static void main(String[] args) {
 
         RacingCarService racingCarService = new RacingCarService();
@@ -30,12 +33,8 @@ public class RacingCarConsoleApplication {
         //인풋값 설정
         PlayInput playInput = new PlayInput(names, count);
         
-        //게임시작
-        List<Car> racingCars = racingCarService.startgame(playInput);
-        String winners = racingCarService.getWinner();
-
-        //출력값 설정
-        PlayResult playResult = new PlayResult(winners, racingCars);
+        //게임실행
+        PlayResult playResult = racingCarService.startgame(playInput);
 
         ObjectMapper mapper = new ObjectMapper();
         try {

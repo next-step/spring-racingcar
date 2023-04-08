@@ -20,15 +20,13 @@ public class RacingCarController {
     @Autowired
     private RacingCarDao racingCarDao;
 
-    private RacingCarService racingCarService = new RacingCarService();
+    @Autowired
+    private RacingCarService racingCarService;
 
     @PostMapping(value = "/plays", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity startGame(@RequestBody PlayInput playInput){
-        List<Car> racingCars = racingCarService.startgame(playInput);
-        String winners = racingCarService.getWinner();
-        int id = racingCarDao.insertPlayResult(playInput.getCount(), winners);
-        racingCarDao.insertPlayCarHistory(id, racingCars);
-        return ResponseEntity.ok(racingCarDao.getPlayResult(id));
+        PlayResult playResult = racingCarService.startgame(playInput);
+        return ResponseEntity.ok(playResult);
     }
 
     @GetMapping(value = "/plays", produces = MediaType.APPLICATION_JSON_VALUE)

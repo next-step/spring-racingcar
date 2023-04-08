@@ -23,9 +23,9 @@ public class RacingCarTest {
     void getWinner(){
 
         List<Car> cars = new ArrayList<>();
-        racing.racingCars.add(new Car("cyan", 150));
-        racing.racingCars.add(new Car("jade", 100));
-        racing.racingCars.add(new Car("bomi", 20));
+        //racing.racingCars.add(new Car("cyan", 150));
+        //racing.racingCars.add(new Car("jade", 100));
+        //racing.racingCars.add(new Car("bomi", 20));
 
         assertThat("cyan").isEqualTo(racing.getWinner());
     }

@@ -1,8 +1,11 @@
 package racingcar.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import racingcar.dao.RacingCarDao;
 import racingcar.domain.Car;
 import racingcar.dto.PlayInput;
+import racingcar.dto.PlayResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,14 +16,20 @@ import java.util.stream.Collectors;
 @Service
 public class RacingCarService {
 
-    public List<Car> racingCars = new ArrayList<>();
+    private List<Car> racingCars = new ArrayList<>();
+    @Autowired
+    private RacingCarDao racingCarDao;
 
-    public List<Car> startgame(PlayInput playInput) {
+    public PlayResult startgame(PlayInput playInput) {
         setCars(playInput.getNames());
         for (int i = 0; i < playInput.getCount(); i++) {
             playRound();
         }
-        return racingCars;
+
+        String winners = getWinner();
+        int id = racingCarDao.insertPlayResult(playInput.getCount(), winners);
+        racingCarDao.insertPlayCarHistory(id, racingCars);
+        return racingCarDao.getPlayResult(id);
     }
 
     private void playRound() {
