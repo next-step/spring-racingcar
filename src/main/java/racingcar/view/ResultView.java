@@ -1,15 +1,14 @@
 package racingcar.view;
 
 import racingcar.domain.Car;
-import racingcar.domain.RacingGame;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ResultView {
 
-    public static void printCarsLocation(final RacingGame racingGame) {
-        racingGame.getParticipationCars().forEach(Car::printLocation);
+    public static void printCarsLocation(final List<Car> participationCars) {
+        participationCars.forEach(car -> System.out.println("이름 : " + car.getName() + ", 위치 : " + car.getPosition()));
         System.out.println();
     }
 

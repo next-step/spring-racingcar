@@ -28,12 +28,6 @@ public class Car implements Comparable<Car> {
             position++;
         }
     }
-
-    public void printLocation() {
-        String stringBuilder = name + " : " + "-".repeat(Math.max(INITIAL_LOCATION, position));
-        System.out.println(stringBuilder);
-    }
-
     public boolean isEqualLocation(Car car) {
         return car.position == this.position;
     }
