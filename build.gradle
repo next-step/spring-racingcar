@@ -19,7 +19,6 @@ dependencies {
 	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
 	testImplementation 'io.rest-assured:rest-assured'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'com.h2database:h2'
 }

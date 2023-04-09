@@ -15,38 +15,63 @@ import java.util.Map;
 @Repository
 public class RacingCarDao {
 
-    private final JdbcTemplate jdbcTemplate;
-    private static SimpleJdbcInsert insertPlayResult;
-    private static SimpleJdbcInsert insertPlayHistory;
+    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert insertPlayResult;
+    private SimpleJdbcInsert insertPlayCarHistory;
 
     public RacingCarDao(DataSource dataSource) {
-        
+
         this.jdbcTemplate = new JdbcTemplate(dataSource);
 
-        this.insertPlayHistory = new SimpleJdbcInsert(dataSource)
-                .withTableName("PLAY_HISTORY")
-                .usingGeneratedKeyColumns("id");
-
+        //게임 세팅
         this.insertPlayResult = new SimpleJdbcInsert(dataSource)
                 .withTableName("PLAY_RESULT")
                 .usingGeneratedKeyColumns("id");
+
+        //참여한 차정보
+        this.insertPlayCarHistory = new SimpleJdbcInsert(dataSource)
+                .withTableName("PLAY_CAR_HISTORY");
+
     }
-    public static void setPlayHistory(List<Car> car) {
+
+    public int insertPlayResult(int round, String winners){
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("round", round);
+        parameters.put("winners", winners);
+        parameters.put("created_at", LocalDateTime.now());
+        return insertPlayResult.executeAndReturnKey(parameters).intValue(); //게임회차 id return
+    }
+
+    public void insertPlayCarHistory(int id, List<Car> car) {
         for (Car racingCar : car) {
             Map<String, Object> parameters = new HashMap<>();
+
+            parameters.put("id", id);
             parameters.put("name", racingCar.getName());
-            parameters.put("move", racingCar.getPosition());
+            parameters.put("position", racingCar.getPosition());
             parameters.put("created_at", LocalDateTime.now());
-            insertPlayHistory.execute(parameters);
+
+            insertPlayCarHistory.execute(parameters);
         }
     }
 
-    public static PlayResult getPlayResult(PlayResult playResult) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("trial_count", playResult.getCount());
-        parameters.put("winners", playResult.getWinners().toString());
-        parameters.put("created_at", LocalDateTime.now());
-        insertPlayResult.execute(parameters);
-        return playResult;
+    //모든 실행결과
+    public List<PlayResult> getAllPlayResult() {
+        String sql = "SELECT id,round, winners FROM PLAY_RESULT";
+        return jdbcTemplate.query(sql
+                , (resultSet, rowNum) -> new PlayResult(
+                        resultSet.getString("winners"),
+                        getCars(resultSet.getInt("id"))));
+    }
+
+    //해당 게임에 참여한 차정보
+    public List<Car> getCars(int id) {
+        String sql = "SELECT name, position FROM PLAY_CAR_HISTORY where id = ? ";
+        return jdbcTemplate.query(sql
+                , (resultSet, rowNum) -> new Car(
+                        resultSet.getString("name")
+                        , resultSet.getInt("position"))
+                , id);
+
     }
 }
