@@ -1,19 +1,22 @@
 package racingcar.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.RacingCar;
 import racingcar.dto.RacingStartDto;
 import racingcar.jdbctemplate.InsertDao;
-import racingcar.reponse.RacingResultResponse;
+import racingcar.dto.RacingResultResponse;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RacingCarService {
-    public static RacingResultResponse playRacingGame(RacingStartDto racingStartDto) {
+    private final InsertDao insertDao;
+    public RacingResultResponse playRacingGame(RacingStartDto racingStartDto) {
 
         Cars cars = new Cars(Arrays.stream(racingStartDto.getNames().split(","))
                 .map(it -> new Car(it.trim()))
@@ -25,7 +28,7 @@ public class RacingCarService {
         }
         Cars winners = racingCar.getWinner();
         cars.getCars().forEach(it ->
-                InsertDao.insertWithMap(it, racingStartDto.getTrial(), winners.getCarNames())
+                insertDao.insertWithMap(it, racingStartDto.getTrial(), winners.getCarNames())
         );
 
         return new RacingResultResponse(

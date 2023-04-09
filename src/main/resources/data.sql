@@ -5,3 +5,11 @@ CREATE TABLE PLAY_RESULT (
     created_at  DATETIME    NOT NULL default current_timestamp,
     PRIMARY KEY (id)
 );
+CREATE TABLE racing_history(
+    id          INT             NOT NULL AUTO_INCREMENT,
+    trial_count INT             NOT NULL,
+    name        VARCHAR(255)    NOT NULL,
+    position    INT             NOT NULL,
+    winners     VARCHAR(255),
+    date        DATETIME        default current_timestamp
+);

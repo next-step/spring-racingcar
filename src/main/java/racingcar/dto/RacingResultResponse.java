@@ -1,4 +1,4 @@
-package racingcar.reponse;
+package racingcar.dto;
 
 import lombok.Getter;
 import racingcar.domain.Car;

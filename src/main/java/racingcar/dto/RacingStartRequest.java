@@ -1,8 +1,7 @@
-package racingcar.request;
+package racingcar.dto;
 
 
 import lombok.Getter;
-import racingcar.reponse.RacingResultResponse;
 
 @Getter
 public class RacingStartRequest {
