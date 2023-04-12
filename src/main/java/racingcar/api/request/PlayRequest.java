@@ -1,9 +1,6 @@
 package racingcar.api.request;
 
-import racingcar.domain.Car;
-
-import java.util.ArrayList;
-import java.util.List;
+import racingcar.domain.Cars;
 
 public class PlayRequest {
     public PlayRequest(String names, int count) {
@@ -14,12 +11,8 @@ public class PlayRequest {
     private String names;
     private int count;
 
-    public List<Car> makeCars() {
-        List<Car> cars = new ArrayList<>();
-        for (String name : this.names.split(",")) {
-            cars.add(new Car(name.trim()));
-        }
-        return cars;
+    public Cars makeCars() {
+        return new Cars(this.names.split(","));
     }
 
     public int getCount() {

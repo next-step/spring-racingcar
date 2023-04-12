@@ -2,7 +2,6 @@ package racingcar.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import racingcar.api.response.PlayResponse;
 import racingcar.domain.RacingGame;
 import racingcar.domain.ResultPlay;
 import racingcar.repository.RacingCarGameRepository;

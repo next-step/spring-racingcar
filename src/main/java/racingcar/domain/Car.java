@@ -19,7 +19,7 @@ public class Car implements Comparable<Car> {
         if (name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("자동차 이름은 5자를 초과할 수 없다.");
         }
-        this.name = name;
+        this.name = name.trim();
         this.position = position;
     }
 
