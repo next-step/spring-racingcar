@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Service
 public class RacingCar {
 
-    public List<Car> racingCars = new ArrayList<>();
+    public static List<Car> racingCars = new ArrayList<>();
 
-    public List<Car> racingGame(RacingInput racingInput) {
+    public static List<Car> racingGame(RacingInput racingInput) {
         setCars(racingInput.getNames());
         for (int i = 0; i < racingInput.getCount(); i++) {
             playRandomRound();
@@ -22,7 +22,7 @@ public class RacingCar {
         return racingCars;
     }
 
-    public void playRandomRound() {
+    public static void playRandomRound() {
         Random random = new Random();
 
         for (Car racingCar : racingCars) {
@@ -31,7 +31,7 @@ public class RacingCar {
         }
     }
 
-    public void setCars(String names) {
+    public static void setCars(String names) {
         racingCars = Arrays.stream(names.split(","))
                 .map(it -> new Car(it.trim()))
                 .collect(Collectors.toList());
