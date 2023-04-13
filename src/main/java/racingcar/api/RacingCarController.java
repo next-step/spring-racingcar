@@ -13,7 +13,6 @@ import racingcar.api.response.PlayResponse;
 import racingcar.service.RacingCarGameService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class RacingCarController {
@@ -28,17 +27,12 @@ public class RacingCarController {
 
     @PostMapping(value = "/plays", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PlayResponse> plays(@RequestBody PlayRequest request) {
-
         RacingGame racingGame = new RacingGame(request.makeCars(), carMoveDeterminer);
-        racingCarGameService.play(racingGame, request.getCount());
-
-        return ResponseEntity.ok(PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners()));
+        return ResponseEntity.ok(racingCarGameService.play(racingGame, request.getCount()));
     }
 
     @GetMapping(value = "/plays", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PlayResponse>> getAllRacingGames() {
-        List<PlayResponse> allResult = racingCarGameService.getAllRacingGames().stream()
-                .map((racingGame) -> PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners())).collect(Collectors.toList());
-        return ResponseEntity.ok(allResult);
+        return ResponseEntity.ok(racingCarGameService.getAllRacingGames());
     }
 }

@@ -2,6 +2,7 @@ package racingcar.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import racingcar.api.response.PlayResponse;
 import racingcar.domain.RacingGame;
 import racingcar.domain.ResultPlay;
 import racingcar.repository.RacingCarGameRepository;
@@ -18,19 +19,22 @@ public class RacingCarGameService {
         this.racingCarGameRepository = racingCarGameRepository;
     }
 
-    public void play(RacingGame racingGame, int count) {
+    public PlayResponse play(RacingGame racingGame, int count) {
         racingGame.startGame(count);
         this.saveResult(racingGame);
+
+        return PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners());
     }
 
     private void saveResult(RacingGame racingGame) {
         long playId = racingCarGameRepository.saveResult(racingGame);
         racingCarGameRepository.saveDetailResult(playId, racingGame);
     }
-    public List<RacingGame> getAllRacingGames() {
+    public List<PlayResponse> getAllRacingGames() {
         List<ResultPlay> resultPlays = racingCarGameRepository.racingGameResults();
         return resultPlays.stream()
                 .map(racingCarGameRepository::racingGameDetailResults)
+                .map((racingGame) -> PlayResponse.extract(racingGame.getParticipationCars(), racingGame.getRacingWinners()))
                 .collect(Collectors.toList());
     }
 }
