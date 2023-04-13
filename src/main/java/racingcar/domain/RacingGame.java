@@ -2,23 +2,23 @@ package racingcar.domain;
 
 public class RacingGame {
     private final Cars participationCars;
-    private final CarMoveEntropy carMoveEntropy;
+    private final CarMoveDeterminer carMoveDeterminer;
     private int trialCount;
 
-    public RacingGame(int trialCount, Cars participationCars, CarMoveEntropy carMoveEntropy) {
+    public RacingGame(int trialCount, Cars participationCars, CarMoveDeterminer carMoveDeterminer) {
         this.participationCars = participationCars;
-        this.carMoveEntropy = carMoveEntropy;
+        this.carMoveDeterminer = carMoveDeterminer;
         this.trialCount = trialCount;
     }
 
-    public RacingGame(Cars participationCars, CarMoveEntropy carMoveEntropy) {
-        this(0, participationCars, carMoveEntropy);
+    public RacingGame(Cars participationCars, CarMoveDeterminer carMoveDeterminer) {
+        this(0, participationCars, carMoveDeterminer);
     }
 
     public void startGame(int moveCount) {
         for (int i = 0; i < moveCount; i++) {
             this.trialCount++;
-            this.participationCars.move(carMoveEntropy);
+            this.participationCars.move(carMoveDeterminer);
         }
     }
 

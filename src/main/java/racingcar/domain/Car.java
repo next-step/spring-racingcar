@@ -6,7 +6,7 @@ public class Car implements Comparable<Car> {
 
     private static final int MAX_NAME_LENGTH = 5;
     private static final int INITIAL_LOCATION = 0;
-    private static final int MOVABLE_MIN_NUMBER = 4;
+
 
     private final String name;
     private int position;
@@ -23,8 +23,8 @@ public class Car implements Comparable<Car> {
         this.position = position;
     }
 
-    public void move(CarMoveEntropy carMoveEntropy) {
-        if (carMoveEntropy.getInt() >= MOVABLE_MIN_NUMBER) {
+    public void move(CarMoveDeterminer carMoveDeterminer) {
+        if (carMoveDeterminer.isMove()) {
             position++;
         }
     }

@@ -40,7 +40,7 @@ public class Cars {
         return samePositionCars(max);
     }
 
-    public void move(CarMoveEntropy carMoveEntropy) {
-        this.cars.forEach(c -> c.move(carMoveEntropy));
+    public void move(CarMoveDeterminer carMoveDeterminer) {
+        this.cars.forEach(c -> c.move(carMoveDeterminer));
     }
 }

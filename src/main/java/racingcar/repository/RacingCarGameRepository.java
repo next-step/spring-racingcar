@@ -68,6 +68,6 @@ public class RacingCarGameRepository {
     public RacingGame racingGameDetailResults(ResultPlay resultPlay) {
         String racingDetailResultsSql = "select player, position from PLAY_DETAIL_RESULT WHERE play_id = ?";
         Cars cars = new Cars(this.jdbcTemplate.query(racingDetailResultsSql, this.carRowMapper, resultPlay.getId()));
-        return new RacingGame(resultPlay.getTrialCount(), cars, new ReadOnlyCarMoveEntropy());
+        return new RacingGame(resultPlay.getTrialCount(), cars, new NoneCarMoveDeterminer());
     }
 }
