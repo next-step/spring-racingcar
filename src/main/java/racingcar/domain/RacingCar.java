@@ -1,7 +1,14 @@
 package racingcar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import racingcar.dto.RacingHistory;
 import racingcar.dto.RacingInput;
+
+import racingcar.dao.RacingCarDao;
+import racingcar.dto.RacingResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class RacingCar {
+
+    @Autowired
+    private static RacingCarDao racingCarDao;
 
     public static List<Car> racingCars = new ArrayList<>();
 
@@ -57,6 +67,13 @@ public class RacingCar {
                 .max()
                 .orElse(0);
     }
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    public static List<RacingHistory> getAllResult(){
+
+        return racingCarDao.getGameHistory();
+    }
+
 
 
 }
