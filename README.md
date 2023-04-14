@@ -1,1 +1,6 @@
-# jwp-racingcar
+# spring racing car
+
+## 요구사항
+- [X] 게임 플레이 이력 조회 API 구현
+- [X] 기존 기능 수정 - 출력 방석 수정
+- [X] 리팩터링 - 중복 코드 제거
