@@ -39,6 +39,12 @@ public class RaceControll {
         }
     }
 
+    public void raceMultiRound(int round) {
+        for(int i = 0; i < round; i++) {
+            this.raceSingleRound();
+        }
+    }
+
     public List<RacingCar> getCars() {
         return this.cars;
     }

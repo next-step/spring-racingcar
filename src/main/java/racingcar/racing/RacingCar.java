@@ -1,6 +1,6 @@
 package racingcar.racing;
 
-public class RacingCar {
+public class RacingCar implements Comparable<RacingCar> {
 
     private final Driver driver;
 
@@ -34,5 +34,10 @@ public class RacingCar {
 
     public Position getPosition() {
         return this.position;
+    }
+
+    @Override
+    public int compareTo(RacingCar o) {
+        return o.getPosition().getPoistion() - this.getPosition().getPoistion();
     }
 }
