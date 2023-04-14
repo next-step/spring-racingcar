@@ -11,11 +11,14 @@ public class RacingResult implements Serializable {
     private final List<String> winners;
     private final List<Car> racingCars;
 
+
     public RacingResult(Integer count, List<String> winners, List<Car> racingCars) {
         this.count = count;
         this.winners = winners;
         this.racingCars = racingCars;
     }
+
+
 
     public Integer getCount() {
         return count;

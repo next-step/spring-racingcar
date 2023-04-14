@@ -1,13 +1,19 @@
 package racingcar.dao;
 
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import racingcar.domain.Car;
+import racingcar.dto.RacingHistory;
 import racingcar.dto.RacingResult;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +21,8 @@ import java.util.Map;
 @Repository
 public class RacingCarDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    private static JdbcTemplate jdbcTemplate;
+
     private static SimpleJdbcInsert insertRacingResult;
     private static SimpleJdbcInsert insertRacingRecord;
 
@@ -49,4 +56,19 @@ public class RacingCarDao {
         insertRacingResult.execute(parameters);
         return racingResult;
     }
+
+
+    //모든 실행결과
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    public static List<RacingHistory> getGameHistory() {
+        String sql = "SELECT TRIAL_COUNT, WINNERS FROM RACING_RESULT";
+
+        return jdbcTemplate.query(sql
+                , (resultSet, rowNum) -> new RacingHistory(
+                        resultSet.getInt("TRIAL_COUNT")
+                       , Collections.singletonList(resultSet.getString("WINNERS"))));
+
+
+    }
+
 }

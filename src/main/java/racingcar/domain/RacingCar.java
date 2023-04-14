@@ -1,7 +1,14 @@
 package racingcar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import racingcar.dto.RacingHistory;
 import racingcar.dto.RacingInput;
+
+import racingcar.dao.RacingCarDao;
+import racingcar.dto.RacingResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,9 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class RacingCar {
 
-    public List<Car> racingCars = new ArrayList<>();
+    @Autowired
+    private static RacingCarDao racingCarDao;
 
-    public List<Car> racingGame(RacingInput racingInput) {
+    public static List<Car> racingCars = new ArrayList<>();
+
+    public static List<Car> racingGame(RacingInput racingInput) {
         setCars(racingInput.getNames());
         for (int i = 0; i < racingInput.getCount(); i++) {
             playRandomRound();
@@ -22,7 +32,7 @@ public class RacingCar {
         return racingCars;
     }
 
-    public void playRandomRound() {
+    public static void playRandomRound() {
         Random random = new Random();
 
         for (Car racingCar : racingCars) {
@@ -31,7 +41,7 @@ public class RacingCar {
         }
     }
 
-    public void setCars(String names) {
+    public static void setCars(String names) {
         racingCars = Arrays.stream(names.split(","))
                 .map(it -> new Car(it.trim()))
                 .collect(Collectors.toList());
@@ -57,6 +67,13 @@ public class RacingCar {
                 .max()
                 .orElse(0);
     }
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    public static List<RacingHistory> getAllResult(){
+
+        return racingCarDao.getGameHistory();
+    }
+
 
 
 }
