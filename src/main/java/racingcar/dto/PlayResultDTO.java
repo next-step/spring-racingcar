@@ -1,13 +1,13 @@
-package racingcar.repository;
+package racingcar.dto;
 
-public class PlayResult {
+public class PlayResultDTO {
     private int round;
     private int trialCount;
     private String name;
     private int position;
     private String winners;
 
-    public PlayResult(int round, int trialCount, String name, int position, String winners) {
+    public PlayResultDTO(int round, int trialCount, String name, int position, String winners) {
         this.round = round;
         this.trialCount = trialCount;
         this.name = name;

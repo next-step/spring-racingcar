@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import racingcar.Car;
 import racingcar.Position;
-import racingcar.repository.ResultRacing;
+import racingcar.dto.ResultRacingDTO;
 
 import java.util.List;
 
@@ -14,13 +14,13 @@ public class QueryingDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<ResultRacing> findHistory() {
+    public List<ResultRacingDTO> findHistory() {
         String sql = "select round, max(winners) as winner from PLAY_RESULT group by round order by round";
 
         return jdbcTemplate.query(
                 sql,
                 (resultSet, rowNum) -> {
-                    ResultRacing resultRacing = new ResultRacing(
+                    ResultRacingDTO resultRacing = new ResultRacingDTO(
                             resultSet.getString("winner"),
                             findRoundPlayer(resultSet.getInt("round"))
                     );

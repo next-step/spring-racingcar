@@ -1,14 +1,14 @@
-package racingcar.repository;
+package racingcar.dto;
 
 import racingcar.Car;
 
 import java.util.List;
 
-public class ResultRacing {
+public class ResultRacingDTO {
     private final String winners;
     private final List<Car> racingCars;
 
-    public ResultRacing(String winners, List<Car> racingCars) {
+    public ResultRacingDTO(String winners, List<Car> racingCars) {
         this.winners = winners;
         this.racingCars = racingCars;
     }

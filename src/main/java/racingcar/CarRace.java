@@ -1,7 +1,7 @@
 package racingcar;
 
 public class CarRace {
-    RandomMove randomMove = new RandomMove();
+    private RandomMove randomMove = new RandomMove();
 
     public Winners getWinners(Cars cars) {
         return new Winners(cars.getFastCars());
