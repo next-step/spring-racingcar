@@ -9,6 +9,11 @@ public class Car {
         this.name = name;
     }
 
+    public Car(final String name, int position) {
+        this.name = name;
+        this.position = position;
+    }
+
     public void step(final int number) {
         if (number >= CAR_STEP_LIMIT)
             this.position++;

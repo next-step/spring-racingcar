@@ -9,11 +9,13 @@ public class RacingCar {
     private final Cars cars;
     private int trial;
     public int maxPosition = 0;
+    private final int round;
     private final Random random = new Random();
 
-    public RacingCar(Cars cars, int trial) {
+    public RacingCar(Cars cars, int trial, int round) {
         this.cars = cars;
         this.trial = trial;
+        this.round = round;
     }
 
     public void run() {
@@ -34,7 +36,11 @@ public class RacingCar {
     }
 
     public Cars getCars() {
-        return cars;
+        return this.cars;
+    }
+
+    public int getRound() {
+        return this.round;
     }
 
     public Cars getWinner() {
@@ -46,11 +52,11 @@ public class RacingCar {
     }
 
     private void setWinner(Car car, List<Car> winners) {
-        if (car.getPosition() > maxPosition) {
-            maxPosition = car.getPosition();
+        if (car.getPosition() > this.maxPosition) {
+            this.maxPosition = car.getPosition();
             winners.clear();
         }
-        if (car.getPosition() >= maxPosition) {
+        if (car.getPosition() >= this.maxPosition) {
             winners.add(car);
         }
     }

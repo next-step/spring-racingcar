@@ -4,7 +4,9 @@ import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.RacingCar;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import static racingcar.view.InputView.getCarNames;
 import static racingcar.view.InputView.getTrial;
@@ -16,13 +18,14 @@ public class RacingCarConsoleApplication {
         List<Car> cars = new ArrayList<>();
         String inputString = getCarNames();
         int trial = getTrial();
+        int round = 1;
 
         StringTokenizer stringTokenizer = new StringTokenizer(inputString, ",");
         while (stringTokenizer.hasMoreTokens()) {
             cars.add(new Car(stringTokenizer.nextToken()));
         }
 
-        RacingCar racingCar = new RacingCar(new Cars(cars), trial);
+        RacingCar racingCar = new RacingCar(new Cars(cars), trial, round);
         while (!racingCar.isEnd()) {
             racingCar.run();
             printCars(racingCar.getCars());
