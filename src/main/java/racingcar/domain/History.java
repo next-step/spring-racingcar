@@ -7,18 +7,17 @@ public class History {
     private String winners;
     private int trialCount;
 
-
     private int position;
 
-    private String created_at;
+    private String createdAt;
+    private int groupId;
 
     private List<Car> racingCars;
 
-    public History(String winners, int trialCount, int position, String created_at) {
+    public History(String winners, int trialCount,int groupId) {
         this.winners = winners;
         this.trialCount = trialCount;
-        this.position = position;
-        this.created_at = created_at;
+        this.groupId = groupId;
     }
 
 
@@ -26,41 +25,30 @@ public class History {
         return winners;
     }
 
-    public void setWinners(String winners) {
-        this.winners = winners;
-    }
-
     public int getTrialCount() {
         return trialCount;
     }
 
-    public void setTrialCount(int trialCount) {
-        this.trialCount = trialCount;
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public List<Car> getRacingCars() {
+    public List<Car> getRacingCars() { //  스크립트에서 사용
         return racingCars;
     }
 
     public void setRacingCars(List<Car> racingCars) {
         this.racingCars = racingCars;
+    }
+
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     @Override
@@ -69,7 +57,7 @@ public class History {
                 "winners='" + winners + '\'' +
                 ", trialCount=" + trialCount +
                 ", position=" + position +
-                ", created_at='" + created_at + '\'' +
+                ", created_at='" + createdAt + '\'' +
                 '}';
     }
 }

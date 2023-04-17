@@ -2,10 +2,19 @@
 CREATE TABLE PLAY_RESULT
 (
     id         INT         NOT NULL AUTO_INCREMENT,
-    winners    VARCHAR(50) NOT NULL,
-    trialCount INT         NOT NULL,
+    group_id  INT         NOT NULL,
     name       VARCHAR(50) NOT NULL,
     position   INT         NOT NULL,
     created_at DATETIME    NOT NULL default current_timestamp,
     PRIMARY KEY (id)
 );
+
+
+CREATE TABLE RESULT_GROUP
+(
+    id         INT         NOT NULL AUTO_INCREMENT,
+    winners    VARCHAR(50) NOT NULL,
+    trial_count INT         NOT NULL,
+    created_at DATETIME    NOT NULL default current_timestamp,
+    PRIMARY KEY (id)
+)

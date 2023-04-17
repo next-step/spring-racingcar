@@ -16,31 +16,17 @@ public class HistoryDAO {
     }
 
 
-    public int insertPlayResult(Car car, int trialCount, String winners) {
-        String sql = "insert into PLAY_RESULT (winners, trialCount,name,position) values (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, winners, trialCount, car.getName(), car.getPosition());
+    public int insertPlayResult(Car car, int groupId) {
+        String sql = "insert into PLAY_RESULT (name,position, group_id ) values (?, ?,?)";
+        return jdbcTemplate.update(sql, car.getName(), car.getPosition(), groupId);
     }
 
-    public List<History> selectListPlayResult() {
-        String sql = "SELECT  FORMATDATETIME(created_at,'yyyymmddhhmmss') created_at   , winners, trialcount ,max(position) position  FROM PLAY_RESULT \n" +
-                "group by FORMATDATETIME(created_at,'yyyymmddhhmmss') , winners, trialcount";
-        return jdbcTemplate.query(
-                sql, (rs, rowNum) -> {
-                    History history = new History(
-                            rs.getString("winners"),
-                            rs.getInt("trialCount"),
-                            rs.getInt("position"),
-                            rs.getString("created_at")
-                    );
-                    return history;
-                });
-    }
+
+
 
     public List<Car> selectListPlay(History historyParameter) {
         String sql = "SELECT name,  position  FROM PLAY_RESULT \n" +
-                "WHERE FORMATDATETIME(created_at,'yyyymmddhhmmss') =  ? \n" +
-                "and    winners = ?  \n" +
-                "and    trialcount =  ?";
+                "WHERE group_id = ?";
         return jdbcTemplate.query(
                 sql, (rs, rowNum) -> {
                     Car car = new Car(
@@ -48,9 +34,7 @@ public class HistoryDAO {
                             rs.getInt("position")
                     );
                     return car;
-                }, historyParameter.getCreated_at()
-                , historyParameter.getWinners()
-                , historyParameter.getTrialCount());
+                }, historyParameter.getGroupId());
     }
 
 }

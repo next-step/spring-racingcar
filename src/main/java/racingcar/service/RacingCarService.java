@@ -2,6 +2,7 @@ package racingcar.service;
 
 
 import org.springframework.stereotype.Service;
+import racingcar.dao.GroupDAO;
 import racingcar.dao.HistoryDAO;
 import racingcar.domain.Car;
 import racingcar.domain.History;
@@ -13,27 +14,31 @@ import java.util.List;
 public class RacingCarService {
     private HistoryDAO historyDAO;
 
-    public RacingCarService(HistoryDAO historyDAO) {
+    private GroupDAO groupDAO;
+
+    public RacingCarService(HistoryDAO historyDAO, GroupDAO groupDAO) {
         this.historyDAO = historyDAO;
+        this.groupDAO = groupDAO;
     }
 
     public RacingCarGame play(String names, int count) {
         String[] carNames = names.split(",");
         RacingCarGame carGame = new RacingCarGame(carNames, count);
         RacingCarGame result = carGame.start();
+        int groupId = groupDAO.insertGroup(result.getTotalTry(), result.getWinners());
+
         for (Car car : result.getRacingCars()) {
-            System.out.println(car.getName());
-            historyDAO.insertPlayResult(car, result.getTotalTry(), result.getWinners());
+            historyDAO.insertPlayResult(car, groupId );
         }
         return result;
     }
 
     public List<History> getRacingGameHistory() {
 
-        List<History> historyList = historyDAO.selectListPlayResult();
+        List<History> historyList = groupDAO.selectListPlayResult();
+
 
         for (History history : historyList) {
-
             List<Car> cars = historyDAO.selectListPlay(history);
             history.setRacingCars(cars);
         }

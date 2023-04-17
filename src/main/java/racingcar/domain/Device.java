@@ -19,11 +19,4 @@ public class Device {
         return count;
     }
 
-    public void setNames(String names) {
-        this.names = names;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 }
