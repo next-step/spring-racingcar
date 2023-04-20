@@ -1,36 +1,31 @@
 package racingcar;
 
-import racingcar.domain.Car;
-import racingcar.domain.Cars;
+import com.google.gson.Gson;
 import racingcar.domain.RacingCar;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import racingcar.dto.RacingResultResponse;
+import racingcar.dto.RacingStartDto;
+import racingcar.service.RacingCarService;
 
 import static racingcar.view.InputView.getCarNames;
 import static racingcar.view.InputView.getTrial;
-import static racingcar.view.ResultView.printCars;
-import static racingcar.view.ResultView.showWinner;
 
 public class RacingCarConsoleApplication {
+
     public static void main(String[] args) {
-        List<Car> cars = new ArrayList<>();
+        Gson gson = new Gson();
+        RacingCarService racingCarService = new RacingCarService();
         String inputString = getCarNames();
         int trial = getTrial();
-        int round = 1;
 
-        StringTokenizer stringTokenizer = new StringTokenizer(inputString, ",");
-        while (stringTokenizer.hasMoreTokens()) {
-            cars.add(new Car(stringTokenizer.nextToken()));
-        }
+        RacingStartDto racingStartDto = new RacingStartDto(inputString, trial);
+        RacingCar racingCar = racingCarService.playRacingGame(racingStartDto, 1);
 
-        RacingCar racingCar = new RacingCar(new Cars(cars), trial, round);
-        while (!racingCar.isEnd()) {
-            racingCar.run();
-            printCars(racingCar.getCars());
-        }
-        Cars winners = racingCar.getWinner();
-        showWinner(winners);
+        String result = gson.toJson(
+                new RacingResultResponse(
+                        racingCar.getWinner().getCarNames(), racingCar.getCars()
+                )
+        );
+
+        System.out.println(result);
     }
 }

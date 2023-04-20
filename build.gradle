@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	runtimeOnly 'com.h2database:h2'
+	implementation 'com.google.code.gson:gson:2.8.7'
 }
 
 tasks.named('test') {

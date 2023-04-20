@@ -8,23 +8,23 @@ import org.springframework.web.bind.annotation.RestController;
 import racingcar.dto.RacingResultResponse;
 import racingcar.dto.RacingStartDto;
 import racingcar.dto.RacingStartRequest;
-import racingcar.service.RacingCarService;
+import racingcar.service.RacingCarWebService;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class RacingCarController {
-    private final RacingCarService racingCarService;
+    private final RacingCarWebService racingCarWebService;
 
     @GetMapping("/plays")
     public List<RacingResultResponse> get_plays() {
-        return racingCarService.getRacingGame();
+        return racingCarWebService.getRacingGame();
     }
 
     @PostMapping("/plays")
     public RacingResultResponse plays(@RequestBody RacingStartRequest request) {
-        return racingCarService.playRacingGame(
+        return racingCarWebService.playRacingWebGame(
                 new RacingStartDto(request.getNames(), request.getCount())
         );
     }
