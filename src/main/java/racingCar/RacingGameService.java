@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 import racingCar.dao.PlayResultDAO;
 import racingCar.dao.PlayerRecordDAO;
 import racingCar.domain.RacingCar;
-import racingCar.model.RacingGameIn;
-import racingCar.model.RacingGameOut;
+import racingCar.model.RacingGameRequest;
+import racingCar.model.RacingGameResponse;
 
 @Service
 public class RacingGameService {
-    private PlayResultDAO playResultDAO;
-    private PlayerRecordDAO playerRecordDAO;
+    private final PlayResultDAO playResultDAO;
+    private final PlayerRecordDAO playerRecordDAO;
 
     public RacingGameService(PlayResultDAO playResultDAO, PlayerRecordDAO playerRecordDAO) {
         this.playResultDAO = playResultDAO;
         this.playerRecordDAO = playerRecordDAO;
     }
-    public RacingGameOut play(RacingGameIn inputData) {
+    public RacingGameResponse play(RacingGameRequest inputData) {
         String names = inputData.getNames();
         int num = inputData.getCount();
 
@@ -41,15 +41,9 @@ public class RacingGameService {
         // 우승자 조회
         int maxPosition = 0;
         List<String> winners = new ArrayList<>();
-        for (RacingCar racingCar : racingCars) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
-            if (racingCar.getPosition() >= maxPosition) {
-                winners.add(racingCar.getName());
-            }
-        }
+
+        maxPosition = findMaxPosition(racingCars);
+        winners = getWinner(racingCars, maxPosition);
 
         Timestamp playTime = new Timestamp(System.currentTimeMillis());
         int playId = playResultDAO.insert(count, toString(winners), playTime);
@@ -58,7 +52,7 @@ public class RacingGameService {
             playerRecordDAO.insert(playId, racingCar);
         }
 
-        RacingGameOut gameResult = new RacingGameOut(winners.toString(), racingCars);
+        RacingGameResponse gameResult = new RacingGameResponse(winners.toString(), racingCars);
 
         return gameResult;
     }
@@ -72,6 +66,27 @@ public class RacingGameService {
         for (RacingCar racingCar : racingCars) {
             int randomNumber = random.nextInt(10);
             racingCar.move(randomNumber);
+        }
+    }
+    private int findMaxPosition(List<RacingCar> cars) {
+        int maxPosition = 0;
+        for (RacingCar car : cars) {
+            maxPosition = Math.max(maxPosition, car.getPosition());
+        }
+        return maxPosition;
+    }
+
+    private List<String> getWinner(List<RacingCar> cars, int maxPosition) {
+        List<String> winners = new ArrayList<>();
+        for (RacingCar car : cars) {
+            setWinners(maxPosition, winners, car);
+        }
+        return winners;
+    }
+
+    private void setWinners(int maxPosition, List<String> winners, RacingCar car) {
+        if (car.getPosition() == maxPosition) {
+            winners.add(car.getName());
         }
     }
 }

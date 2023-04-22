@@ -4,7 +4,7 @@ package racingCar.model;
 import java.util.List;
 import racingCar.domain.RacingCar;
 
-public class RacingGameOut {
+public class RacingGameResponse {
     String winners;
 
     List<RacingCar> racingCars;
@@ -25,7 +25,7 @@ public class RacingGameOut {
         this.racingCars = racingCars;
     }
 
-    public RacingGameOut(String winners, List<RacingCar> racingCars ) {
+    public RacingGameResponse(String winners, List<RacingCar> racingCars ) {
         this.winners = winners;
         this.racingCars = racingCars;
     }

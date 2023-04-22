@@ -1,6 +1,9 @@
 package racingCar.domain;
 
 public class RacingCar {
+
+    private static final int MOVABLE_MIN_NUMBER = 4;
+
     private final String name;
 
     private int position;
@@ -19,7 +22,7 @@ public class RacingCar {
     }
 
     public void move(int randomNumber) {
-        if (randomNumber >= 4) {
+        if (randomNumber >= MOVABLE_MIN_NUMBER) {
             this.position++;
         }
     }

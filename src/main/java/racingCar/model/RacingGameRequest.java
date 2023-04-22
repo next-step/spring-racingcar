@@ -1,10 +1,10 @@
 package racingCar.model;
 
 
-public class RacingGameIn {
+public class RacingGameRequest {
 
-    String names;
-    int count;
+    private String names;
+    private int count;
 
     public String getNames() {
         return names;
