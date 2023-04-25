@@ -1,36 +1,26 @@
 package racingcar.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import racingcar.domain.Car;
 import racingcar.domain.Cars;
 import racingcar.domain.RacingCar;
 import racingcar.dto.RacingStartDto;
-import racingcar.jdbctemplate.InsertDao;
-import racingcar.reponse.RacingResultResponse;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class RacingCarService {
-    public static RacingResultResponse playRacingGame(RacingStartDto racingStartDto) {
-
+    public RacingCar playRacingGame(RacingStartDto racingStartDto, int round) {
         Cars cars = new Cars(Arrays.stream(racingStartDto.getNames().split(","))
                 .map(it -> new Car(it.trim()))
                 .collect(Collectors.toList()));
 
-        RacingCar racingCar = new RacingCar(cars, racingStartDto.getTrial());
+        RacingCar racingCar = new RacingCar(cars, racingStartDto.getTrial(), round);
         while (!racingCar.isEnd()) {
             racingCar.run();
         }
-        Cars winners = racingCar.getWinner();
-        cars.getCars().forEach(it ->
-                InsertDao.insertWithMap(it, racingStartDto.getTrial(), winners.getCarNames())
-        );
 
-        return new RacingResultResponse(
-                winners.getCarNames(),
-                cars
-        );
+        return racingCar;
     }
 }

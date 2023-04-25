@@ -1,33 +1,23 @@
 package racingcar;
 
-import racingcar.domain.Car;
-import racingcar.domain.Cars;
 import racingcar.domain.RacingCar;
-
-import java.util.*;
+import racingcar.dto.RacingStartDto;
+import racingcar.service.RacingCarService;
 
 import static racingcar.view.InputView.getCarNames;
 import static racingcar.view.InputView.getTrial;
-import static racingcar.view.ResultView.printCars;
 import static racingcar.view.ResultView.showWinner;
 
 public class RacingCarConsoleApplication {
+
     public static void main(String[] args) {
-        List<Car> cars = new ArrayList<>();
+        RacingCarService racingCarService = new RacingCarService();
         String inputString = getCarNames();
         int trial = getTrial();
 
-        StringTokenizer stringTokenizer = new StringTokenizer(inputString, ",");
-        while (stringTokenizer.hasMoreTokens()) {
-            cars.add(new Car(stringTokenizer.nextToken()));
-        }
+        RacingStartDto racingStartDto = new RacingStartDto(inputString, trial);
+        RacingCar racingCar = racingCarService.playRacingGame(racingStartDto, 1);
 
-        RacingCar racingCar = new RacingCar(new Cars(cars), trial);
-        while (!racingCar.isEnd()) {
-            racingCar.run();
-            printCars(racingCar.getCars());
-        }
-        Cars winners = racingCar.getWinner();
-        showWinner(winners);
+        System.out.println(showWinner(racingCar));
     }
 }
