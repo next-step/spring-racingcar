@@ -51,6 +51,10 @@ public class RacingCar {
         return new Cars(winners);
     }
 
+    public String getWinnerNames() {
+        return getWinner().getCarNames();
+    }
+
     private void setWinner(Car car, List<Car> winners) {
         if (car.getPosition() > this.maxPosition) {
             this.maxPosition = car.getPosition();

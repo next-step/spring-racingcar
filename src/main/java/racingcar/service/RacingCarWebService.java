@@ -25,7 +25,7 @@ public class RacingCarWebService {
         insertDao.insertWinnerHistory(racingCar);
 
         return new RacingResultResponse(
-                racingCar.getWinner().getCarNames(),
+                racingCar.getWinnerNames(),
                 racingCar.getCars()
         );
     }
