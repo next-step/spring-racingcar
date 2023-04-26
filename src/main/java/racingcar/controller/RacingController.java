@@ -1,20 +1,21 @@
 package racingcar.controller;
 
-import racingcar.behavior.RandomMovingStrategy;
-import racingcar.domain.RacingCars;
-import racingcar.view.InputView;
-import racingcar.view.ResultView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import racingcar.dto.RacingCarRequestDto;
+import racingcar.dto.RacingCarResponseDto;
+import racingcar.service.RacingCarService;
+
+@RestController
 public class RacingController {
-    public static void main(String[] args) {
-        String[] nameOfCars = InputView.inputNameOfCars();
-        int loopCount = InputView.inputLoopCount();
+    @Autowired
+    private RacingCarService racingCarService;
 
-        RacingCars racingCars = RacingCars.of(nameOfCars, new RandomMovingStrategy(), loopCount);
-        ResultView.printResultMessage();
-        while (!racingCars.isLastRound()) {
-            ResultView.printPositionResult(racingCars.progressRound());
-        }
-        ResultView.printNamesOfWinnerCarsResult(racingCars.getNamesOfWinnerCars());
+    @PostMapping("/plays")
+    public RacingCarResponseDto playGame(@RequestBody RacingCarRequestDto racingCarRequestDto) {
+        return racingCarService.game(racingCarRequestDto.getNames(), racingCarRequestDto.getCount());
     }
 }
