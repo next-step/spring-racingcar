@@ -7,24 +7,23 @@ public class Car {
     static final int DEFAULT_DISTANCE = 0;
     private static final int MAX_INPUT_NAME_VALUE = 5;
     private static final String BLANK = " ";
-
+    private final String name;
     private int position;
-    private final String carName;
 
-    public Car(String carName) {
+    public Car(String name) {
         this.position = DEFAULT_DISTANCE;
-        this.carName = validateNamesOfCars(carName);
+        this.name = validateNamesOfCars(name);
     }
 
-    public static String validateNamesOfCars(String carName) {
-        if (isNullOrEmpty(carName) || isFiveLetterWords(carName)) {
+    public static String validateNamesOfCars(String name) {
+        if (isNullOrEmpty(name) || isFiveLetterWords(name)) {
             throw new IllegalArgumentException(ErrorMessage.INPUT_NAME_ERROR);
         }
-        return carName;
+        return name;
     }
 
-    static boolean isNullOrEmpty(String carName) {
-        return carName.trim().isEmpty() || carName.equals(BLANK);
+    static boolean isNullOrEmpty(String name) {
+        return name.trim().isEmpty() || name.equals(BLANK);
     }
 
     static boolean isFiveLetterWords(String carName) {
@@ -45,7 +44,7 @@ public class Car {
         return this.position == position;
     }
 
-    public String getCarName() {
-        return this.carName;
+    public String getName() {
+        return name;
     }
 }
