@@ -7,6 +7,7 @@ public class Car {
     static final int DEFAULT_DISTANCE = 0;
     private static final int MAX_INPUT_NAME_VALUE = 5;
     private static final String BLANK = " ";
+
     private final String name;
     private int position;
 
@@ -43,6 +44,7 @@ public class Car {
     public boolean hasSamePosition(int position) {
         return this.position == position;
     }
+
 
     public String getName() {
         return name;
