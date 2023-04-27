@@ -4,12 +4,12 @@ import java.util.Random;
 
 public class RandomMoveStrategy implements MoveStrategy {
 
-    private static final int MAX_MOVE_DISTANCE = 10;
+    private static final int MAX = 10;
 
     @Override
     public int move() {
         Random random = new Random();
-        return random.nextInt(MAX_MOVE_DISTANCE);
+        return random.nextInt(MAX);
     }
 
 }
