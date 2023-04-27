@@ -16,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GameControllerTest extends AssuredTest {
 
-
-    @DisplayName("")
+    @DisplayName("/plays 요청, 응답 테스트")
     @Test
     void plays() {
         // when
@@ -25,6 +24,8 @@ class GameControllerTest extends AssuredTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getString("winners")).isNotNull();
+        assertThat(response.jsonPath().getList("racingCars").size()).isEqualTo(3);
     }
 
     public static ExtractableResponse<Response> play_요청(String name, int count) {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import racingcar.application.GameService;
 import racingcar.presentation.dto.PlayRequest;
+import racingcar.presentation.dto.PlayResponse;
 
 @RestController
 public class GameController {
@@ -17,12 +18,11 @@ public class GameController {
     }
 
     @PostMapping(value = "/plays")
-    public ResponseEntity<Void> plays(@RequestBody PlayRequest request) {
+    public ResponseEntity<PlayResponse> plays(@RequestBody PlayRequest request) {
 
-        gameService.play(request);
+        PlayResponse response = gameService.play(request);
 
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok(response);
     }
 
 }
