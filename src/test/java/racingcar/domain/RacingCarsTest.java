@@ -1,7 +1,6 @@
 package racingcar.domain;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import racingcar.fixture.TestMoveStrategy;
@@ -14,25 +13,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RacingCarsTest {
 
-    private static final int MOVE_DISTANCE = 1;
-    private RacingCars racingCars;
-    private MoveStrategy moveStrategy;
+    private static final int MOVE_CAR = 10;
+    private static final int NOT_MOVE_CAR = 1;
 
-    @BeforeEach
-    void setUp() {
-        racingCars = RacingCars.of(Arrays.asList("a", "b", "c", "d"));
-        moveStrategy = new TestMoveStrategy(MOVE_DISTANCE);
-    }
-
-    @DisplayName("자동차들이 움직이는지 확인")
+    @DisplayName("모든 자동차를 1칸 움직인다.")
     @Test
     void move() {
+        // given
+        int expect = 1;
+        RacingCars racingCars = RacingCars.of(Arrays.asList("a", "b", "c"));
+
         // when
-        racingCars.move(moveStrategy);
+        racingCars.move(new TestMoveStrategy(MOVE_CAR));
 
         // then
         racingCars.getRacingCars()
-                .forEach(it -> assertThat(it.getPosition()).isEqualTo(MOVE_DISTANCE));
+                .forEach(it -> assertThat(it.getPosition()).isEqualTo(expect));
     }
 
     @DisplayName("우승자를 확인")
@@ -62,16 +58,16 @@ class RacingCarsTest {
 
     private List<RacingCar> MaxDistanceCarFixture() {
         RacingCar a = new RacingCar("a");
-        a.move(1);
+        a.move(NOT_MOVE_CAR);
 
         RacingCar b = new RacingCar("b");
-        b.move(10);
+        b.move(MOVE_CAR);
 
         RacingCar c = new RacingCar("c");
-        c.move(10);
+        c.move(MOVE_CAR);
 
         RacingCar d = new RacingCar("d");
-        d.move(5);
+        d.move(NOT_MOVE_CAR);
 
         return Arrays.asList(a, b, c, d);
     }

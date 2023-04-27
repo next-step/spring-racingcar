@@ -9,32 +9,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RacingCarTest {
 
-    @DisplayName("자동차를 입력한 거리 만큼 이동시킬 수 있다")
-    @ValueSource(ints = {1, 2, 3, 4, 5})
-    @ParameterizedTest(name = "자동차를 {0} 만큼 이동시킬 수 있다")
-    void move(int distance) {
+    private static final int MOVE_CAR = 10;
+
+    @DisplayName("4 이상의 숫자를 전달할 경우 자동차가 1칸 이동한다.")
+    @ValueSource(ints = {4, 5, 6, 7, 8, 9})
+    @ParameterizedTest(name = "{0}을 입력하면 자동차가 1칸 이동한다.")
+    void move(int number) {
         // given
         RacingCar car = new RacingCar("A");
 
         // when
-        car.move(distance);
+        car.move(number);
 
         // then
-        assertThat(car.getPosition()).isEqualTo(distance);
+        assertThat(car.getPosition()).isEqualTo(1);
+    }
+
+    @DisplayName("4 미만의 숫자를 전달할 경우 자동차가 이동하지 않는다.")
+    @ValueSource(ints = {-10, -5, -1, 0, 1, 2, 3})
+    @ParameterizedTest(name = "{0}을 입력하면 자동차가 이동하지 않는다..")
+    void move_not(int number) {
+        // given
+        RacingCar car = new RacingCar("A");
+
+        // when
+        car.move(number);
+
+        // then
+        assertThat(car.getPosition()).isEqualTo(0);
     }
 
     @DisplayName("자동차를 여러번 이동시키면 거리가 누적된다.")
     @Test
     void move_() {
         // given
-        int first = 5;
-        int second = 10;
-        int expect = first + second;
+        int expect = 2;
         RacingCar car = new RacingCar("A");
 
         // when
-        car.move(first);
-        car.move(second);
+        car.move(MOVE_CAR);
+        car.move(MOVE_CAR);
 
         // then
         assertThat(car.getPosition()).isEqualTo(expect);
