@@ -3,7 +3,7 @@ package racingcar;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RacingCarApplication {
+public class RacingCarConsoleApplication {
 
     public static void main(String[] args) {
         // 자동차 입력
