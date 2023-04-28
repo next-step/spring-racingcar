@@ -6,6 +6,7 @@ import racingcar.domain.PlayResultRepository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 
 @Repository
 public class PlayResultDao implements PlayResultRepository {
@@ -24,12 +25,16 @@ public class PlayResultDao implements PlayResultRepository {
     }
 
     @Override
-    public void save(String winners, int trialCount) {
+    public void save(List<String> winners, int trialCount) {
         HashMap<String, Object> param = new HashMap<>();
-        param.put("winners", winners);
+        param.put("winners", makeWinnerValue(winners));
         param.put("trial_count", trialCount);
 
         simpleJdbcInsert.execute(param);
+    }
+
+    private String makeWinnerValue(List<String> winners) {
+        return String.join(",", winners);
     }
 
 }

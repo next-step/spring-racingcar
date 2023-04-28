@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RacingGame {
 
-    private RacingCars racingCars;
+    private final RacingCars racingCars;
 
     private RacingGame(RacingCars racingCars) {
         this.racingCars = racingCars;
@@ -20,9 +20,8 @@ public class RacingGame {
         }
     }
 
-    public String getWinners() {
-        List<String> carNames = racingCars.getMaxDistanceCarName();
-        return String.join(",", carNames);
+    public List<String> getWinners() {
+        return racingCars.getMaxDistanceCarName();
     }
 
 }

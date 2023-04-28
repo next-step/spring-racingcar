@@ -28,12 +28,12 @@ public class PlayHistoryDao implements PlayHistoryRepository {
 
     @Override
     public void save(RacingCars racingCars) {
-        MapSqlParameterSource[] paramsList = createParam(racingCars);
-        simpleJdbcInsert.executeBatch(paramsList);
+        MapSqlParameterSource[] params = createParam(racingCars);
+        simpleJdbcInsert.executeBatch(params);
     }
 
     private MapSqlParameterSource[] createParam(RacingCars racingCars) {
-        List<RacingCar> cars = racingCars.getRacingCars();
+        List<RacingCar> cars = racingCars.getValue();
 
         return cars.stream()
                 .map(it -> new MapSqlParameterSource()

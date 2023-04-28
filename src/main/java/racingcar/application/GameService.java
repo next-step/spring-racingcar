@@ -9,6 +9,8 @@ import racingcar.domain.RandomMoveStrategy;
 import racingcar.presentation.dto.PlayRequest;
 import racingcar.presentation.dto.PlayResponse;
 
+import java.util.List;
+
 @Service
 public class GameService {
 
@@ -26,7 +28,7 @@ public class GameService {
 
         RacingGame racingGame = RacingGame.of(racingCars);
         racingGame.play(playCount, new RandomMoveStrategy());
-        String winners = racingGame.getWinners();
+        List<String> winners = racingGame.getWinners();
 
         resultRepository.save(winners, playCount);
         historyRepository.save(racingCars);

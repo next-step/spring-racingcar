@@ -1,7 +1,9 @@
 package racingcar.domain;
 
+import java.util.List;
+
 public interface PlayResultRepository {
 
-    void save(String winners, int trialCount);
+    void save(List<String> winners, int trialCount);
 
 }

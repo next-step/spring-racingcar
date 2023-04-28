@@ -27,7 +27,7 @@ class RacingCarsTest {
         racingCars.move(new TestMoveStrategy(MOVE_CAR));
 
         // then
-        racingCars.getRacingCars()
+        racingCars.getValue()
                 .forEach(it -> assertThat(it.getPosition()).isEqualTo(expect));
     }
 
