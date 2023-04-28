@@ -30,13 +30,14 @@ class RacingCarTest {
     @ParameterizedTest(name = "{0}을 입력하면 자동차가 이동하지 않는다..")
     void move_not(int number) {
         // given
+        int expect = 0;
         RacingCar car = new RacingCar("A");
 
         // when
         car.move(number);
 
         // then
-        assertThat(car.getPosition()).isEqualTo(0);
+        assertThat(car.getPosition()).isEqualTo(expect);
     }
 
     @DisplayName("자동차를 여러번 이동시키면 거리가 누적된다.")

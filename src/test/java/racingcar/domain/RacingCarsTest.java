@@ -35,13 +35,14 @@ class RacingCarsTest {
     @Test
     void getMaxDistanceCar() {
         // given
+        int expect = 2;
         RacingCars racingCars = new RacingCars(MaxDistanceCarFixture());
 
         // when
         List<String> winnerName = racingCars.getMaxDistanceCarName();
 
         // then
-        assertThat(winnerName).hasSize(2);
+        assertThat(winnerName).hasSize(expect);
         assertThat(winnerName).containsExactly("b", "c");
     }
 

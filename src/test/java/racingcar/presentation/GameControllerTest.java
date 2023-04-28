@@ -20,12 +20,13 @@ class GameControllerTest extends AssuredTest {
     @Test
     void plays() {
         // when
-        ExtractableResponse<Response> response = play_요청("a,b,c", 3);
+        int gameCount = 3;
+        ExtractableResponse<Response> response = play_요청("a,b,c", gameCount);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.jsonPath().getString("winners")).isNotNull();
-        assertThat(response.jsonPath().getList("racingCars").size()).isEqualTo(3);
+        assertThat(response.jsonPath().getList("racingCars").size()).isEqualTo(gameCount);
     }
 
     public static ExtractableResponse<Response> play_요청(String name, int count) {
