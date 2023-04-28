@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import racingcar.domain.RacingCar;
 
 public class RacingCarConsoleApplication {
+
   public static void main(String[] args) {
     // 자동차 입력
     Scanner scanner = new Scanner(System.in);

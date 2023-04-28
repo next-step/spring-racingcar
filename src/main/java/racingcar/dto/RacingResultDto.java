@@ -12,6 +12,7 @@ import racingcar.domain.RacingCar;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RacingResultDto {
+
   private String winners;
   private List<RacingCar> racingCars;
 }

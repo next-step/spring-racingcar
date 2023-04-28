@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 @Repository
 public class RacingCarRepository {
+
   private final JdbcTemplate jdbcTemplate;
 
   public void insertRacingResult(String winners, int trialCnt) {

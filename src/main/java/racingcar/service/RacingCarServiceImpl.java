@@ -10,9 +10,11 @@ import racingcar.domain.RacingCar;
 import racingcar.dto.RacingRequestDto;
 import racingcar.dto.RacingResultDto;
 import racingcar.repository.RacingCarRepository;
+
 @RequiredArgsConstructor
 @Service
 public class RacingCarServiceImpl implements RacingCarService {
+
   private final RacingCarRepository racingCarRepository;
 
   @Override
@@ -23,7 +25,7 @@ public class RacingCarServiceImpl implements RacingCarService {
 
     // count 만큼 racing play
     int count = racingRequestDto.getCount();
-    for (int i = 0 ; i < count ; i++) {
+    for (int i = 0; i < count; i++) {
       this.playRacingGame(racingCars);
     }
 
@@ -32,10 +34,12 @@ public class RacingCarServiceImpl implements RacingCarService {
 
     return new RacingResultDto(winners, racingCars);
   }
+
   private String getWinner(List<RacingCar> racingCars) {
     // RacingCar 객체들을 position 속성값으로 내림차순으로 정렬
     racingCars.sort(Comparator.comparingInt(RacingCar::getPosition).reversed());
-    racingCarRepository.insertRacingResult(racingCars.get(0).getName(), racingCars.get(0).getPosition());
+    racingCarRepository.insertRacingResult(racingCars.get(0).getName(),
+        racingCars.get(0).getPosition());
     // position 속성값이 가장 큰 RacingCar 객체의 name 속성값 반환
     return racingCars.get(0).getName();
   }
@@ -43,7 +47,7 @@ public class RacingCarServiceImpl implements RacingCarService {
   private void playRacingGame(List<RacingCar> racingCars) {
     //게임 돌리기
     Random random = new Random();
-    for(RacingCar racingCar : racingCars){
+    for (RacingCar racingCar : racingCars) {
       int ranDomNum = random.nextInt();
       racingCar.move(ranDomNum);
     }

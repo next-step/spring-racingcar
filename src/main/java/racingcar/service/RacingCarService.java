@@ -5,5 +5,6 @@ import racingcar.dto.RacingRequestDto;
 import racingcar.dto.RacingResultDto;
 
 public interface RacingCarService {
+
   RacingResultDto playRacing(RacingRequestDto racingRequestDto);
 }
