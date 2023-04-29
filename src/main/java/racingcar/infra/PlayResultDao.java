@@ -1,12 +1,12 @@
 package racingcar.infra;
 
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import racingcar.domain.PlayResult;
 import racingcar.domain.PlayResultRepository;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
 
 @Repository
 public class PlayResultDao implements PlayResultRepository {
@@ -17,6 +17,7 @@ public class PlayResultDao implements PlayResultRepository {
 
     private final SimpleJdbcInsert simpleJdbcInsert;
 
+
     public PlayResultDao(DataSource dataSource) {
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName(TABLE_NAME)
@@ -25,16 +26,11 @@ public class PlayResultDao implements PlayResultRepository {
     }
 
     @Override
-    public void save(List<String> winners, int trialCount) {
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("winners", makeWinnerValue(winners));
-        param.put("trial_count", trialCount);
+    public int save(PlayResult playResult) {
+        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(playResult);
+        Number key = simpleJdbcInsert.executeAndReturnKey(parameterSource);
 
-        simpleJdbcInsert.execute(param);
-    }
-
-    private String makeWinnerValue(List<String> winners) {
-        return String.join(",", winners);
+        return key.intValue();
     }
 
 }

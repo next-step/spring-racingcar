@@ -11,9 +11,11 @@ CREATE TABLE PLAY_RESULT
 
 CREATE TABLE PLAYER_HISTORY
 (
-    id         INT         NOT NULL AUTO_INCREMENT,
-    name       VARCHAR(50) NOT NULL,
-    position   INT         NOT NULL,
-    created_at DATETIME    NOT NULL default current_timestamp,
-    PRIMARY KEY (id)
+    id             INT         NOT NULL AUTO_INCREMENT,
+    play_result_id INT         NOT NULL,
+    name           VARCHAR(50) NOT NULL,
+    position       INT         NOT NULL,
+    created_at     DATETIME    NOT NULL default current_timestamp,
+    PRIMARY KEY (id),
+    FOREIGN KEY (play_result_id) REFERENCES PLAY_RESULT (id)
 );

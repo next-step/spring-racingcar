@@ -1,7 +1,9 @@
 package racingcar.application;
 
 import org.springframework.stereotype.Service;
+import racingcar.domain.PlayHistory;
 import racingcar.domain.PlayHistoryRepository;
+import racingcar.domain.PlayResult;
 import racingcar.domain.PlayResultRepository;
 import racingcar.domain.RacingCars;
 import racingcar.domain.RacingGame;
@@ -10,6 +12,7 @@ import racingcar.presentation.dto.PlayRequest;
 import racingcar.presentation.dto.PlayResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -30,10 +33,27 @@ public class GameService {
         racingGame.play(playCount, new RandomMoveStrategy());
         List<String> winners = racingGame.getWinners();
 
-        resultRepository.save(winners, playCount);
-        historyRepository.save(racingCars);
+        int playResultId = savePlayResult(racingGame, playCount);
+        savePlayHistories(playResultId, racingCars);
 
         return PlayResponse.of(winners, racingCars);
+    }
+
+    private int savePlayResult(RacingGame racingGame, int playCount) {
+        PlayResult playResult = PlayResult.builder()
+                .winners(racingGame.getWinners())
+                .trialCount(playCount)
+                .build();
+        return resultRepository.save(playResult);
+    }
+
+    private void savePlayHistories(int playResultId, RacingCars racingCars) {
+        List<PlayHistory> playHistories = racingCars.getValue()
+                .stream()
+                .map(it -> PlayHistory.of(playResultId, it))
+                .collect(Collectors.toList());
+
+        historyRepository.save(playHistories);
     }
 
 }

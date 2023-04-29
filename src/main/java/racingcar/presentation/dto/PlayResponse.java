@@ -17,14 +17,19 @@ public class PlayResponse {
     }
 
     public static PlayResponse of(List<String> winners, RacingCars racingCars) {
+        String winner = String.join(",", winners);
+        return of(winner, racingCars);
+    }
+
+    public static PlayResponse of(String winners, RacingCars racingCars) {
         List<RacingCarDto> carDtos = racingCars.getValue()
                 .stream()
                 .map(it -> new RacingCarDto(it))
                 .collect(Collectors.toList());
 
-        String winner = String.join(",", winners);
-        return new PlayResponse(winner, carDtos);
+        return new PlayResponse(winners, carDtos);
     }
+
 
     public String getWinners() {
         return winners;
