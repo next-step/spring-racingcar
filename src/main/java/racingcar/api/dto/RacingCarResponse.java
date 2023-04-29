@@ -1,16 +1,17 @@
 package racingcar.api.dto;
 
+import racingcar.domain.entity.PlayResult;
 import racingcar.domain.entity.RacingCar;
 
 import java.util.List;
 
 public class RacingCarResponse {
 
-    private List<String> winners;
+    private String winners;
 
     private List<RacingCar> racingCars;
 
-    public List<String> getWinners() {
+    public String getWinners() {
         return winners;
     }
 
@@ -18,8 +19,12 @@ public class RacingCarResponse {
         return racingCars;
     }
 
-    public RacingCarResponse(List<String> winners, List<RacingCar> racingCars) {
+    public RacingCarResponse(String winners, List<RacingCar> racingCars) {
         this.winners = winners;
         this.racingCars = racingCars;
+    }
+
+    public static RacingCarResponse of(PlayResult playResult) {
+        return new RacingCarResponse(playResult.getWinners(), playResult.getRacingCars());
     }
 }

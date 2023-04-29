@@ -1,8 +1,11 @@
 package racingcar.domain.entity;
 
 public class RacingCar {
-    private final String name;
+    private String name;
     private int position;
+
+    public RacingCar() {
+    }
 
     public RacingCar(String name) {
         this.name = name;
