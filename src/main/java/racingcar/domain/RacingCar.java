@@ -1,6 +1,7 @@
-package racingcar;
+package racingcar.domain;
 
-class RacingCar {
+public class RacingCar {
+
   private final String name;
   private int position;
 
