@@ -1,10 +1,17 @@
 package racingcar.api.dto;
 
-import java.util.List;
-
 public class RacingCarRequest {
 
     private String names;
-    private int count;
+
+    private Integer count;
+
+    public String getNames() {
+        return names;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
 }
 
