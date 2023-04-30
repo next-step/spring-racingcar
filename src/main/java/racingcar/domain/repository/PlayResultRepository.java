@@ -10,6 +10,7 @@ import racingcar.domain.entity.PlayResult;
 import racingcar.domain.entity.RacingCar;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -39,10 +40,11 @@ public class PlayResultRepository {
             String winners = rs.getString("winners");
             int trialCount = rs.getInt("trial_count");
             LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-            String jsonRacingCars = rs.getString("racing_cars");
+            String jsonRacingCars = rs.getNString("racing_cars");
             List<RacingCar> racingCars;
             try {
-                racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<List<RacingCar>>() {});
+                racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<ArrayList<RacingCar>>() {
+                });
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
