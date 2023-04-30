@@ -2,6 +2,7 @@ package racingcar.domain;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class RacingCars {
@@ -15,6 +16,14 @@ public class RacingCars {
         this.racingCars = convertNamesToRacingCars(names);
     }
 
+    public int size() {
+        return racingCars.size();
+    }
+
+    public RacingCar get(int index) {
+        return racingCars.get(index);
+    }
+
     private List<RacingCar> convertNamesToRacingCars(String names) {
         return Arrays.stream(this.convertNamesToArray(names))
                 .map(it -> new RacingCar(it.trim()))
@@ -23,6 +32,14 @@ public class RacingCars {
 
     private String[] convertNamesToArray(String names) {
         return names.split(",");
+    }
+
+    public void playRound() {
+        Random random = new Random();
+        for (RacingCar racingCar : racingCars) {
+            int randomNumber = random.nextInt(10);
+            racingCar.move(randomNumber);
+        }
     }
 
 }
