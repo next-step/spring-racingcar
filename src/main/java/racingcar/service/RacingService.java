@@ -32,10 +32,10 @@ public class RacingService {
         }
         List<String> winners = getWinner(cars);
 
-        cars.forEach(car -> playCarResultInsertDao.insertWithBeanPropertySqlParameterSource
-                (new PlayCarResult(car.getName(), car.getPosition(), LocalDateTime.now())));
+        cars.forEach(car -> playCarResultInsertDao.insert(
+                (new PlayCarResult(car.getName(), car.getPosition(), LocalDateTime.now()))));
 
-        playResultInsertDao.insertWithBeanPropertySqlParameterSource(new PlayResult(request.getCount(), String.join(",", winners), LocalDateTime.now()));
+        playResultInsertDao.insert(new PlayResult(request.getCount(), String.join(",", winners), LocalDateTime.now()));
 
         return new RacingResponse(String.join(",", winners), cars.stream().map(car -> new RacingCarResponse(car.getName(), car.getPosition())).collect(Collectors.toList()));
     }

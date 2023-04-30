@@ -17,7 +17,7 @@ public class PlayCarResultInsertDao {
                 .usingGeneratedKeyColumns("id");
     }
 
-    public PlayCarResult insertWithBeanPropertySqlParameterSource(PlayCarResult playCarResult) {
+    public PlayCarResult insert(PlayCarResult playCarResult) {
         BeanPropertySqlParameterSource parameters = new BeanPropertySqlParameterSource(playCarResult);
         long id = insertActor.executeAndReturnKey(parameters).longValue();
         return new PlayCarResult(id, playCarResult.getName(), playCarResult.getPosition(), playCarResult.getCreatedAt());

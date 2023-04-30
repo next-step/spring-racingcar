@@ -18,7 +18,7 @@ public class PlayResultInsertDao {
                 .usingGeneratedKeyColumns("id");
     }
 
-    public PlayResult insertWithBeanPropertySqlParameterSource(PlayResult playResult) {
+    public PlayResult insert(PlayResult playResult) {
         BeanPropertySqlParameterSource parameters = new BeanPropertySqlParameterSource(playResult);
         long id = insertActor.executeAndReturnKey(parameters).longValue();
         return new PlayResult(id, playResult.getTrialCount(), playResult.getWinners(), playResult.getCreatedAt());
