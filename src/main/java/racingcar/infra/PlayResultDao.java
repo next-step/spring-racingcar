@@ -1,0 +1,36 @@
+package racingcar.infra;
+
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+import racingcar.domain.PlayResult;
+import racingcar.domain.PlayResultRepository;
+
+import javax.sql.DataSource;
+
+@Repository
+public class PlayResultDao implements PlayResultRepository {
+
+    private static final String TABLE_NAME = "play_result";
+    private static final String ID = "id";
+    private static final String[] COLUMNS = {"winners", "trial_count"};
+
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
+
+    public PlayResultDao(DataSource dataSource) {
+        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName(TABLE_NAME)
+                .usingGeneratedKeyColumns(ID)
+                .usingColumns(COLUMNS);
+    }
+
+    @Override
+    public int save(PlayResult playResult) {
+        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(playResult);
+        Number key = simpleJdbcInsert.executeAndReturnKey(parameterSource);
+
+        return key.intValue();
+    }
+
+}
