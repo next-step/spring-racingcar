@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GameControllerTest extends AssuredTest {
 
-    @DisplayName("/plays 요청, 응답 테스트")
+    @DisplayName("게임 실행 요청, 응답 테스트")
     @Test
     void plays() {
         // when
@@ -29,7 +29,25 @@ class GameControllerTest extends AssuredTest {
         assertThat(response.jsonPath().getList("racingCars").size()).isEqualTo(gameCount);
     }
 
-    public static ExtractableResponse<Response> play_요청(String name, int count) {
+    @DisplayName("게임 이력 조회 요청, 응답 테스트")
+    @Test
+    void getPlays() {
+        // given
+        int gameCount = 3;
+        int expect = 2;
+        String players = "a,b,c";
+        play_요청(players, gameCount);
+        play_요청(players, gameCount);
+
+        // when
+        ExtractableResponse<Response> response = play_history_조회_요청();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getList("$")).hasSize(expect);
+    }
+
+    private static ExtractableResponse<Response> play_요청(String name, int count) {
         Map<String, String> params = new HashMap<>();
         params.put("names", name);
         params.put("count", String.valueOf(count));
@@ -40,6 +58,16 @@ class GameControllerTest extends AssuredTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
                 .when().post("/plays")
+                .then().log().all()
+                .extract();
+    }
+
+    private static ExtractableResponse<Response> play_history_조회_요청() {
+        return RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/plays")
                 .then().log().all()
                 .extract();
     }
