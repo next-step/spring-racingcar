@@ -18,6 +18,9 @@ public class RacingCarApi {
 
     @PostMapping("/plays")
     public GameResultDto playRacingCar(@RequestBody GameStartDto gameStartDto) {
+        if (gameStartDto.isNotValid()) {
+            throw new IllegalArgumentException();
+        }
         return racingService.game(gameStartDto);
     }
 }

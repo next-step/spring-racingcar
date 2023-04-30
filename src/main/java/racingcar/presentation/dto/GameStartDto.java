@@ -2,9 +2,9 @@ package racingcar.presentation.dto;
 
 public class GameStartDto {
     private String names;
-    private Integer count;
+    private int count;
 
-    public GameStartDto(String names, Integer count) {
+    public GameStartDto(String names, int count) {
         this.names = names;
         this.count = count;
     }
@@ -13,7 +13,11 @@ public class GameStartDto {
         return names;
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count;
+    }
+
+    public boolean isNotValid() {
+        return this.names.isEmpty() || this.count == 0;
     }
 }
