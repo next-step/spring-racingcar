@@ -8,6 +8,7 @@ import racingcar.domain.PlayResultRepository;
 import racingcar.domain.RacingCars;
 import racingcar.domain.RacingGame;
 import racingcar.domain.RandomMoveStrategy;
+import racingcar.presentation.dto.PlayHistoryResponse;
 import racingcar.presentation.dto.PlayRequest;
 import racingcar.presentation.dto.PlayResponse;
 
@@ -54,6 +55,29 @@ public class GameService {
                 .collect(Collectors.toList());
 
         historyRepository.save(playHistories);
+    }
+
+    public PlayHistoryResponse findPlays() {
+        List<PlayResult> results = findPlayResults();
+        List<PlayHistory> playHistories = findPlayHistories();
+
+        return PlayHistoryResponse.of(results, playHistories);
+    }
+
+    private List<PlayResult> findPlayResults() {
+        List<PlayResult> results = resultRepository.findAll();
+        if (results.isEmpty()) {
+            throw new RuntimeException("게임 기록이 없습니다.");
+        }
+        return results;
+    }
+
+    private List<PlayHistory> findPlayHistories() {
+        List<PlayHistory> results = historyRepository.findAll();
+        if (results.isEmpty()) {
+            throw new RuntimeException("게임 기록이 없습니다.");
+        }
+        return results;
     }
 
 }
