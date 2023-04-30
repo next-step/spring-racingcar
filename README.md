@@ -41,7 +41,7 @@
 
 ## 미션1 PR 링크
 
-*
+* https://github.com/next-step/spring-racingcar/pull/61
 
 ## 미션 소개
 
