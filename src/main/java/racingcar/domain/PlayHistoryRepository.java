@@ -6,4 +6,6 @@ public interface PlayHistoryRepository {
 
     void save(List<PlayHistory> playHistories);
 
+    List<PlayHistory> findAll();
+
 }
