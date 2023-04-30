@@ -20,14 +20,4 @@ public class PlaysRequest {
     public String toString() {
         return "names : " + names + " count : " + count;
     }
-
-    public List<RacingCar> getRacingCars() {
-        return Arrays.stream(this.getNameArray())
-                .map(it -> new RacingCar(it.trim()))
-                .collect(Collectors.toList());
-    }
-
-    private String[] getNameArray() {
-        return names.split(",");
-    }
 }
