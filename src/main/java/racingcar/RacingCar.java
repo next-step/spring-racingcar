@@ -1,6 +1,6 @@
 package racingcar;
 
-class RacingCar {
+public class RacingCar {
     private final String name;
     private int position;
 
