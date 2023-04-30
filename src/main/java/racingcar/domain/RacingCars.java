@@ -1,5 +1,8 @@
 package racingcar.domain;
 
+import racingcar.domain.dto.RacingCarDto;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -40,6 +43,28 @@ public class RacingCars {
             int randomNumber = random.nextInt(10);
             racingCar.move(randomNumber);
         }
+    }
+
+    public List<String> findWinners() {
+        int maxPosition = 0;
+        List<String> winners = new ArrayList<>();
+        for (RacingCar racingCar : racingCars) {
+            if (racingCar.getPosition() > maxPosition) {
+                maxPosition = racingCar.getPosition();
+                winners.clear();
+            }
+            if (racingCar.getPosition() >= maxPosition) {
+                winners.add(racingCar.getName());
+            }
+        }
+
+        return winners;
+    }
+
+    public List<RacingCarDto> getRacingCarDtos() {
+        return racingCars.stream()
+                .map(RacingCarDto::from)
+                .collect(Collectors.toList());
     }
 
 }
