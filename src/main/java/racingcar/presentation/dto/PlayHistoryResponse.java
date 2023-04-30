@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class PlayHistoryResponse {
 
     @JsonValue
-    private List<PlayResponse> histories;
+    private final List<PlayResponse> histories;
 
     private PlayHistoryResponse(List<PlayResponse> histories) {
         this.histories = histories;
