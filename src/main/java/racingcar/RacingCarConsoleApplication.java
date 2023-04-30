@@ -1,5 +1,7 @@
 package racingcar;
 
+import racingcar.domain.entity.RacingCar;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
