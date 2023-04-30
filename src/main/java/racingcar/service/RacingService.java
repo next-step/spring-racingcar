@@ -1,5 +1,6 @@
 package racingcar.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import racingcar.RacingCar;
 import racingcar.controller.dto.RacingRequest;
@@ -17,15 +18,12 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RacingService {
 
-    private PlayResultInsertDao playResultInsertDao;
-    private PlayCarResultInsertDao playCarResultInsertDao;
-
-    public RacingService(PlayResultInsertDao playResultInsertDao, PlayCarResultInsertDao playCarResultInsertDao) {
-        this.playResultInsertDao = playResultInsertDao;
-        this.playCarResultInsertDao = playCarResultInsertDao;
-    }
+    private final PlayResultInsertDao playResultInsertDao;
+    private final PlayCarResultInsertDao playCarResultInsertDao;
+    private final Random random = new Random();
 
     public RacingResponse playGame(RacingRequest request) {
         List<RacingCar> cars = createCar(request.getNames());
@@ -34,11 +32,9 @@ public class RacingService {
         }
         List<String> winners = getWinner(cars);
 
-        // 데이터 저장
         cars.forEach(car -> playCarResultInsertDao.insertWithBeanPropertySqlParameterSource
                 (new PlayCarResult(car.getName(), car.getPosition(), LocalDateTime.now())));
 
-        System.out.println(String.join(",", winners));
         playResultInsertDao.insertWithBeanPropertySqlParameterSource(new PlayResult(request.getCount(), String.join(",", winners), LocalDateTime.now()));
 
         return new RacingResponse(String.join(",", winners), cars.stream().map(car -> new RacingCarResponse(car.getName(), car.getPosition())).collect(Collectors.toList()));
@@ -58,7 +54,7 @@ public class RacingService {
                 maxPosition = racingCar.getPosition();
                 winners.clear();
             }
-            if (racingCar.getPosition() >= maxPosition) {
+            if (racingCar.getPosition() == maxPosition) {
                 winners.add(racingCar.getName());
             }
         }
@@ -66,7 +62,6 @@ public class RacingService {
     }
 
     private void playRound(List<RacingCar> cars) {
-        Random random = new Random();
         for (RacingCar racingCar : cars) {
             int randomNumber = random.nextInt(10);
             racingCar.move(randomNumber);

@@ -1,11 +1,9 @@
 package racingcar.jdbc.dao;
 
-
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import racingcar.jdbc.PlayCarResult;
-
 import javax.sql.DataSource;
 
 @Repository

@@ -1,10 +1,11 @@
 package racingcar.jdbc;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
 public class PlayCarResult {
     private long id;
     private String name;
@@ -17,10 +18,4 @@ public class PlayCarResult {
         this.createdAt = createdAt;
     }
 
-    public PlayCarResult(long id, String name, int position, LocalDateTime createdAt) {
-        this.id = id;
-        this.name = name;
-        this.position = position;
-        this.createdAt = createdAt;
-    }
 }
