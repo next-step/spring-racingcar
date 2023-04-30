@@ -1,6 +1,9 @@
 package racingcar.domain.entity;
 
 public class RacingCar {
+
+    private static final int CONDITION_TO_MOVE = 4;
+
     private String name;
     private int position;
 
@@ -21,7 +24,7 @@ public class RacingCar {
     }
 
     public void move(int randomNumber) {
-        if (randomNumber >= 4) {
+        if (randomNumber >= CONDITION_TO_MOVE) {
             this.position++;
         }
     }

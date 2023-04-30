@@ -9,6 +9,8 @@ import racingcar.domain.entity.PlayResult;
 import racingcar.domain.entity.RacingCars;
 import racingcar.domain.service.RacingCarGameService;
 
+import javax.validation.Valid;
+
 @RestController
 public class RacingCarController {
 
@@ -18,7 +20,7 @@ public class RacingCarController {
     }
 
     @PostMapping("/plays")
-    public RacingCarResponse play(@RequestBody RacingCarRequest request) {
+    public RacingCarResponse play(@RequestBody @Valid RacingCarRequest request) {
         PlayResult playResult = racingCarGameService.playGame(RacingCars.from(request.getNames()), request.getCount());
         return RacingCarResponse.of(playResult);
     }
