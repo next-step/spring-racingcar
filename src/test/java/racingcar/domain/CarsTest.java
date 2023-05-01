@@ -9,7 +9,7 @@ public class CarsTest {
     @Test
     void create() {
         String[] carNames = {"carA", "carB", "carC"};
-        assertThat(Cars.createCars(carNames))
+        assertThat(Cars.carList(carNames))
                 .hasSize(3)
                 .containsExactly(new Car("carA"), new Car("carB"), new Car("carC"));
     }

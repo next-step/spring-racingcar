@@ -11,14 +11,14 @@ public class Cars {
     private final List<Car> cars;
 
     public Cars(String[] carNames) {
-        this.cars = createCars(carNames);
+        this.cars = carList(carNames);
     }
 
     public Cars(List<Car> cars) {
         this.cars = cars;
     }
 
-    static List<Car> createCars(String[] carNames) {
+    static List<Car> carList(String[] carNames) {
         return Stream.of(carNames).map(Car::new).collect(Collectors.toList());
     }
 
