@@ -3,10 +3,8 @@ package racingcar.dto;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
 public class PlaysRequestDto {
 	private static final String NAME_SPLIT_KEYWORD = ",";
