@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaysResponseDto {
-    private String winners;
+    private List<String> winners;
     private List<RacingCar> racingCars;
 }

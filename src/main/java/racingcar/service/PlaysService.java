@@ -6,6 +6,7 @@ import racingcar.dtos.response.PlaysResponseDto;
 import org.springframework.stereotype.Service;
 import racingcar.repository.PlayDao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -24,12 +25,12 @@ public class PlaysService {
         List<RacingCar> racingCars = Arrays.stream(playsRequestDto.getNames().split(",")).map(RacingCar::new).collect(Collectors.toList());
 
         playRound(racingCars, playsRequestDto.getCount());
-        String winner = getWinners(racingCars);
+        List<String> winners = getWinners(racingCars);
 
-        playDao.insertWinner(winner, playsRequestDto.getCount());
+        winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getCount()));
         racingCars.forEach(racingCar -> playDao.insertPlayTravelDistance(racingCar.getName(), racingCar.getPosition()));
 
-        return new PlaysResponseDto( winner, racingCars );
+        return new PlaysResponseDto( winners, racingCars );
     }
 
     private void playRound(List<RacingCar> racingCars, Integer playCount) {
@@ -38,15 +39,20 @@ public class PlaysService {
         }
     }
 
-    private String getWinners(List<RacingCar> racingCars) {
+    private List<String> getWinners(List<RacingCar> racingCars) {
         int maxPosition = 0;
-        String winner   = "";
+        List<String> winners = new ArrayList<>();
+
         for (RacingCar racingCar : racingCars) {
+            if (racingCar.getPosition() > maxPosition) { // maxPosition 보다 다음 racingCar의 position이 더 크니 기존 winnder들은 날려버려야함.
+                maxPosition = racingCar.getPosition();
+                winners.clear();
+            }
             if (racingCar.getPosition() >= maxPosition) {
                 maxPosition = racingCar.getPosition();
-                winner     = racingCar.getName();
+                winners.add(racingCar.getName());
             }
         }
-        return winner;
+        return winners;
     }
 }
