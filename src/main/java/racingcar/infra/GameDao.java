@@ -14,11 +14,11 @@ public class GameDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void savePlayResult(int trialCount, RacingCars racingCars, Winners winners) {
+    public void savePlayResult(RacingCars racingCars, Winners winners) {
         StringBuilder query = new StringBuilder();
         query.append("  INSERT INTO PLAY_RESULT (trial_count, name, position, winners) ");
-        query.append("         VALUES ( ?, ?, ?, ? ) ");
+        query.append("         VALUES ( ?, ?, ?, ? )                                   ");
 
-        jdbcTemplate.update(query.toString(), trialCount, racingCars.getNames(), racingCars.getPositions(), winners.getNames());
+        jdbcTemplate.update(query.toString(), racingCars.getTrialCount(), racingCars.getNames(), racingCars.getPositions(), winners.getNames());
     }
 }

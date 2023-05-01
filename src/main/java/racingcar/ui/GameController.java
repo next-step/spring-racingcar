@@ -26,11 +26,11 @@ public class GameController {
             throw new NameEmptyException();
         }
 
-        RacingCars racingCars = RacingCars.from(gameRequest.getNames());
-        racingCars.move(gameRequest.getCount());
+        RacingCars racingCars = RacingCars.from(gameRequest.getNames(), gameRequest.getCount());
+        racingCars.move();
         Winners winners = new Winners(racingCars.getWinner());
 
-        gameService.saveGameResult(gameRequest.getCount(), racingCars, winners);
+        gameService.saveGameResult(racingCars, winners);
         return ResponseEntity.ok(GameResponse.of(winners, racingCars));
     }
 

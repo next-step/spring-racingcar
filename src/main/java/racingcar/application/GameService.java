@@ -16,7 +16,7 @@ public class GameService {
     }
 
     @Transactional
-    public void saveGameResult(int trialCount, RacingCars racingCars, Winners winners) {
-        gameDao.savePlayResult(trialCount, racingCars, winners);
+    public void saveGameResult(RacingCars racingCars, Winners winners) {
+        gameDao.savePlayResult(racingCars, winners);
     }
 }
