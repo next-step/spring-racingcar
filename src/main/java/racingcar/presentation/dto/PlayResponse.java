@@ -26,7 +26,7 @@ public class PlayResponse {
     public static PlayResponse of(String winners, RacingCars racingCars) {
         List<RacingCarDto> carDtos = racingCars.getValue()
                 .stream()
-                .map(it -> new RacingCarDto(it))
+                .map(RacingCarDto::new)
                 .collect(Collectors.toList());
 
         return new PlayResponse(winners, carDtos);
