@@ -9,8 +9,13 @@ import org.springframework.stereotype.Repository;
 public class PlaysRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public void insert(String winners) {
-        String sql = "INSERT INTO PLAY_RESULT (WINNERS) VALUES (?)";
-        jdbcTemplate.update(sql, winners);
+    public void insertPlayResult(String winners, int count) {
+        String sql = "INSERT INTO PLAY_RESULT (WINNERS, COUNT) VALUES (?, ?)";
+        jdbcTemplate.update(sql, winners, count);
+    }
+
+    public void insertPlayPosition(String name, int position) {
+        String sql = "INSERT INTO PLAY_POSITION (NAME, POSITION) VALUES (?, ?)";
+        jdbcTemplate.update(sql, name, position);
     }
 }
