@@ -18,7 +18,7 @@ public class Cars {
         this.cars = cars;
     }
 
-    protected static List<Car> createCars(String[] carNames) {
+    static List<Car> createCars(String[] carNames) {
         return Stream.of(carNames).map(Car::new).collect(Collectors.toList());
     }
 
