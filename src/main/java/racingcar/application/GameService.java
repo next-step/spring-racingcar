@@ -65,19 +65,11 @@ public class GameService {
     }
 
     private List<PlayResult> findPlayResults() {
-        List<PlayResult> results = resultRepository.findAll();
-        if (results.isEmpty()) {
-            throw new RuntimeException("게임 기록이 없습니다.");
-        }
-        return results;
+        return resultRepository.findAll();
     }
 
     private List<PlayHistory> findPlayHistories() {
-        List<PlayHistory> results = historyRepository.findAll();
-        if (results.isEmpty()) {
-            throw new RuntimeException("게임 기록이 없습니다.");
-        }
-        return results;
+        return historyRepository.findAll();
     }
 
 }
