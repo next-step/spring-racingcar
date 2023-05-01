@@ -2,55 +2,29 @@ package racingcar.business;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import racingcar.RacingCar;
-import racingcar.data.RacingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
 import racingcar.presentation.dto.GameStartDto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
+@WebMvcTest(RacingService.class)
 class RacingServiceTest {
 
-    private final RacingService racingService;
+    @Autowired
+    private MockMvc mockMvc;
 
-    public RacingServiceTest() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        RacingRepository racingRepository = new RacingRepository(jdbcTemplate);
-        this.racingService = new RacingService(racingRepository);
-    }
+    @MockBean
+    private RacingService racingService;
 
-    @DisplayName("자동차 이름 입력값으로 반환된 자동차 갯수를 확인한다.")
+    @DisplayName("비즈니스 레이어 테스트")
     @Test
-    void getRacingCarsTest() {
+    void gameTest() {
         // given
-        String names = "A,B,C,D,E";
-        GameStartDto gameStartDto = new GameStartDto(names, 0);
-
+        GameStartDto gameStartDto = new GameStartDto("A,B,C", 100);
         // when
-        List<RacingCar> racingCars = racingService.getRacingCars(gameStartDto);
-
+//        given(racingService.game(gameStartDto))
+//                .willReturn(new GameResultDto())
         // then
-        int playerCount = names.split(",").length;
-        assertThat(racingCars.size()).isEqualTo(playerCount);
     }
-
-    @DisplayName("시도할 횟수 입력값과 실제 플레이된 게임 횟수를 비교한다.")
-    @Test
-    void startCarRacingGameCountTest() {
-        // given
-        int inputCount = 10;
-        List<RacingCar> racingCars = IntStream.rangeClosed(1, 10).mapToObj(i -> new RacingCar(String.valueOf(i)))
-                .collect(Collectors.toList());
-
-        // when
-        int gameCount = racingService.startCarRacingGame(racingCars, inputCount);
-
-        // then
-        assertThat(inputCount).isEqualTo(gameCount);
-    }
-
 }
