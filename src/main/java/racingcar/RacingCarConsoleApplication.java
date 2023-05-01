@@ -42,6 +42,9 @@ public class RacingCarConsoleApplication {
 
         System.out.println();
         System.out.println("최종 우승자: " + String.join(", ", winners));
+        racingCars.forEach(it ->
+                System.out.println("name: " + it.getName() + ", " + "position: " + it.getPosition())
+        );
     }
 
     private static void playRound(List<RacingCar> racingCars) {
