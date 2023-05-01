@@ -1,52 +1,55 @@
 package racingcar;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import racingcar.application.GameService;
+import racingcar.infra.PlayHistoryCacheDao;
+import racingcar.infra.PlayResultCacheDao;
+import racingcar.presentation.dto.PlayRequest;
+import racingcar.presentation.dto.PlayResponse;
+
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class RacingCarConsoleApplication {
+
+    private static final Scanner SCANNER = new Scanner(System.in);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     public static void main(String[] args) {
-        // 자동차 입력
-        Scanner scanner = new Scanner(System.in);
+        GameService gameService = new GameService(new PlayResultCacheDao(), new PlayHistoryCacheDao());
+
+        PlayRequest playRequest = inputPlayRequest();
+        PlayResponse response = gameService.play(playRequest);
+        printResult(response);
+    }
+
+    private static PlayRequest inputPlayRequest() {
+        String names = inputRacingCars();
+        int playCount = inputPlayCount();
+        return new PlayRequest(names, playCount);
+    }
+
+    private static String inputRacingCars() {
         System.out.println("경주할 자동차 이름을 입력하세요(이름은 쉼표(,)를 기준으로 구분).");
-        List<RacingCar> racingCars = Arrays.stream(scanner.nextLine().split(","))
-                .map(it -> new RacingCar(it.trim()))
-                .collect(Collectors.toList());
+        return SCANNER.nextLine();
+    }
 
-        // 시도 횟수 입력
+    private static int inputPlayCount() {
         System.out.println("시도할 횟수는 몇 회인가요?");
-        int count = scanner.nextInt();
+        return SCANNER.nextInt();
+    }
 
-        // 경주 시작
-        for (int i = 0; i < count; i++) {
-            playRound(racingCars);
-        }
-
-        // 우승자 조회
-        int maxPosition = 0;
-        List<String> winners = new ArrayList<>();
-        for (RacingCar racingCar : racingCars) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
-            if (racingCar.getPosition() >= maxPosition) {
-                winners.add(racingCar.getName());
-            }
+    private static void printResult(PlayResponse response) {
+        String result = null;
+        try {
+            result = MAPPER.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            System.out.println("결과 출력 중 에러가 발생하였습니다.");
         }
 
         System.out.println();
-        System.out.println("최종 우승자: " + String.join(", ", winners));
+        System.out.println("경기 결과: \n" + result);
     }
 
-    private static void playRound(List<RacingCar> racingCars) {
-        Random random = new Random();
-        for (RacingCar racingCar : racingCars) {
-            int randomNumber = random.nextInt(10);
-            racingCar.move(randomNumber);
-        }
-    }
 }

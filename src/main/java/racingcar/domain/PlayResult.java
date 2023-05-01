@@ -20,6 +20,10 @@ public class PlayResult {
         return trialCount;
     }
 
+    public void updateId(int id) {
+        this.id = id;
+    }
+
     public static PlayResultBuilder builder() {
         return new PlayResultBuilder();
     }

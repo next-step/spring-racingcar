@@ -8,6 +8,7 @@ import racingcar.domain.PlayResultRepository;
 import racingcar.domain.RacingCars;
 import racingcar.domain.RacingGame;
 import racingcar.domain.RandomMoveStrategy;
+import racingcar.presentation.dto.PlayHistoryResponse;
 import racingcar.presentation.dto.PlayRequest;
 import racingcar.presentation.dto.PlayResponse;
 
@@ -54,6 +55,21 @@ public class GameService {
                 .collect(Collectors.toList());
 
         historyRepository.save(playHistories);
+    }
+
+    public PlayHistoryResponse findPlays() {
+        List<PlayResult> results = findPlayResults();
+        List<PlayHistory> playHistories = findPlayHistories();
+
+        return PlayHistoryResponse.of(results, playHistories);
+    }
+
+    private List<PlayResult> findPlayResults() {
+        return resultRepository.findAll();
+    }
+
+    private List<PlayHistory> findPlayHistories() {
+        return historyRepository.findAll();
     }
 
 }

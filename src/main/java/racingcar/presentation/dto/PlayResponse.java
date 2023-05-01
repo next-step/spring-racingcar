@@ -1,5 +1,7 @@
 package racingcar.presentation.dto;
 
+import racingcar.domain.PlayHistory;
+import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
 import racingcar.domain.RacingCars;
 
@@ -24,12 +26,19 @@ public class PlayResponse {
     public static PlayResponse of(String winners, RacingCars racingCars) {
         List<RacingCarDto> carDtos = racingCars.getValue()
                 .stream()
-                .map(it -> new RacingCarDto(it))
+                .map(RacingCarDto::new)
                 .collect(Collectors.toList());
 
         return new PlayResponse(winners, carDtos);
     }
 
+    public static PlayResponse of(PlayResult playResult, List<PlayHistory> histories) {
+        String winners = playResult.getWinners();
+        List<RacingCarDto> racingCarDtos = histories.stream()
+                .map(RacingCarDto::new)
+                .collect(Collectors.toList());
+        return new PlayResponse(winners, racingCarDtos);
+    }
 
     public String getWinners() {
         return winners;
@@ -46,6 +55,11 @@ public class PlayResponse {
         public RacingCarDto(RacingCar racingCar) {
             this.name = racingCar.getName();
             this.position = racingCar.getPosition();
+        }
+
+        public RacingCarDto(PlayHistory playHistory) {
+            this.name = playHistory.getName();
+            this.position = playHistory.getPosition();
         }
 
         public String getName() {
