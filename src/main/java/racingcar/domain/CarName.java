@@ -1,11 +1,11 @@
 package racingcar.domain;
 
-class CarName {
+public class CarName {
     private static final int MAX_NAME_LENGTH = 5;
 
     private final String name;
 
-    CarName(String name){
+    public CarName(String name){
         checkNameValidation(name);
         this.name = name;
     }

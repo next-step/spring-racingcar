@@ -2,14 +2,14 @@ package racingcar.domain;
 
 import java.util.Objects;
 
-public class Score {
+public class Position {
     private final int value;
 
-    Score() {
+    Position() {
         this.value = 0;
     }
 
-    Score(int value) {
+    Position(int value) {
         this.value = value;
     }
 
@@ -17,16 +17,16 @@ public class Score {
         return this.value;
     }
 
-    Score getAddedScore() {
-        return new Score(this.value + 1);
+    Position getAddedPosition() {
+        return new Position(this.value + 1);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Score score = (Score) o;
-        return value == score.value;
+        Position position = (Position) o;
+        return value == position.value;
     }
 
     @Override

@@ -1,29 +1,32 @@
 package racingcar.domain;
 
+import lombok.Getter;
+
+@Getter
 public class Car {
-    private Score score;
+    private Position position;
     private final CarName name;
 
     Car(String name) {
         this.name = new CarName(name);
-        score = new Score();
+        position = new Position();
     }
 
     public String getName() {
-        return name.getName();
+        return this.name.getName();
     }
 
-    public Score getScore() {
-        return score;
+    public Integer getPosition() {
+        return this.position.getValue();
     }
 
     void go(MoveState moveState) {
         if (moveState.isMovable()) {
-            this.score = score.getAddedScore();
+            this.position = position.getAddedPosition();
         }
     }
 
     boolean isSameNumber(int number) {
-        return this.score.equals(new Score(number));
+        return this.position.equals(new Position(number));
     }
 }

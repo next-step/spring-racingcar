@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ScoreTest {
+class PositionTest {
     @DisplayName("score 동등 비교")
     @Test
     void equals() {
-        Score score = new Score();
-        Score sameScore = new Score(1);
-        assertThat(score.getAddedScore().equals(sameScore)).isTrue();
+        Position position = new Position();
+        Position samePosition = new Position(1);
+        assertThat(position.getAddedPosition().equals(samePosition)).isTrue();
     }
 }

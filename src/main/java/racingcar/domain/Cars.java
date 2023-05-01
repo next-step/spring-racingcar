@@ -11,6 +11,12 @@ public class Cars {
         names.forEach(name -> cars.add(new Car(name)));
     }
 
+    public void play(int count){
+        for (int i = 0; i < count; i++) {
+            this.attempt(new RandomState());
+        }
+    }
+
     public void attempt(MoveState moveState) {
         cars.forEach(car -> car.go(moveState));
     }
@@ -21,7 +27,7 @@ public class Cars {
 
     public List<Car> getWinners() {
         int maxScore = cars.stream()
-                .mapToInt(car -> car.getScore().getValue())
+                .mapToInt(Car::getPosition)
                 .max()
                 .orElse(0);
 

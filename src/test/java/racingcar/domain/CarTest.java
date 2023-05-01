@@ -20,7 +20,7 @@ class CarTest {
     void go() {
         Car car = new Car(CAR_NAME);
         car.go(moveState);
-        assertThat(car.getScore()).isEqualTo(new Score(1));
+        assertThat(car.getPosition()).isEqualTo(1);
     }
 
     @DisplayName("car의 현재 스코어와 숫자가 같은지 비교한다.")

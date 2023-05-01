@@ -18,7 +18,7 @@ public class OutputView {
     public void printStatusFromScores(List<Car> cars) {
         cars.forEach(car -> {
             System.out.print(car.getName() + NAME_SEPARATE_KEYWORD);
-            for (int i = 0; i < car.getScore().getValue(); i++) {
+            for (int i = 0; i < car.getPosition(); i++) {
                 System.out.print(GO_KEYWORD);
             }
             System.out.println();
