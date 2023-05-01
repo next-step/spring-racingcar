@@ -1,5 +1,6 @@
 package racingcar.play.api;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,13 +11,10 @@ import racingcar.play.application.dto.PlayResultResponse;
 
 @RequestMapping("/plays")
 @RestController
+@AllArgsConstructor
 public class PlayController {
 
     private final PlayService playService;
-
-    public PlayController(PlayService playService) {
-        this.playService = playService;
-    }
 
     @PostMapping
     public PlayResultResponse play(@RequestBody PlayRequest playRequest) {
