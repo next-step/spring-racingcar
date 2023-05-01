@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class PlaysService {
     private final PlayDao playDao;
+    private final Random random = new Random();
 
     public PlaysService(PlayDao playDao) {
         this.playDao = playDao;
@@ -32,18 +33,14 @@ public class PlaysService {
     }
 
     private void playRound(List<RacingCar> racingCars, Integer playCount) {
-        Random random = new Random();
         for (int i = 0; i < playCount; i++) {
-            racingCars.forEach(racingCar -> {
-                int randomNumber = random.nextInt(10);
-                racingCar.move(randomNumber);
-            });
+            racingCars.forEach(racingCar -> racingCar.move(random.nextInt(10)));
         }
     }
 
     private String getWinners(List<RacingCar> racingCars) {
         int maxPosition = 0;
-        String winner  = "";
+        String winner   = "";
         for (RacingCar racingCar : racingCars) {
             if (racingCar.getPosition() >= maxPosition) {
                 maxPosition = racingCar.getPosition();
