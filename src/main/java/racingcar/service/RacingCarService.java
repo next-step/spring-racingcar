@@ -1,6 +1,5 @@
 package racingcar.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import racingcar.controller.dto.request.PlayRacingCarRequest;
 import racingcar.controller.dto.response.PlayRacingCarResponse;
@@ -13,7 +12,6 @@ public class RacingCarService {
 
     private final PlayResultRepository playResultRepository;
 
-    @Autowired
     public RacingCarService(PlayResultRepository playResultRepository) {
         this.playResultRepository = playResultRepository;
     }
