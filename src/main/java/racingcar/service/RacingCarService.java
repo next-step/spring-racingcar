@@ -5,15 +5,18 @@ import racingcar.controller.dto.request.PlayRacingCarRequest;
 import racingcar.controller.dto.response.PlayRacingCarResponse;
 import racingcar.domain.RacingCarGame;
 import racingcar.domain.RacingCars;
-import racingcar.repository.PlayResultRepository;
+import racingcar.repository.PlayHistoryDao;
+import racingcar.repository.PlayResultDao;
 
 @Service
 public class RacingCarService {
 
-    private final PlayResultRepository playResultRepository;
+    private final PlayResultDao playResultDao;
+    private final PlayHistoryDao playHistoryDao;
 
-    public RacingCarService(PlayResultRepository playResultRepository) {
-        this.playResultRepository = playResultRepository;
+    public RacingCarService(PlayResultDao playResultDao, PlayHistoryDao playHistoryDao) {
+        this.playResultDao = playResultDao;
+        this.playHistoryDao = playHistoryDao;
     }
 
     public PlayRacingCarResponse play(PlayRacingCarRequest request) {
@@ -24,7 +27,8 @@ public class RacingCarService {
 
         String winners = racingCarGame.winners();
 
-        playResultRepository.save(winners);
+        Integer playResultId = playResultDao.save(winners, request.getCount());
+        playHistoryDao.save(playResultId, racingCars);
 
         return PlayRacingCarResponse.of(winners, racingCars);
     }
