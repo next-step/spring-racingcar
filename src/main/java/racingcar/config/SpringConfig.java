@@ -8,9 +8,4 @@ import javax.xml.validation.Validator;
 
 @Configuration
 public class SpringConfig {
-
-    @Bean
-    JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate();
-    }
 }
