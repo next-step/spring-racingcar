@@ -34,7 +34,6 @@ public class PlaysService {
             racingCars.forEach(racingCar -> racingCar.move(random.nextInt(10)));
         }
     }
-
     private List<String> getWinners(List<RacingCar> racingCars) {
         int maxPosition = 0;
         List<String> winners = new ArrayList<>();
