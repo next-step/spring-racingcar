@@ -17,4 +17,11 @@ public class RacingCars {
     public List<RacingCar> getRacingCars() {
         return racingCars;
     }
+
+    public Integer getMaxPosition() {
+        return racingCars.stream()
+                .map(RacingCar::getPosition)
+                .max(Integer::compareTo)
+                .orElse(0);
+    }
 }

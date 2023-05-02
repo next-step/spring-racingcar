@@ -26,17 +26,10 @@ public class RacingCarGame {
     }
 
     public String winners() {
-        int maxPosition = 0;
-        
         List<String> winners = new ArrayList<>();
 
         for (RacingCar racingCar : racingCars.getRacingCars()) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
-
-            if (racingCar.getPosition() >= maxPosition) {
+            if (racingCar.getPosition() == racingCars.getMaxPosition()) {
                 winners.add(racingCar.getName());
             }
         }
