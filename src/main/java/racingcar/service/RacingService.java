@@ -34,7 +34,6 @@ public class RacingService {
         racingResultRepository.insertGameResult(new PlayResult(winners, racingPlaysRequest.getCount(), racingCars));
 
         PlayResult playResult =  racingResultRepository.getResults();
-        System.out.println("playResult : " + playResult.getRacingCars());
 
         return RacingPlaysResponse.of(playResult);
 

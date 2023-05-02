@@ -11,9 +11,7 @@ import racingcar.domain.RacingCar;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author a1101466 on 2023/05/02
@@ -41,15 +39,15 @@ public class RacingResultRepository {
     }
 
     public PlayResult getResults() {
-        String sql = "SELECT * FROM play_result order by created_at desc limit 1";
-        List<PlayResult> result = jdbcTemplate.query(sql, (rs, rowNum) -> {
+        String sql = "SELECT * FROM play_result order by id desc limit 1";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
             int id = rs.getInt("id");
             String winners = rs.getString("winners");
             int trialCount = rs.getInt("trial_count");
             LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-            String jsonRacingCars = rs.getString("racing_cars");
+            String jsonRacingCars = rs.getString("racing_cars").replaceAll("\\\\", "");
+            jsonRacingCars = jsonRacingCars.substring(1, jsonRacingCars.length()-1);
             List<RacingCar> racingCars;
-
             try {
                 racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<>() {});
             } catch (JsonProcessingException e) {
@@ -57,6 +55,6 @@ public class RacingResultRepository {
             }
             return new PlayResult(winners, trialCount, racingCars, createdAt);
         });
-        return result.get(0);
     }
+
 }

@@ -1,27 +1,17 @@
 package racingcar.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
-@Setter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RacingCar {
     private String name;
     private int position;
 
-    public RacingCar() {
-    }
-
-    public RacingCar(String name) {
+  public RacingCar(String name) {
         this.name = name;
         this.position = 0;
-    }
-
-    public RacingCar(String name, int position) {
-        this.name = name;
-        this.position = position;
     }
 
     public void move(int randomNumber) {
