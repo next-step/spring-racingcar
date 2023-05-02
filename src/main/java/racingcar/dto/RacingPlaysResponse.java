@@ -1,5 +1,6 @@
 package racingcar.dto;
 
+import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
 import lombok.Getter;
 
@@ -14,4 +15,13 @@ import java.util.List;
 public class RacingPlaysResponse {
     private String winners;
     private List<RacingCar> racingCars;
+
+    public RacingPlaysResponse(String winners, List<RacingCar> racingCars) {
+        this.winners = winners;
+        this.racingCars = racingCars;
+    }
+
+    public static RacingPlaysResponse of(PlayResult playResult){
+        return new RacingPlaysResponse(playResult.getWinners(), playResult.getRacingCars());
+    }
 }
