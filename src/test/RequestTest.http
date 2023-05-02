@@ -6,3 +6,6 @@ Content-Type: application/json
   "names": "bori,kim",
   "count": 10
 }
+
+### GET plays
+GET http://localhost:8080/plays
