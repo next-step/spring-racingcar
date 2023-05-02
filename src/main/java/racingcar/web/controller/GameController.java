@@ -13,6 +13,8 @@ import racingcar.domain.service.RacingCarService;
 import racingcar.web.dto.PlaysRequest;
 import racingcar.web.dto.PlaysResponse;
 
+import javax.validation.Valid;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class GameController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public PlaysResponse plays(@RequestBody PlaysRequest playsRequest) {
+    public PlaysResponse plays(@Valid @RequestBody PlaysRequest playsRequest) {
         log.info(playsRequest.toString());
         RacingGameResult gameResult = racingCarService.plays(playsRequest.getNames(),
                 playsRequest.getCount());
