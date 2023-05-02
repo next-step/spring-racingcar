@@ -5,30 +5,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import racingcar.web.entity.PlayResult;
+import racingcar.web.entity.PlayHistory;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @JdbcTest
-class PlayResultDaoTest {
+class PlayHistoryDaoTest {
 
     @Autowired JdbcTemplate jdbcTemplate;
-    PlayResultDao playResultDao;
+    PlayHistoryDao playHistoryDao;
 
     @BeforeEach
     void setUp() {
-        playResultDao = new PlayResultDao(jdbcTemplate);
+        playHistoryDao = new PlayHistoryDao(jdbcTemplate);
     }
 
     @Test
     void insert() {
-        PlayResult givenPlayResult = new PlayResult(3, "carA");
-        Long id = playResultDao.insert(givenPlayResult);
+        PlayHistory givenPlayHistory = new PlayHistory(3, "carA");
+        Long id = playHistoryDao.insert(givenPlayHistory);
 
         assertThat(id).isNotNull();
 
-        PlayResult findPlayResult = playResultDao.findById(id);
-        assertThat(findPlayResult.getTrialCount()).isEqualTo(3);
-        assertThat(findPlayResult.getWinners()).isEqualTo("carA");
+        PlayHistory findPlayHistory = playHistoryDao.findById(id);
+        assertThat(findPlayHistory.getTrialCount()).isEqualTo(3);
+        assertThat(findPlayHistory.getWinners()).isEqualTo("carA");
     }
 }

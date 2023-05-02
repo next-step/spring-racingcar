@@ -5,9 +5,10 @@ import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCarGame;
 import racingcar.strategy.MovingStrategy;
 import racingcar.strategy.MovingStrategyType;
-import racingcar.web.dao.PlayResultDao;
-import racingcar.web.dao.PlayResultDetailDao;
-import racingcar.web.entity.PlayResultDetail;
+import racingcar.web.dao.PlayHistoryDao;
+import racingcar.web.dao.PlayHistoryDetailDao;
+import racingcar.web.entity.PlayHistory;
+import racingcar.web.entity.PlayHistoryDetail;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,12 +21,12 @@ public class PlayService {
     private static final String CAR_NAME_SEPARATOR = ",";
     private static final MovingStrategy MOVING_STRATEGY = MovingStrategyType.getStrategy(RANDOM);
 
-    private final PlayResultDao playResultDao;
-    private final PlayResultDetailDao playResultDetailDao;
+    private final PlayHistoryDao playHistoryDao;
+    private final PlayHistoryDetailDao playHistoryDetailDao;
 
-    public PlayService(PlayResultDao playResultDao, PlayResultDetailDao playResultDetailDao) {
-        this.playResultDao = playResultDao;
-        this.playResultDetailDao = playResultDetailDao;
+    public PlayService(PlayHistoryDao playHistoryDao, PlayHistoryDetailDao playHistoryDetailDao) {
+        this.playHistoryDao = playHistoryDao;
+        this.playHistoryDetailDao = playHistoryDetailDao;
     }
 
     public List<PlayResult> play(String carNames, int playCount) {
@@ -53,14 +54,15 @@ public class PlayService {
     }
 
     private void savePlayResults(List<PlayResult> playResults, int playCount) {
-        Long playResultId = playResultDao.insert(new racingcar.web.entity.PlayResult(playCount, findWinners(playResults)));
+        PlayHistory playHistory = new PlayHistory(playCount, findWinners(playResults));
+        Long playHistoryId = playHistoryDao.insert(playHistory);
 
-        List<PlayResultDetail> playResultDetails = playResults.stream()
-                .map(playResult -> new PlayResultDetail(playResultId, playResult.getNameValue(), playResult.getPositionValue()))
+        List<PlayHistoryDetail> playHistoryDetails = playResults.stream()
+                .map(playResult -> new PlayHistoryDetail(playHistoryId, playResult.getNameValue(), playResult.getPositionValue()))
                 .collect(Collectors.toList());
 
-        for (PlayResultDetail playResultDetail : playResultDetails) {
-            playResultDetailDao.insert(playResultDetail);
+        for (PlayHistoryDetail playHistoryDetail : playHistoryDetails) {
+            playHistoryDetailDao.insert(playHistoryDetail);
         }
     }
 

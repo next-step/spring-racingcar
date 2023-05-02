@@ -1,4 +1,4 @@
-CREATE TABLE PLAY_RESULT (
+CREATE TABLE PLAY_HISTORY (
     id          BIGINT         NOT NULL AUTO_INCREMENT,
     trial_count INT         NOT NULL,
     winners     VARCHAR(50) NOT NULL,
@@ -6,11 +6,11 @@ CREATE TABLE PLAY_RESULT (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE PLAY_RESULT_DETAIL (
+CREATE TABLE PLAY_HISTORY_DETAIL (
     id              BIGINT         NOT NULL AUTO_INCREMENT,
-    play_result_id  BIGINT         NOT NULL,
+    play_history_id  BIGINT         NOT NULL,
     name            VARCHAR(50) NOT NULL,
     position        INT         NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (play_result_id) REFERENCES PLAY_RESULT (id)
+    FOREIGN KEY (play_history_id) REFERENCES PLAY_HISTORY (id)
 );
