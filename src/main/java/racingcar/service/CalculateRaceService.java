@@ -14,7 +14,7 @@ public class CalculateRaceService {
      * @param n 차수
      * @return 이동 거리
      */
-    public int getMoveDistance(int n) {
+    public int getPosition(int n) {
         return generateRandomNumber(calculateMean(n, p), calculateSqrt(n, p));
     }
 

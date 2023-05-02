@@ -38,14 +38,6 @@ public class RacingPlayerService {
         return racingPlayer;
     }
 
-    public List<RacingPlayer> createRacingPlayers(List<String> names, RacingGame racingGame) {
-        List<Integer> positions = getPositions(names, racingGame.getTrialCount());
-        Integer maxValue = getMaxValue(positions);
-        return IntStream.range(0, names.size())
-                .mapToObj(i -> createRacingPlayer(names.get(i), positions.get(i), this.isWinner(positions.get(i), maxValue), racingGame))
-                .collect(Collectors.toList());
-    }
-
     public boolean isWinner(int position, int maxValue) {
         return maxValue == position;
     }
@@ -55,7 +47,7 @@ public class RacingPlayerService {
      * @param distances 레이싱 결과물
      * @return 최댓값
      */
-    private Integer getMaxValue(List<Integer> distances) {
+    public Integer getMaxValue(List<Integer> distances) {
         return distances.stream().max(Integer::compareTo).orElseThrow(RuntimeException::new);
     }
 
@@ -65,8 +57,8 @@ public class RacingPlayerService {
      * @param count 차수
      * @return 레이싱 결과물
      */
-    private List<Integer> getPositions(List<String> names, int count) {
-        return IntStream.range(0, names.size()).mapToObj(i -> calculateRaceService.getMoveDistance(count)).collect(Collectors.toList());
+    public List<Integer> getPositions(List<String> names, int count) {
+        return IntStream.range(0, names.size()).mapToObj(i -> calculateRaceService.getPosition(count)).collect(Collectors.toList());
     }
 
 }

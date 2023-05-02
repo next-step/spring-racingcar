@@ -142,7 +142,7 @@ class CalculateRaceServiceTest {
             // given
             int n = 100;
             // when
-            List<Integer> result = IntStream.range(0, 100000).mapToObj(i -> calculateRaceService.getMoveDistance(n)).collect(Collectors.toList());
+            List<Integer> result = IntStream.range(0, 100000).mapToObj(i -> calculateRaceService.getPosition(n)).collect(Collectors.toList());
             // then
 
             long count = result.stream().filter(r -> r > n).count();
