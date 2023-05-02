@@ -2,17 +2,26 @@ package racingcar.play.api.dto;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import racingcar.play.domain.RacingCar;
 import racingcar.play.domain.RacingCars;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class PlayRequest {
 
-    private String names;
-    private Integer count;
+    @NotBlank(message = "자동차 이름은 필수 값 입니다.")
+    @Length(min = 1, max = 50, message = "자동차 이름은 ,로 구분하고 최소 {min}자 ~ 최대 {max}자 입니다.")
+    private final String names;
+
+    @NotNull(message = "플레이 횟수는 필수 값입니디.")
+    @Min(value = 1, message = "플래이 횟수는 최소 {value}보다 커야 합니다.")
+    private final Integer count;
 
     public RacingCars toRacingCars() {
         return new RacingCars(Arrays.stream(names.split(","))

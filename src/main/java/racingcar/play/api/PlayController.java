@@ -1,5 +1,6 @@
 package racingcar.play.api;
 
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ public class PlayController {
     private final PlayService playService;
 
     @PostMapping
-    public PlayResultResponse play(@RequestBody PlayRequest playRequest) {
+    public PlayResultResponse play(@RequestBody @Valid PlayRequest playRequest) {
         return playService.playGame(playRequest);
     }
 }
