@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -21,6 +23,15 @@ public class PlayResult {
 
     public String getWinnersAsString() {
         return String.join(",", winners);
+    }
+
+    public void setWinnersFromString(String str) {
+        this.winners = Arrays.stream(str.split(","))
+                .collect(Collectors.toList());
+    }
+
+    public void setRacingCars(RacingCars racingCars) {
+        this.racingCars = racingCars;
     }
 
 }
