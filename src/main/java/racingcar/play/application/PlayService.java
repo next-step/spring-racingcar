@@ -1,6 +1,7 @@
 package racingcar.play.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import racingcar.play.api.dto.PlayRequest;
 import racingcar.play.application.dto.PlayResultResponse;
 import racingcar.play.dao.PlayResultDao;
@@ -20,6 +21,7 @@ public class PlayService {
         this.playerDao = playerDao;
     }
 
+    @Transactional
     public PlayResultResponse playGame(PlayRequest playRequest) {
         RacingCars racingCars = playRequest.toRacingCars();
         racingCars.playRound(playRequest.getCount());
