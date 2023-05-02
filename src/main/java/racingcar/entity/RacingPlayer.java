@@ -1,9 +1,14 @@
 package racingcar.entity;
 
+import javax.validation.constraints.NotNull;
+
 public class RacingPlayer extends BaseEntity {
     private Long racingGameId;
+    @NotNull
     private final String name;
+    @NotNull
     private final Integer position;
+    @NotNull
     private final Boolean isWinner;
 
     public RacingPlayer(String name, Integer position, Boolean isWinner) {
