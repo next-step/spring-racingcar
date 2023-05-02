@@ -21,4 +21,8 @@ public abstract class BaseEntity {
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
+
+    public boolean isNew() {
+        return id == null;
+    }
 }
