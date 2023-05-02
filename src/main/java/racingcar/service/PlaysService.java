@@ -2,14 +2,11 @@ package racingcar.service;
 
 import racingcar.domain.RacingCar;
 import racingcar.dtos.request.PlaysRequestDto;
-import racingcar.dtos.response.PlaysResponseDto;
+import racingcar.dtos.response.*;
 import org.springframework.stereotype.Service;
 import racingcar.repository.PlayDao;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,10 +23,9 @@ public class PlaysService {
 
         playRound(racingCars, playsRequestDto.getCount());
         List<String> winners = getWinners(racingCars);
-
-        winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getCount()));
-        racingCars.forEach(racingCar -> playDao.insertPlayTravelDistance(racingCar.getName(), racingCar.getPosition()));
-
+        Long latestGame = getLatestGame();
+        winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getCount(), latestGame + 1));
+        racingCars.forEach(racingCar -> playDao.insertPlayTravelDistance(racingCar.getName(), racingCar.getPosition(), latestGame + 1));
         return new PlaysResponseDto( winners, racingCars );
     }
 
@@ -54,5 +50,38 @@ public class PlaysService {
             }
         }
         return winners;
+    }
+
+    private Long getLatestGame() {
+        if (Objects.isNull(playDao.selectLatestGame()))
+            return 0L;
+        return playDao.selectLatestGame();
+    }
+
+    public List<PlayHistories> getPlayHistories() {
+        //경기를 기준으로 조회
+        Map<Long, List<PlayResultWinnersAndGame>> winnersGames = playDao.getWinnersAndGames();
+        Map<Long, List<PlayFinalTravelDistance>> allPlayFinalTravelDistance = playDao.getAllPlayFinalTravelDistance();
+
+        return getTotalOfGame().stream()
+                               .map(game -> {
+                                   PlayHistories histories = new PlayHistories();
+                                   StringBuilder sb = new StringBuilder();
+                                   histories.setWinners(winnersGames.get(game)
+                                                                    .stream()
+                                                                    .map(PlayResultWinnersAndGame::getWinners)
+                                                                    .collect(Collectors.joining(",")));
+
+                                   histories.setRacingCars(allPlayFinalTravelDistance.get(game)
+                                                                                     .stream()
+                                                                                     .map(ftd -> new PlayRacingCar(ftd.getName(), ftd.getPosition()))
+                                                                                     .collect(Collectors.toList())
+                                   );
+                                   return histories;
+                               }).collect(Collectors.toList());
+    }
+
+    private List<Long> getTotalOfGame() {
+        return playDao.getTotalNumberOfGame();
     }
 }
