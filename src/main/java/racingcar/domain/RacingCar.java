@@ -1,14 +1,17 @@
 package racingcar.domain;
 
+import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class RacingCar {
     private static final int MOVE_MINIMUM_NUMBER = 4;
     private int id;
+    private int playResultId;
     private final String name;
     private int position;
     private LocalDateTime createdAt;
@@ -16,14 +19,6 @@ public class RacingCar {
     public RacingCar(String name) {
         this.name = name;
         this.position = 0;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public int getPosition() {
-        return this.position;
     }
 
     public void move(int randomNumber) {

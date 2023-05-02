@@ -1,29 +1,29 @@
 package racingcar.persistence;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import racingcar.domain.PlayResult;
+import racingcar.domain.RacingCar;
+import racingcar.domain.repository.RacingCarRepository;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @Repository
-public class PlayAllResultDAO {
+public class RacingCarDAO implements RacingCarRepository {
     private SimpleJdbcInsert insertActor;
 
-    public PlayAllResultDAO(DataSource dataSource) {
+    public RacingCarDAO(DataSource dataSource) {
         insertActor = new SimpleJdbcInsert(dataSource)
-                .withTableName("PLAY_ALL_RESULT")
+                .withTableName("RACING_CAR")
                 .usingGeneratedKeyColumns("id");
     }
 
-    public int insert(int newId, String player, int position) {
+    public int insert(RacingCar racingCar) {
         HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("play_result_id", newId);
-        parameters.put("player", player);
-        parameters.put("position", position);
+        parameters.put("play_result_id", racingCar.getPlayResultId());
+        parameters.put("player", racingCar.getName());
+        parameters.put("position", racingCar.getPosition());
         parameters.put("created_at", LocalDateTime.now());
         return insertActor.executeAndReturnKey(parameters).intValue();
     }
