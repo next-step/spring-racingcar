@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 
 @Repository
-public class PlayResultDao implements PlayResultRepository {
+public class PlayResultDao {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -14,9 +14,8 @@ public class PlayResultDao implements PlayResultRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    @Override
-    public void save(String winners) {
-        String sql = "INSERT INTO PLAY_RESULT (WINNERS) VALUES (?)";
-        jdbcTemplate.update(sql, winners);
+    public Integer save(String winners, Integer count) {
+        String sql = "INSERT INTO PLAY_RESULT (WINNERS, TRIAL_COUNT) VALUES (?, ?)";
+        return jdbcTemplate.update(sql, winners, count);
     }
 }
