@@ -47,6 +47,12 @@ public class RacingCars {
         }
     }
 
+    public void playRound(int round) {
+        for (int i = 0; i < round; i++) {
+            playRound();
+        }
+    }
+
     public List<String> findWinners() {
         int maxPosition = 0;
         List<String> winners = new ArrayList<>();

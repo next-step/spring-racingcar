@@ -24,9 +24,7 @@ public class RacingCarService {
         RacingCars racingCars = new RacingCars(names);
 
         // 경주 시작
-        for (int i = 0; i < count; i++) {
-            racingCars.playRound();
-        }
+        racingCars.playRound(count);
 
         // 결과 저장
         PlayResult playResult = PlayResult.builder()
@@ -40,6 +38,7 @@ public class RacingCarService {
         return RacingGameResultDto.from(playResult);
     }
 
+    @Transactional
     public List<RacingGameResultDto> getHistory() {
         List<PlayResult> playResults = playResultRepository.findAll();
 
