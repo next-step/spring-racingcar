@@ -25,7 +25,7 @@ public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer,
             ps.setLong(1, entity.getRacingGameId());
             ps.setString(2, entity.getName());
             ps.setInt(3, entity.getPosition());
-            ps.setBoolean(4, entity.getWinner());
+            ps.setBoolean(4, entity.isWinner());
             ps.setTimestamp(5, java.sql.Timestamp.valueOf(entity.getCreatedDate()));
         };
 

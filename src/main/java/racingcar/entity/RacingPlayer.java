@@ -33,7 +33,7 @@ public class RacingPlayer extends BaseEntity {
         return position;
     }
 
-    public Boolean getWinner() {
+    public Boolean isWinner() {
         return isWinner;
     }
 }
