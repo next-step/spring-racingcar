@@ -24,7 +24,7 @@ class PlayControllerTest {
     }
 
     @Test
-    void plays() {
+    void plays_valid() {
         PlayRequestDto playRequestDto = new PlayRequestDto("carA, carB,carC", 3);
 
         RestAssured.given().log().all()
@@ -35,5 +35,18 @@ class PlayControllerTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("winners", notNullValue())
                 .body("racingCars.size()", is(3));
+    }
+
+    @Test
+    void plays_invalid() {
+        PlayRequestDto playRequestDto = new PlayRequestDto("carnameA", 3);
+
+        RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(playRequestDto)
+                .when().post("/plays")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body(is("자동차 이름은 1~5자 사이어야 합니다."));
     }
 }

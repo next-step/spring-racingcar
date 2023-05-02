@@ -21,7 +21,6 @@ public class PlayController {
         this.playService = playService;
     }
 
-    // TODO API 예외처리
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {
         List<PlayResult> playResults = playService.play(playRequestDto.getNames(), playRequestDto.getCount());

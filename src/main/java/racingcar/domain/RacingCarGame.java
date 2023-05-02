@@ -13,7 +13,14 @@ public class RacingCarGame {
 
     public RacingCarGame(String[] carNames, int playCount) {
         this.cars = new Cars(carNames);
-        this.playCount = playCount;
+        this.playCount = validatePlayCount(playCount);
+    }
+
+    private int validatePlayCount(int playCount) {
+        if (playCount <= 0) {
+            throw new IllegalArgumentException("플레이 횟수는 1회 이상이어야 합니다.");
+        }
+        return playCount;
     }
 
     public static List<PlayResult> findWinners(List<PlayResult> playResults) {
