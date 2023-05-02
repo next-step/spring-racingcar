@@ -4,8 +4,8 @@ import lombok.ToString;
 
 import java.util.Objects;
 
-@ToString
 public class RacingCar {
+    private static final int MOVE_MINIMUM_NUMBER = 4;
     private final String name;
     private int position;
 
@@ -23,7 +23,7 @@ public class RacingCar {
     }
 
     public void move(int randomNumber) {
-        if (randomNumber >= 4) {
+        if (randomNumber >= MOVE_MINIMUM_NUMBER) {
             this.position++;
         }
     }
