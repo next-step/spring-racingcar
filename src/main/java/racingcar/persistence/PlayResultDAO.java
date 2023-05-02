@@ -4,8 +4,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import racingcar.domain.PlayResult;
-import racingcar.domain.dto.RacingCarDto;
-import racingcar.domain.dto.RacingGameResult;
 import racingcar.domain.repository.PlayResultRepository;
 
 import javax.sql.DataSource;
