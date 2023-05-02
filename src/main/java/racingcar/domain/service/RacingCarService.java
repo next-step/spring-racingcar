@@ -10,13 +10,14 @@ import racingcar.domain.repository.PlayResultRepository;
 import racingcar.domain.repository.RacingCarRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RacingCarService {
 
     private final PlayResultRepository playResultRepository;
-    private final RacingCarRepository racingCarRepository;
 
     @Transactional
     public RacingGameResultDto plays(String names, Integer count) {
@@ -37,5 +38,13 @@ public class RacingCarService {
         playResultRepository.insert(playResult);
 
         return RacingGameResultDto.from(playResult);
+    }
+
+    public List<RacingGameResultDto> getHistory() {
+        List<PlayResult> playResults = playResultRepository.findAll();
+
+        return playResults.stream()
+                .map(RacingGameResultDto::from)
+                .collect(Collectors.toList());
     }
 }
