@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public class PlayResult {
     private int id;
     private int trialCount;
-    private RacingGameResult racingGameResult;
+    private String winner;
+    private RacingCars racingCars;
     private LocalDateTime createdAt;
 
 }

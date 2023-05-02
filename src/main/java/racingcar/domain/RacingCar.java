@@ -2,12 +2,16 @@ package racingcar.domain;
 
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class RacingCar {
     private static final int MOVE_MINIMUM_NUMBER = 4;
+    private int id;
     private final String name;
     private int position;
+    private LocalDateTime createdAt;
 
     public RacingCar(String name) {
         this.name = name;
