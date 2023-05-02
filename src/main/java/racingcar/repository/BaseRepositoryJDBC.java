@@ -42,6 +42,13 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
         }
     }
 
+    /**
+     * 객체를 저장한다.
+     * @param entity 단일 엔티티
+     * @param insertSql insert 쿼리
+     * @param pss sql과 entity 매핑
+     * @return 저장된 엔티티
+     */
     protected T insert(T entity, String insertSql, PreparedStatementSetter pss) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         entity.setCreatedDate(LocalDateTime.now());
