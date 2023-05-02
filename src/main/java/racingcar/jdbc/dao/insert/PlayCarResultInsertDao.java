@@ -1,4 +1,4 @@
-package racingcar.jdbc.dao;
+package racingcar.jdbc.dao.insert;
 
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
