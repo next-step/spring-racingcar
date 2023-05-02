@@ -5,5 +5,5 @@ import racingcar.domain.PlayResult;
 
 public interface PlayResultRepository {
 
-    int insert(PlayResult playResult);
+    void insert(PlayResult playResult);
 }

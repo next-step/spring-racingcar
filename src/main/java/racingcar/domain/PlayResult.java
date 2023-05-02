@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -14,8 +15,12 @@ import java.time.LocalDateTime;
 public class PlayResult {
     private int id;
     private int trialCount;
-    private String winner;
+    private List<String> winners;
     private RacingCars racingCars;
     private LocalDateTime createdAt;
+
+    public String getWinnersAsString() {
+        return String.join(",", winners);
+    }
 
 }
