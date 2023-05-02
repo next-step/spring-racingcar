@@ -3,19 +3,13 @@ package racingcar.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import racingcar.entity.RacingPlayer;
 
 import javax.validation.Validator;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Repository
-public class RacingPlayerRepositoryJDBC extends BaseRepository<RacingPlayer, Long> implements RacingPlayerRepository {
+public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer, Long> implements RacingPlayerRepository {
 
     @Autowired
     public RacingPlayerRepositoryJDBC(JdbcTemplate jdbcTemplate, Validator validator) {
