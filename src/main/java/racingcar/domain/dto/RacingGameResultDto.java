@@ -1,8 +1,7 @@
 package racingcar.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import racingcar.domain.PlayResult;
 
 import java.util.List;
 
@@ -12,5 +11,10 @@ import java.util.List;
 public class RacingGameResultDto {
     private List<String> winners;
     private List<RacingCarDto> racingCarDtos;
+
+    public static RacingGameResultDto from(PlayResult playResult) {
+        return new RacingGameResultDto(playResult.getWinners(),
+                playResult.getRacingCars().getRacingCarDtos());
+    }
 
 }

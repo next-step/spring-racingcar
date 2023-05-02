@@ -3,10 +3,13 @@ package racingcar.domain.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCars;
 import racingcar.domain.dto.RacingGameResultDto;
 import racingcar.domain.repository.PlayResultRepository;
 import racingcar.domain.repository.RacingCarRepository;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +26,16 @@ public class RacingCarService {
         for (int i = 0; i < count; i++) {
             racingCars.playRound();
         }
-        RacingGameResultDto racingGameResultDto = new RacingGameResultDto(
-                racingCars.findWinners(), racingCars.getRacingCarDtos());
 
         // 결과 저장
+        PlayResult playResult = PlayResult.builder()
+                .trialCount(count)
+                .winners(racingCars.findWinners())
+                .racingCars(racingCars)
+                .createdAt(LocalDateTime.now())
+                .build();
+        playResultRepository.insert(playResult);
 
-
-        // 우승자 반환
-        return racingGameResultDto;
+        return RacingGameResultDto.from(playResult);
     }
 }
