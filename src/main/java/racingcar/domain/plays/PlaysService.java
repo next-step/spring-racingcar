@@ -20,9 +20,13 @@ public class PlaysService {
         List<RacingCar> racingCars = createRacingCars(request.getNames());
         playRound(request.getCount(), racingCars);
         String winners = getWinners(racingCars);
-        insertPlayPositions(racingCars);
         playsRepository.insertPlayResult(winners, request.getCount());
+        insertPlayPositions(racingCars);
         return createResponse(winners, racingCars);
+    }
+
+    public List<PlaysDTO.Response> read() {
+        return playsRepository.findAll();
     }
 
     private void insertPlayPositions(List<RacingCar> racingCars) {
@@ -36,7 +40,7 @@ public class PlaysService {
                 .collect(Collectors.toList());
     }
 
-    private void playRound(int count, List<RacingCar> racingCars) {
+    public void playRound(int count, List<RacingCar> racingCars) {
         for (int i = 0; i < count; i++) {
             racingCars.forEach(car ->
                     car.move(random.nextInt(10))
@@ -44,7 +48,7 @@ public class PlaysService {
         }
     }
 
-    private String getWinners(List<RacingCar> racingCars) {
+    public String getWinners(List<RacingCar> racingCars) {
         int maxPosition = racingCars.stream().mapToInt(RacingCar::getPosition).max().orElse(0);
         return racingCars.stream()
                 .filter(racingCar -> racingCar.getPosition() == maxPosition)
