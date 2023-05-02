@@ -65,7 +65,6 @@ public class PlaysService {
         return getTotalOfGame().stream()
                                .map(game -> {
                                    PlayHistories histories = new PlayHistories();
-                                   StringBuilder sb = new StringBuilder();
                                    histories.setWinners(winnersGames.get(game)
                                                                     .stream()
                                                                     .map(PlayResultWinnersAndGame::getWinners)
