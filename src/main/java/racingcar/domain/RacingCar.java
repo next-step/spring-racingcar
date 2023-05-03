@@ -1,31 +1,40 @@
 package racingcar.domain;
 
-import lombok.ToString;
+import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@ToString
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RacingCar {
-    private final String name;
+    private static final int MOVE_MINIMUM_NUMBER = 4;
+    private int id;
+    private int playResultId;
+    private String name;
     private int position;
-
+    private boolean isWinner;
+    private LocalDateTime createdAt;
     public RacingCar(String name) {
         this.name = name;
         this.position = 0;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public int getPosition() {
-        return this.position;
-    }
-
     public void move(int randomNumber) {
-        if (randomNumber >= 4) {
+        if (randomNumber >= MOVE_MINIMUM_NUMBER) {
             this.position++;
         }
+    }
+
+    public void setPlayResult(int playResultId) {
+        this.playResultId = playResultId;
+    }
+
+    public void setWin() {
+        this.isWinner = true;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package racingcar.domain;
 
+import lombok.Getter;
 import racingcar.domain.dto.RacingCarDto;
 
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+
+@Getter
 public class RacingCars {
     private final List<RacingCar> racingCars;
 
@@ -45,20 +48,31 @@ public class RacingCars {
         }
     }
 
+    public void playRound(int round) {
+        for (int i = 0; i < round; i++) {
+            playRound();
+        }
+    }
+
     public List<String> findWinners() {
         int maxPosition = 0;
-        List<String> winners = new ArrayList<>();
+        List<RacingCar> winners = new ArrayList<>();
         for (RacingCar racingCar : racingCars) {
             if (racingCar.getPosition() > maxPosition) {
                 maxPosition = racingCar.getPosition();
                 winners.clear();
             }
             if (racingCar.getPosition() >= maxPosition) {
-                winners.add(racingCar.getName());
+                winners.add(racingCar);
             }
         }
 
-        return winners;
+        // isWinner = True
+        winners.forEach(RacingCar::setWin);
+
+        return winners.stream()
+                .map(RacingCar::getName)
+                .collect(Collectors.toList());
     }
 
     public List<RacingCarDto> getRacingCarDtos() {
@@ -66,5 +80,4 @@ public class RacingCars {
                 .map(RacingCarDto::from)
                 .collect(Collectors.toList());
     }
-
 }

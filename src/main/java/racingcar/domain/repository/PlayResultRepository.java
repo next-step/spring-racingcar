@@ -1,9 +1,12 @@
 package racingcar.domain.repository;
 
-import org.springframework.stereotype.Repository;
 import racingcar.domain.PlayResult;
+
+import java.util.List;
 
 public interface PlayResultRepository {
 
-    void save(PlayResult playResult);
+    void insert(PlayResult playResult);
+
+    List<PlayResult> findAll();
 }

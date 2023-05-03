@@ -2,7 +2,7 @@ package racingcar.web.dto;
 
 import lombok.*;
 import racingcar.domain.dto.RacingCarDto;
-import racingcar.domain.dto.RacingGameResult;
+import racingcar.domain.dto.RacingGameResultDto;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ public class PlaysResponse {
     private List<String> winners;
     private List<RacingCarDto> racingCars;
 
-    public static PlaysResponse from(RacingGameResult racingGameResult) {
+    public static PlaysResponse from(RacingGameResultDto racingGameResultDto) {
         return PlaysResponse.builder()
-                .winners(racingGameResult.getWinners())
-                .racingCars(racingGameResult.getRacingCarDtos())
+                .winners(racingGameResultDto.getWinners())
+                .racingCars(racingGameResultDto.getRacingCarDtos())
                 .build();
     }
 
