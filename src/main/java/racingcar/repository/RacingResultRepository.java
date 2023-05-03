@@ -41,19 +41,21 @@ public class RacingResultRepository {
     public PlayResult getResults() {
         String sql = "SELECT * FROM play_result order by id desc limit 1";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-            int id = rs.getInt("id");
-            String winners = rs.getString("winners");
-            int trialCount = rs.getInt("trial_count");
-            LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+
             String jsonRacingCars = rs.getString("racing_cars").replaceAll("\\\\", "");
             jsonRacingCars = jsonRacingCars.substring(1, jsonRacingCars.length()-1);
-            List<RacingCar> racingCars;
+            List<RacingCar> racingCars = null;
             try {
                 racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<>() {});
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("racingcars json -> List<RacingCar> 변환실패");
             }
-            return new PlayResult(winners, trialCount, racingCars, createdAt);
+            return PlayResult.builder()
+                    .winners(rs.getString("winners"))
+                    .trialCount(rs.getInt("trial_count"))
+                    .racingCars(racingCars)
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .build();
         });
     }
 
