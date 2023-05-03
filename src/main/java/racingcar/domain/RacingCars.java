@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+
 @Getter
 public class RacingCars {
     private final List<RacingCar> racingCars;
@@ -79,6 +80,4 @@ public class RacingCars {
                 .map(RacingCarDto::from)
                 .collect(Collectors.toList());
     }
-
-
 }

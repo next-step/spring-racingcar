@@ -18,7 +18,6 @@ public class RacingCar {
     private int position;
     private boolean isWinner;
     private LocalDateTime createdAt;
-
     public RacingCar(String name) {
         this.name = name;
         this.position = 0;

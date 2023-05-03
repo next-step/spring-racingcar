@@ -33,5 +33,4 @@ public class PlayResult {
     public void setRacingCars(RacingCars racingCars) {
         this.racingCars = racingCars;
     }
-
 }
