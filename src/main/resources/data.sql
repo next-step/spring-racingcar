@@ -11,5 +11,7 @@ CREATE TABLE PLAY_POSITION (
     id                      INT         NOT NULL AUTO_INCREMENT,
     name                    VARCHAR(50) NOT NULL,
     position                INT         NOT NULL,
-    PRIMARY KEY (id)
+    play_result_id          INT         NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (play_result_id) REFERENCES PLAY_RESULT (id)
 );
