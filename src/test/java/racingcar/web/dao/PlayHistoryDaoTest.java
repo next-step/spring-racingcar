@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import racingcar.web.entity.PlayHistory;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @JdbcTest
 class PlayHistoryDaoTest {
@@ -27,7 +28,7 @@ class PlayHistoryDaoTest {
 
         assertThat(id).isNotNull();
 
-        PlayHistory findPlayHistory = playHistoryDao.findById(id);
+        PlayHistory findPlayHistory = assertDoesNotThrow(playHistoryDao.findById(id)::get);
         assertThat(findPlayHistory.getTrialCount()).isEqualTo(3);
         assertThat(findPlayHistory.getWinners()).isEqualTo("carA");
     }

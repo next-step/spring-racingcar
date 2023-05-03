@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import racingcar.web.entity.PlayHistory;
 
 import java.sql.PreparedStatement;
+import java.util.Optional;
 
 @Repository
 public class PlayHistoryDao {
@@ -18,10 +19,10 @@ public class PlayHistoryDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public PlayHistory findById(Long id) {
+    public Optional<PlayHistory> findById(Long id) {
         String sql = "SELECT * FROM play_history WHERE ID = ?";
 
-        return jdbcTemplate.queryForObject(sql, playHistoryRowMapper(), id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, playHistoryRowMapper(), id));
     }
 
     public Long insert(PlayHistory playHistory) {

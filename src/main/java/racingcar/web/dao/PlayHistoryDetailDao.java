@@ -9,6 +9,7 @@ import racingcar.web.entity.PlayHistoryDetail;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PlayHistoryDetailDao {
@@ -19,10 +20,10 @@ public class PlayHistoryDetailDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public PlayHistoryDetail findById(Long id) {
+    public Optional<PlayHistoryDetail> findById(Long id) {
         String sql = "SELECT * FROM play_history_detail WHERE id = ?";
 
-        return jdbcTemplate.queryForObject(sql, playHistoryDetailRowMapper(), id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, playHistoryDetailRowMapper(), id));
     }
 
     public List<PlayHistoryDetail> findByPlayHistoryId(Long id) {

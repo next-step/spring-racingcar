@@ -9,6 +9,7 @@ import racingcar.web.entity.PlayHistory;
 import racingcar.web.entity.PlayHistoryDetail;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @JdbcTest
 class PlayHistoryDetailDaoTest {
@@ -32,7 +33,7 @@ class PlayHistoryDetailDaoTest {
 
         assertThat(id).isNotNull();
 
-        PlayHistoryDetail findPlayHistoryDetail = playHistoryDetailDao.findById(id);
+        PlayHistoryDetail findPlayHistoryDetail = assertDoesNotThrow(playHistoryDetailDao.findById(id)::get);
         assertThat(findPlayHistoryDetail.getPlayHistoryId()).isEqualTo(playHistoryId);
         assertThat(findPlayHistoryDetail.getName()).isEqualTo("carA");
         assertThat(findPlayHistoryDetail.getPosition()).isEqualTo(3);

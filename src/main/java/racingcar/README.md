@@ -5,6 +5,6 @@
   - [x] 통합 테스트로 db에 잘 저장되는지 확인
 - [x] @WebMvcTest를 사용해 PlayController 슬라이스 테스트 작성
   - [x] PlayService mocking 후 정상, 비정상 케이스에 대한 응답 검증
-- [ ] Dao에서 id가 존재하지 않는 경우에 대한 예외 처리 고민
+- [x] Dao에서 id가 존재하지 않는 경우에 대한 예외 처리 고민
 - [x] carName split 로직 책임 객체 고민
 - [x] PlayService 에서 랜덤 로직 분리하고 테스트 작성

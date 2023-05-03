@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest
 class PlayServiceTest {
@@ -55,7 +56,7 @@ class PlayServiceTest {
 
         Long playHistoryId = playService.savePlayResults(playResults, playCount);
 
-        PlayHistory playHistory = playHistoryDao.findById(playHistoryId);
+        PlayHistory playHistory = assertDoesNotThrow(playHistoryDao.findById(playHistoryId)::get);
         List<PlayHistoryDetail> playHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistoryId);
 
         assertThat(playHistory.getWinners()).isEqualTo("carA");
