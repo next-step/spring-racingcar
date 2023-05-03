@@ -30,7 +30,7 @@ class PlayServiceTest {
 
     @Test
     void play() {
-        List<PlayResult> playResults = playService.play("carA, carB, carC", 3);
+        List<PlayResult> playResults = playService.play(new String[]{"carA", "carB", "carC"}, 3);
 
         assertThat(playResults).isNotNull();
         assertThat(playResults).hasSize(3);

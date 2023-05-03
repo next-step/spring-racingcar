@@ -19,8 +19,8 @@ import static racingcar.strategy.MovingStrategyType.RANDOM;
 @Service
 public class PlayService {
 
-    private static final String CAR_NAME_SEPARATOR = ",";
     private static final MovingStrategy MOVING_STRATEGY = MovingStrategyType.getStrategy(RANDOM);
+    private static final String CAR_NAME_SEPARATOR = ",";
 
     private final PlayHistoryDao playHistoryDao;
     private final PlayHistoryDetailDao playHistoryDetailDao;
@@ -30,8 +30,8 @@ public class PlayService {
         this.playHistoryDetailDao = playHistoryDetailDao;
     }
 
-    public List<PlayResult> play(String carNames, int playCount) {
-        RacingCarGame racingCarGame = createRacingCarGame(carNames, playCount);
+    public List<PlayResult> play(String[] carNames, int playCount) {
+        RacingCarGame racingCarGame = new RacingCarGame(carNames, playCount);
         List<PlayResult> playResults = null;
 
         while (!racingCarGame.isEnd()) {
@@ -46,10 +46,6 @@ public class PlayService {
         return RacingCarGame.findWinners(playResults).stream()
                 .map(PlayResult::getNameValue)
                 .collect(Collectors.joining(CAR_NAME_SEPARATOR));
-    }
-
-    private RacingCarGame createRacingCarGame(String carNames, int playCount) {
-        return new RacingCarGame(carNames.split(CAR_NAME_SEPARATOR), playCount);
     }
 
     @Transactional

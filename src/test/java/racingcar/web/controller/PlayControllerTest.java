@@ -42,7 +42,7 @@ class PlayControllerTest {
                 new PlayResult(1, "carA"),
                 new PlayResult(0, "carB")
         );
-        given(playService.play("carA,carB", 3)).willReturn(playResults);
+        given(playService.play(new String[]{"carA","carB"}, 3)).willReturn(playResults);
         given(playService.findWinners(playResults)).willReturn("carA");
 
         mvc.perform(post("/plays")
@@ -56,7 +56,7 @@ class PlayControllerTest {
     void plays_invalid() throws Exception {
         PlayRequestDto requestDto = new PlayRequestDto("", -1);
 
-        given(playService.play("", -1)).willThrow(new IllegalArgumentException("Error Message"));
+        given(playService.play(new String[]{""}, -1)).willThrow(new IllegalArgumentException("Error Message"));
 
         mvc.perform(post("/plays")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
