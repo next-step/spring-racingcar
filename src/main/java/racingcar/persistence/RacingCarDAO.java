@@ -52,6 +52,7 @@ public class RacingCarDAO implements RacingCarRepository {
                     .playResultId(rs.getInt("play_result_id"))
                     .name(rs.getString("player"))
                     .position(rs.getInt("position"))
+                    .isWinner(rs.getBoolean("is_winner"))
                     .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                     .build();
         });

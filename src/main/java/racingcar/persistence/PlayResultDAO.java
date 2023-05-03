@@ -56,7 +56,6 @@ public class PlayResultDAO implements PlayResultRepository {
                     .trialCount(resultSet.getInt("trial_count"))
                     .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
                     .build();
-            playResult.setWinnersFromString(resultSet.getString("winner"));
             return playResult;
         });
 
@@ -66,11 +65,17 @@ public class PlayResultDAO implements PlayResultRepository {
 
         // playResult - racingCar 매핑
         for (PlayResult playResult : playResults) {
-            List<RacingCar> listFilterByPlayResultId = racingCarList.stream()
+            List<RacingCar> filteredRacingCars
+                    = racingCarList.stream()
                     .filter(r -> r.getPlayResultId() == playResult.getId())
                     .collect(Collectors.toList());
 
-            playResult.setRacingCars(new RacingCars(listFilterByPlayResultId));
+            playResult.setRacingCars(new RacingCars(filteredRacingCars));
+
+            playResult.setWinners(filteredRacingCars.stream()
+                    .filter(RacingCar::isWinner)
+                    .map(RacingCar::getName)
+                    .collect(Collectors.toList()));
         }
 
         return playResults;

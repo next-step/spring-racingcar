@@ -26,9 +26,8 @@ public class PlayResult {
         return String.join(DELIMITER_BETWEEN_WINNER, winners);
     }
 
-    public void setWinnersFromString(String str) {
-        this.winners = Arrays.stream(str.split(DELIMITER_BETWEEN_WINNER))
-                .collect(Collectors.toList());
+    public void setWinners(List<String> winners) {
+        this.winners = winners;
     }
 
     public void setRacingCars(RacingCars racingCars) {
