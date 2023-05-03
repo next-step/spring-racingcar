@@ -1,5 +1,6 @@
 package racingcar.api.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import racingcar.api.dto.PlayRequest;
 import racingcar.api.dto.PlayResultResponse;
@@ -21,16 +22,17 @@ public class RacingCarController {
     }
 
     @GetMapping
-    public List<PlayResultResponse> getPlayResults() {
-        List<PlayResult> playResults = racingCarGameService.getPlayResults();
-        return playResults.stream()
-                        .map(PlayResultResponse::of)
-                        .collect(Collectors.toList());
+    public ResponseEntity<List<PlayResultResponse>> getPlayResults() {
+        List<PlayResultResponse> playResults = racingCarGameService.getPlayResults()
+                .stream()
+                .map(PlayResultResponse::of)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(playResults);
     }
 
     @PostMapping
-    public PlayResultResponse play(@RequestBody @Valid PlayRequest request) {
+    public ResponseEntity<PlayResultResponse> play(@RequestBody @Valid PlayRequest request) {
         PlayResult playResult = racingCarGameService.playGame(RacingCars.from(request.getNames()), request.getCount());
-        return PlayResultResponse.of(playResult);
+        return ResponseEntity.ok(PlayResultResponse.of(playResult));
     }
 }
