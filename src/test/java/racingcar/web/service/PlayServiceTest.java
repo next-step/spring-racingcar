@@ -35,8 +35,8 @@ class PlayServiceTest {
 
         assertThat(playResults).isNotNull();
         assertThat(playResults).hasSize(3);
-        assertThat(playResults.stream().map(PlayResult::getNameValue)).containsOnly("carA", "carB", "carC");
-        assertThat(playResults.stream().map(PlayResult::getPositionValue)).containsOnly(3);
+        assertThat(playResults).flatExtracting(PlayResult::getNameValue).containsOnly("carA", "carB", "carC");
+        assertThat(playResults).flatExtracting(PlayResult::getPositionValue).containsOnly(3);
     }
 
     @ParameterizedTest(name = "{2}")
