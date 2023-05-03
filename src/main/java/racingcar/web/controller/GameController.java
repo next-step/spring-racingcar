@@ -17,18 +17,19 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/plays")
 public class GameController {
 
     private final RacingCarService racingCarService;
 
-    @GetMapping("/plays")
+    @GetMapping
     public List<PlaysResponse> getHistory() {
         return racingCarService.getHistory().stream()
                 .map(PlaysResponse::from)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(value = "/plays",
+    @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public PlaysResponse plays(@Valid @RequestBody PlaysRequest playsRequest) {
