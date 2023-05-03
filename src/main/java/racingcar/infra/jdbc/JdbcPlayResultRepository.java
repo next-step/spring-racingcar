@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import racingcar.domain.entity.PlayResult;
@@ -46,10 +47,9 @@ class JdbcPlayResultRepository implements PlayResultRepository {
             String jsonRacingCars = rs.getNString("racing_cars");
             List<RacingCar> racingCars;
             try {
-                racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<ArrayList<RacingCar>>() {
-                });
+                racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<ArrayList<RacingCar>>() {});
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                throw new JsonParseException(e);
             }
             return new PlayResult(id, winners, trialCount, racingCars, createdAt);
         });
