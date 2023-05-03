@@ -55,18 +55,23 @@ public class RacingCars {
 
     public List<String> findWinners() {
         int maxPosition = 0;
-        List<String> winners = new ArrayList<>();
+        List<RacingCar> winners = new ArrayList<>();
         for (RacingCar racingCar : racingCars) {
             if (racingCar.getPosition() > maxPosition) {
                 maxPosition = racingCar.getPosition();
                 winners.clear();
             }
             if (racingCar.getPosition() >= maxPosition) {
-                winners.add(racingCar.getName());
+                winners.add(racingCar);
             }
         }
 
-        return winners;
+        // isWinner = True
+        winners.forEach(RacingCar::setWin);
+
+        return winners.stream()
+                .map(RacingCar::getName)
+                .collect(Collectors.toList());
     }
 
     public List<RacingCarDto> getRacingCarDtos() {

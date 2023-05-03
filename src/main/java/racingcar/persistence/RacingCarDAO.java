@@ -33,6 +33,7 @@ public class RacingCarDAO implements RacingCarRepository {
         parameters.put("play_result_id", racingCar.getPlayResultId());
         parameters.put("player", racingCar.getName());
         parameters.put("position", racingCar.getPosition());
+        parameters.put("is_winner", racingCar.isWinner());
         parameters.put("created_at", LocalDateTime.now());
         return insertActor.executeAndReturnKey(parameters).intValue();
     }

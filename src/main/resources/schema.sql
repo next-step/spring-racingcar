@@ -2,7 +2,6 @@
 CREATE TABLE PLAY_RESULT (
     id          INT         NOT NULL AUTO_INCREMENT,
     trial_count  INT         NOT NULL,
-    winner      VARCHAR(MAX) NOT NULL,
     created_at  DATETIME    NOT NULL default current_timestamp,
     PRIMARY KEY (id)
 );
@@ -12,6 +11,7 @@ CREATE TABLE RACING_CAR (
                              play_result_id         INT         NOT NULL,
                              player                 VARCHAR(100) NOT NULL,
                              position               INT          NOT NULL,
+                             is_winner               VARCHAR(10) NOT NULL,
                              created_at  DATETIME    NOT NULL default current_timestamp,
                              PRIMARY KEY (id)
 );

@@ -16,6 +16,7 @@ public class RacingCar {
     private int playResultId;
     private String name;
     private int position;
+    private boolean isWinner;
     private LocalDateTime createdAt;
 
     public RacingCar(String name) {
@@ -31,6 +32,10 @@ public class RacingCar {
 
     public void setPlayResult(int playResultId) {
         this.playResultId = playResultId;
+    }
+
+    public void setWin() {
+        this.isWinner = true;
     }
 
     @Override
