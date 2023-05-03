@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class InputView {
 
-    public static final String CAR_NAME_SEPARATOR = ",";
+    private static final String CAR_NAME_SEPARATOR = ",";
 
     private static final Scanner scanner = new Scanner(System.in);
 
