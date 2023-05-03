@@ -1,9 +1,16 @@
 package racingcar.api.dto;
 
-public class RacingCarRequest {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+public class PlayRequest {
+
+    @NotBlank
     private String names;
 
+    @NotNull
+    @Min(1)
     private Integer count;
 
     public String getNames() {

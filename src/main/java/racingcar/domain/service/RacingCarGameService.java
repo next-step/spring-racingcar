@@ -5,6 +5,8 @@ import racingcar.domain.entity.PlayResult;
 import racingcar.domain.entity.RacingCars;
 import racingcar.domain.repository.PlayResultRepository;
 
+import java.util.List;
+
 @Service
 public class RacingCarGameService {
 
@@ -26,5 +28,9 @@ public class RacingCarGameService {
             racingCars.playRound();
         }
         return racingCars;
+    }
+
+    public List<PlayResult> getPlayResults() {
+        return playResultRepository.getAllPlayResults();
     }
 }

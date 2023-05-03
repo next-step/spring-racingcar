@@ -32,10 +32,8 @@ public class PlayResult {
     }
 
     public PlayResult(int id, String winners, int trialCount, List<RacingCar> racingCars, LocalDateTime createdAt) {
+        this(winners, trialCount, racingCars);
         this.id = id;
-        this.winners = winners;
-        this.trialCount = trialCount;
-        this.racingCars = racingCars;
         this.createdAt = createdAt;
     }
 

@@ -5,7 +5,7 @@ import racingcar.domain.entity.RacingCar;
 
 import java.util.List;
 
-public class RacingCarResponse {
+public class PlayResultResponse {
 
     private String winners;
 
@@ -19,12 +19,12 @@ public class RacingCarResponse {
         return racingCars;
     }
 
-    public RacingCarResponse(String winners, List<RacingCar> racingCars) {
+    public PlayResultResponse(String winners, List<RacingCar> racingCars) {
         this.winners = winners;
         this.racingCars = racingCars;
     }
 
-    public static RacingCarResponse of(PlayResult playResult) {
-        return new RacingCarResponse(playResult.getWinners(), playResult.getRacingCars());
+    public static PlayResultResponse of(PlayResult playResult) {
+        return new PlayResultResponse(playResult.getWinners(), playResult.getRacingCars());
     }
 }
