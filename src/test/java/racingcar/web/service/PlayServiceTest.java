@@ -1,6 +1,5 @@
 package racingcar.web.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,7 +14,6 @@ import racingcar.web.entity.PlayHistory;
 import racingcar.web.entity.PlayHistoryDetail;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +34,7 @@ class PlayServiceTest {
 
         assertThat(playResults).isNotNull();
         assertThat(playResults).hasSize(3);
+        assertThat(playResults.stream().map(PlayResult::getNameValue)).containsOnly("carA", "carB", "carC");
     }
 
     @ParameterizedTest(name = "{2}")
@@ -60,8 +59,8 @@ class PlayServiceTest {
 
         assertThat(playHistory.getWinners()).isEqualTo("carA");
         assertThat(playHistory.getTrialCount()).isEqualTo(playCount);
-        assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getName)).contains("carA", "carB");
-        assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getPosition)).contains(3, 2);
+        assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getName)).containsOnly("carA", "carB");
+        assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getPosition)).containsOnly(3, 2);
     }
 
     private static Stream<Arguments> playResultsProvider() {
