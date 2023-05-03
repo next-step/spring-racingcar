@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCarGame;
 import racingcar.strategy.MovingStrategy;
-import racingcar.strategy.MovingStrategyType;
 import racingcar.web.dao.PlayHistoryDao;
 import racingcar.web.dao.PlayHistoryDetailDao;
 import racingcar.web.entity.PlayHistory;
@@ -14,18 +13,17 @@ import racingcar.web.entity.PlayHistoryDetail;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static racingcar.strategy.MovingStrategyType.RANDOM;
-
 @Service
 public class PlayService {
 
-    private static final MovingStrategy MOVING_STRATEGY = MovingStrategyType.getStrategy(RANDOM);
     private static final String CAR_NAME_SEPARATOR = ",";
 
+    private final MovingStrategy movingStrategy;
     private final PlayHistoryDao playHistoryDao;
     private final PlayHistoryDetailDao playHistoryDetailDao;
 
-    public PlayService(PlayHistoryDao playHistoryDao, PlayHistoryDetailDao playHistoryDetailDao) {
+    public PlayService(MovingStrategy movingStrategy, PlayHistoryDao playHistoryDao, PlayHistoryDetailDao playHistoryDetailDao) {
+        this.movingStrategy = movingStrategy;
         this.playHistoryDao = playHistoryDao;
         this.playHistoryDetailDao = playHistoryDetailDao;
     }
@@ -35,7 +33,7 @@ public class PlayService {
         List<PlayResult> playResults = null;
 
         while (!racingCarGame.isEnd()) {
-            racingCarGame.play(MOVING_STRATEGY);
+            racingCarGame.play(movingStrategy);
             playResults = racingCarGame.getPlayResults();
         }
 

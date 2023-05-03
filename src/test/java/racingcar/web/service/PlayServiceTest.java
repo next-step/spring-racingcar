@@ -35,6 +35,7 @@ class PlayServiceTest {
         assertThat(playResults).isNotNull();
         assertThat(playResults).hasSize(3);
         assertThat(playResults.stream().map(PlayResult::getNameValue)).containsOnly("carA", "carB", "carC");
+        assertThat(playResults.stream().map(PlayResult::getPositionValue)).containsOnly(3);
     }
 
     @ParameterizedTest(name = "{2}")
@@ -73,4 +74,5 @@ class PlayServiceTest {
                         new PlayResult(3, "carB")), "carA,carB", "findWinners - 우승자가 여러명인 경우")
         );
     }
+
 }
