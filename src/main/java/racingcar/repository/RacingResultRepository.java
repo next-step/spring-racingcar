@@ -31,7 +31,7 @@ public class RacingResultRepository {
         try {
             String carsToJson = objectMapper.writeValueAsString(playResult.getRacingCars());
             String sql = "insert into PLAY_RESULT (winners, trial_count, racing_cars) values (?, ?, ?)";
-            int test = jdbcTemplate.update(sql, playResult.getWinners(), playResult.getTrialCount(), carsToJson);
+            jdbcTemplate.update(sql, playResult.getWinners(), playResult.getTrialCount(), carsToJson);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
