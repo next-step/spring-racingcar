@@ -14,7 +14,7 @@ public class PlayResultResponse {
     private final List<RacingCarResponse> racingCars;
 
     public static PlayResultResponse from(RacingCars racingCars) {
-        return new PlayResultResponse(racingCars.getWinners(),
+        return new PlayResultResponse(String.join(",", racingCars.getWinners()),
             racingCars.getRacingCars()
                 .stream()
                 .map(RacingCarResponse::from)

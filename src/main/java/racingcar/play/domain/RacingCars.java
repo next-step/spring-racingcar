@@ -25,12 +25,12 @@ public class RacingCars {
         racingCars.forEach(racingCar -> racingCar.move(random.nextInt(MAX_RANGE)));
     }
 
-    public String getWinners() {
+    public List<String> getWinners() {
         int maxPosition = calculateMaxPosition();
         return racingCars.stream()
             .filter(racingCar -> racingCar.getPosition() >= maxPosition)
             .map(RacingCar::getName)
-            .collect(Collectors.joining(","));
+            .collect(Collectors.toUnmodifiableList());
     }
 
     private int calculateMaxPosition() {
