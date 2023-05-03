@@ -1,6 +1,6 @@
 ## Step 1 리팩토링 요구사항
 - [ ] PlayService 통합 테스트로 진행
-  - [ ] 컴파일 오류 해결
+  - [ ] Test 컴파일 오류 해결
   - [ ] save 로직 public으로 변경, 오류 시 롤백을 위한 트랜잭션 설정
   - [ ] 통합 테스트로 db에 잘 저장되는지, 오류 시 롤백되는지 확인
 - [ ] @WebMvcTest를 사용해 PlayController 슬라이스 테스트 작성
