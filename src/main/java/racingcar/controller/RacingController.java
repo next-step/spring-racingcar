@@ -11,11 +11,11 @@ import racingcar.service.RacingCarService;
 
 @RestController
 public class RacingController {
-    @Autowired
-    private RacingCarService racingCarService;
+	@Autowired
+	private RacingCarService racingCarService;
 
-    @PostMapping("/plays")
-    public RacingCarResponseDto playGame(@RequestBody RacingCarRequestDto racingCarRequestDto) {
-        return racingCarService.game(racingCarRequestDto.getNames(), racingCarRequestDto.getCount());
-    }
+	@PostMapping("/plays")
+	public RacingCarResponseDto playGame(@RequestBody RacingCarRequestDto racingCarRequestDto) {
+		return racingCarService.game(racingCarRequestDto.getNames(), racingCarRequestDto.getCount());
+	}
 }
