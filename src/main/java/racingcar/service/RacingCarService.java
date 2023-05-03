@@ -19,7 +19,6 @@ import racingcar.repository.GameResultRepository;
 public class RacingCarService {
 	private final GameHistoryRepository gameHistoryRepository;
 	private final GameResultRepository gameResultRepository;
-	private List<Car> cars;
 
 	public RacingCarService(GameHistoryRepository gameHistoryRepository, GameResultRepository gameResultRepository) {
 		this.gameHistoryRepository = gameHistoryRepository;
@@ -28,7 +27,6 @@ public class RacingCarService {
 
 	public RacingCarResponseDto game(String nameOfCars, int finalRound) {
 		List<Car> initCars = createCars(nameOfCars);
-		this.cars = initCars;
 
 		RacingGame racingGame = RacingGame.of(initCars, new RandomMovingStrategy());
 		racingGame.play(finalRound);
@@ -36,7 +34,7 @@ public class RacingCarService {
 		int playResultId = saveGameResult(racingGame, finalRound);
 		saveGameHistories(playResultId, initCars);
 
-		return new RacingCarResponseDto(racingGame.getWinners(), cars);
+		return new RacingCarResponseDto(racingGame.getWinners(), initCars);
 	}
 
 	private int saveGameResult(RacingGame racingGame, int round) {
