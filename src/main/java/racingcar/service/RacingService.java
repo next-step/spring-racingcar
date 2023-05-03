@@ -8,8 +8,10 @@ import racingcar.controller.dto.RacingResponse;
 import racingcar.controller.dto.RacingCarResponse;
 import racingcar.jdbc.PlayCarResult;
 import racingcar.jdbc.PlayResult;
-import racingcar.jdbc.dao.PlayCarResultInsertDao;
-import racingcar.jdbc.dao.PlayResultInsertDao;
+import racingcar.jdbc.dao.insert.PlayCarResultInsertDao;
+import racingcar.jdbc.dao.insert.PlayResultInsertDao;
+import racingcar.jdbc.dao.query.PlayCarResultQueryDao;
+import racingcar.jdbc.dao.query.PlayResultQueryDao;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +23,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RacingService {
 
+    private static Random random = new Random();
+    private final PlayResultQueryDao playResultQueryDao;
+    private final PlayCarResultQueryDao playCarResultQueryDao;
     private final PlayResultInsertDao playResultInsertDao;
     private final PlayCarResultInsertDao playCarResultInsertDao;
-    private final Random random = new Random();
+
 
     public RacingResponse playGame(RacingRequest request) {
         List<RacingCar> cars = createCar(request.getNames());
@@ -32,21 +37,22 @@ public class RacingService {
         }
         List<String> winners = getWinner(cars);
 
-        cars.forEach(car -> playCarResultInsertDao.insert(
-                (new PlayCarResult(car.getName(), car.getPosition(), LocalDateTime.now()))));
+        PlayResult insert = playResultInsertDao.insert(new PlayResult(request.getCount(), String.join(",", winners), LocalDateTime.now()));
 
-        playResultInsertDao.insert(new PlayResult(request.getCount(), String.join(",", winners), LocalDateTime.now()));
+        cars.forEach(car -> playCarResultInsertDao.insert(
+                (new PlayCarResult(car.getName(), car.getPosition(), insert.getPlay_id(),LocalDateTime.now()))));
+
 
         return new RacingResponse(String.join(",", winners), cars.stream().map(car -> new RacingCarResponse(car.getName(), car.getPosition())).collect(Collectors.toList()));
     }
 
-    private List<RacingCar> createCar(String cars) {
+    public static List<RacingCar> createCar(String cars) {
         return Arrays.stream(cars.split(","))
                 .map(it -> new RacingCar(it.trim()))
                 .collect(Collectors.toList());
     }
 
-    private List<String> getWinner(List<RacingCar> cars) {
+    public static List<String> getWinner(List<RacingCar> cars) {
         int maxPosition = 0;
         List<String> winners = new ArrayList<>();
         for (RacingCar racingCar : cars) {
@@ -61,7 +67,7 @@ public class RacingService {
         return winners;
     }
 
-    private void playRound(List<RacingCar> cars) {
+    public static void playRound(List<RacingCar> cars) {
         for (RacingCar racingCar : cars) {
             int randomNumber = random.nextInt(10);
             racingCar.move(randomNumber);
@@ -69,4 +75,15 @@ public class RacingService {
     }
 
 
+    public List<RacingResponse> getPlayGameList() {
+        List<RacingResponse> list = new ArrayList<>();
+        int count = playResultQueryDao.count();
+        for (int i = 1; i <= count; i++) {
+            list.add(new RacingResponse(
+                    playResultQueryDao.findWinnerById((long) i),
+                    RacingCarResponse.of(playCarResultQueryDao.findByPlayResultId(i))
+            ));
+        }
+        return list;
+    }
 }

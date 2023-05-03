@@ -4,7 +4,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import racingcar.jdbc.PlayResult;
-
 import javax.sql.DataSource;
 
 @Repository
@@ -15,7 +14,7 @@ public class PlayResultInsertDao {
     public PlayResultInsertDao(DataSource dataSource) {
         this.insertActor = new SimpleJdbcInsert(dataSource)
                 .withTableName("PLAY_RESULT")
-                .usingGeneratedKeyColumns("id");
+                .usingGeneratedKeyColumns("play_id");
     }
 
     public PlayResult insert(PlayResult playResult) {
