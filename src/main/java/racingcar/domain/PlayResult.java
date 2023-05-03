@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class PlayResult {
+    private static final String DELIMITER_BETWEEN_WINNER = ",";
     private int id;
     private int trialCount;
     private List<String> winners;
@@ -22,11 +23,11 @@ public class PlayResult {
     private LocalDateTime createdAt;
 
     public String getWinnersAsString() {
-        return String.join(",", winners);
+        return String.join(DELIMITER_BETWEEN_WINNER, winners);
     }
 
     public void setWinnersFromString(String str) {
-        this.winners = Arrays.stream(str.split(","))
+        this.winners = Arrays.stream(str.split(DELIMITER_BETWEEN_WINNER))
                 .collect(Collectors.toList());
     }
 
