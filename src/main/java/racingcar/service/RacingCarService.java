@@ -6,70 +6,59 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import racingcar.behavior.MovingStrategy;
 import racingcar.behavior.RandomMovingStrategy;
 import racingcar.domain.Car;
+import racingcar.domain.GameHistory;
+import racingcar.domain.GameResult;
+import racingcar.domain.RacingGame;
 import racingcar.dto.RacingCarResponseDto;
+import racingcar.repository.GameHistoryRepository;
+import racingcar.repository.GameResultRepository;
 
 @Service
 public class RacingCarService {
-    private List<Car> cars;
-    private MovingStrategy movingStrategy;
-    private int finalRound;
-    private int round;
+	private final GameHistoryRepository gameHistoryRepository;
+	private final GameResultRepository gameResultRepository;
+	private List<Car> cars;
 
-    public RacingCarResponseDto game(String nameOfCars, int round) {
-        List<Car> initCars = createCars(nameOfCars);
-        this.finalRound = round;
-        this.cars = initCars;
-        this.movingStrategy = new RandomMovingStrategy();
-        while (!isLastRound()) {
-            progressRound();
-        }
-        String namesOfWinnerCars = getNameOfWinnerCar();
-        return new RacingCarResponseDto(namesOfWinnerCars, cars);
-    }
+	public RacingCarService(GameHistoryRepository gameHistoryRepository, GameResultRepository gameResultRepository) {
+		this.gameHistoryRepository = gameHistoryRepository;
+		this.gameResultRepository = gameResultRepository;
+	}
 
-    private List<Car> createCars(String nameOfCars) {
-        String[] nameOfCarsArr = nameOfCars.replaceAll("\"", "").split(",");
-        return Arrays.stream(nameOfCarsArr)
-                .map(Car::new)
-                .collect(Collectors.toList());
-    }
+	public RacingCarResponseDto game(String nameOfCars, int finalRound) {
+		List<Car> initCars = createCars(nameOfCars);
+		this.cars = initCars;
 
-    public void progressRound() {
-        run();
-    }
+		RacingGame racingGame = RacingGame.of(initCars, new RandomMovingStrategy());
+		racingGame.play(finalRound);
 
-    void nextRound() {
-        round = round + 1;
-    }
+		int playResultId = saveGameResult(racingGame, finalRound);
+		saveGameHistories(playResultId, initCars);
 
-    public boolean isLastRound() {
-        return finalRound == round;
-    }
+		return new RacingCarResponseDto(racingGame.getWinners(), cars);
+	}
 
-    int getMaxPosition() {
-        return cars.stream()
-                .mapToInt(Car::getPosition)
-                .max()
-                .orElseThrow(RuntimeException::new);
-    }
+	private int saveGameResult(RacingGame racingGame, int round) {
+		GameResult gameResult = GameResult.builder()
+			.winners(racingGame.getNameOfWinnerCar())
+			.trialCount(round)
+			.build();
+		return gameResultRepository.save(gameResult);
+	}
 
-    public String getNameOfWinnerCar() {
-        int winnerPosition = getMaxPosition();
-        return cars.stream()
-                .filter(car -> car.hasSamePosition(winnerPosition))
-                .map(Car::getName)
-                .collect(Collectors.joining(","));
-    }
+	private void saveGameHistories(int playerResultId, List<Car> cars) {
+		List<GameHistory> gameHistories = cars.stream()
+			.map(car -> GameHistory.of(playerResultId, car))
+			.collect(Collectors.toList());
+		gameHistoryRepository.saveAll(gameHistories);
+	}
 
-    public void run() {
-        cars.forEach(this::moveCar);
-        nextRound();
-    }
+	private List<Car> createCars(String nameOfCars) {
+		String[] nameOfCarsArr = nameOfCars.replaceAll("\"", "").split(",");
+		return Arrays.stream(nameOfCarsArr)
+			.map(Car::new)
+			.collect(Collectors.toList());
+	}
 
-    private void moveCar(Car car) {
-        car.move(movingStrategy);
-    }
 }
