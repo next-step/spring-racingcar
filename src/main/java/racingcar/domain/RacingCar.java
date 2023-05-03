@@ -1,6 +1,6 @@
-package racingcar;
+package racingcar.domain;
 
-class RacingCar {
+public class RacingCar {
   private final String name;
   private int position;
 
@@ -19,6 +19,12 @@ class RacingCar {
 
   public void move(int randomNumber) {
     if (randomNumber >= 4) {
+      this.position++;
+    }
+  }
+
+  public void move(MovementAction movementAction) {
+    if (movementAction.isMove()) {
       this.position++;
     }
   }
