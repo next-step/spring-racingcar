@@ -5,21 +5,30 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.PlayResult;
+import racingcar.web.dao.PlayHistoryDao;
+import racingcar.web.dao.PlayHistoryDetailDao;
+import racingcar.web.entity.PlayHistory;
+import racingcar.web.entity.PlayHistoryDetail;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 class PlayServiceTest {
 
+    @Autowired
     private PlayService playService;
-
-    @BeforeEach
-    void setUp() {
-        playService = new PlayService();
-    }
+    @Autowired
+    private PlayHistoryDao playHistoryDao;
+    @Autowired
+    private PlayHistoryDetailDao playHistoryDetailDao;
 
     @Test
     void play() {
@@ -33,6 +42,26 @@ class PlayServiceTest {
     @MethodSource("playResultsProvider")
     void findWinners(List<PlayResult> playResults, String expected, String displayMessage) {
         assertThat(playService.findWinners(playResults)).isEqualTo(expected);
+    }
+
+    @Test
+    @Transactional
+    void savePlayResults() {
+        List<PlayResult> playResults = List.of(
+                new PlayResult(3, "carA"),
+                new PlayResult(2, "carB")
+        );
+        int playCount = 10;
+
+        Long playHistoryId = playService.savePlayResults(playResults, playCount);
+
+        PlayHistory playHistory = playHistoryDao.findById(playHistoryId);
+        List<PlayHistoryDetail> playHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistoryId);
+
+        assertThat(playHistory.getWinners()).isEqualTo("carA");
+        assertThat(playHistory.getTrialCount()).isEqualTo(playCount);
+        assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getName)).contains("carA", "carB");
+        assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getPosition)).contains(3, 2);
     }
 
     private static Stream<Arguments> playResultsProvider() {

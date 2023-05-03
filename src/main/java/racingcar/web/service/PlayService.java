@@ -1,6 +1,7 @@
 package racingcar.web.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCarGame;
 import racingcar.strategy.MovingStrategy;
@@ -38,8 +39,6 @@ public class PlayService {
             playResults = racingCarGame.getPlayResults();
         }
 
-        savePlayResults(playResults, playCount);
-
         return playResults;
     }
 
@@ -53,7 +52,8 @@ public class PlayService {
         return new RacingCarGame(carNames.split(CAR_NAME_SEPARATOR), playCount);
     }
 
-    private void savePlayResults(List<PlayResult> playResults, int playCount) {
+    @Transactional
+    public Long savePlayResults(List<PlayResult> playResults, int playCount) {
         PlayHistory playHistory = new PlayHistory(playCount, findWinners(playResults));
         Long playHistoryId = playHistoryDao.insert(playHistory);
 
@@ -64,6 +64,8 @@ public class PlayService {
         for (PlayHistoryDetail playHistoryDetail : playHistoryDetails) {
             playHistoryDetailDao.insert(playHistoryDetail);
         }
+
+        return playHistoryId;
     }
 
 }
