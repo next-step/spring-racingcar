@@ -1,5 +1,6 @@
 package racingcar.web.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,14 +11,11 @@ import racingcar.web.entity.PlayHistory;
 import java.sql.PreparedStatement;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Repository
 public class PlayHistoryDao {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public PlayHistoryDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public Optional<PlayHistory> findById(Long id) {
         String sql = "SELECT * FROM play_history WHERE ID = ?";

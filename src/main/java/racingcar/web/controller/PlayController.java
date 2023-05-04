@@ -1,5 +1,6 @@
 package racingcar.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,16 +13,13 @@ import racingcar.web.service.PlayService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 public class PlayController {
 
     private static final String CAR_NAME_SEPARATOR = ",";
 
     private final PlayService playService;
-
-    public PlayController(PlayService playService) {
-        this.playService = playService;
-    }
 
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {

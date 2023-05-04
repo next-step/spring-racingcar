@@ -1,5 +1,6 @@
 package racingcar.web.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.PlayResult;
@@ -13,6 +14,7 @@ import racingcar.web.entity.PlayHistoryDetail;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class PlayService {
 
@@ -21,12 +23,6 @@ public class PlayService {
     private final MovingStrategy movingStrategy;
     private final PlayHistoryDao playHistoryDao;
     private final PlayHistoryDetailDao playHistoryDetailDao;
-
-    public PlayService(MovingStrategy movingStrategy, PlayHistoryDao playHistoryDao, PlayHistoryDetailDao playHistoryDetailDao) {
-        this.movingStrategy = movingStrategy;
-        this.playHistoryDao = playHistoryDao;
-        this.playHistoryDetailDao = playHistoryDetailDao;
-    }
 
     public List<PlayResult> play(String[] carNames, int playCount) {
         RacingCarGame racingCarGame = new RacingCarGame(carNames, playCount);
