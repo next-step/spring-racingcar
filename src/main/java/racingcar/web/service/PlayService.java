@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class PlayService {
 
-    private static final String CAR_NAME_SEPARATOR = ",";
-
     private final MovingStrategy movingStrategy;
     private final PlayHistoryDao playHistoryDao;
     private final PlayHistoryDetailDao playHistoryDetailDao;
@@ -36,15 +34,15 @@ public class PlayService {
         return playResults;
     }
 
-    public String findWinners(List<PlayResult> playResults) {
+    public String[] findWinners(List<PlayResult> playResults) {
         return RacingCarGame.findWinners(playResults).stream()
                 .map(PlayResult::getNameValue)
-                .collect(Collectors.joining(CAR_NAME_SEPARATOR));
+                .toArray(String[]::new);
     }
 
     @Transactional
-    public Long savePlayResults(List<PlayResult> playResults, int playCount) {
-        PlayHistory playHistory = new PlayHistory(playCount, findWinners(playResults));
+    public Long savePlayResults(int playCount, String winners, List<PlayResult> playResults) {
+        PlayHistory playHistory = new PlayHistory(playCount, winners);
         Long playHistoryId = playHistoryDao.insert(playHistory);
 
         List<PlayHistoryDetail> playHistoryDetails = playResults.stream()

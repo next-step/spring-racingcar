@@ -41,7 +41,7 @@ class PlayServiceTest {
 
     @ParameterizedTest(name = "{2}")
     @MethodSource("playResultsProvider")
-    void findWinners(List<PlayResult> playResults, String expected, String displayMessage) {
+    void findWinners(List<PlayResult> playResults, String[] expected, String displayMessage) {
         assertThat(playService.findWinners(playResults)).isEqualTo(expected);
     }
 
@@ -54,7 +54,7 @@ class PlayServiceTest {
         );
         int playCount = 10;
 
-        Long playHistoryId = playService.savePlayResults(playResults, playCount);
+        Long playHistoryId = playService.savePlayResults(playCount, "carA", playResults);
 
         PlayHistory playHistory = assertDoesNotThrow(playHistoryDao.findById(playHistoryId)::get);
         List<PlayHistoryDetail> playHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistoryId);
@@ -69,10 +69,10 @@ class PlayServiceTest {
         return Stream.of(
                 Arguments.of(List.of(
                         new PlayResult(3, "carA"),
-                        new PlayResult(2, "carB")), "carA", "findWinners - 우승자가 한명인 경우"),
+                        new PlayResult(2, "carB")), new String[]{"carA"}, "findWinners - 우승자가 한명인 경우"),
                 Arguments.of(List.of(
                         new PlayResult(3, "carA"),
-                        new PlayResult(3, "carB")), "carA,carB", "findWinners - 우승자가 여러명인 경우")
+                        new PlayResult(3, "carB")), new String[]{"carA", "carB"}, "findWinners - 우승자가 여러명인 경우")
         );
     }
 

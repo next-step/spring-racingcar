@@ -43,7 +43,7 @@ class PlayControllerTest {
                 new PlayResult(0, "carB")
         );
         given(playService.play(new String[]{"carA","carB"}, 3)).willReturn(playResults);
-        given(playService.findWinners(playResults)).willReturn("carA");
+        given(playService.findWinners(playResults)).willReturn(new String[]{"carA"});
 
         mvc.perform(post("/plays")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

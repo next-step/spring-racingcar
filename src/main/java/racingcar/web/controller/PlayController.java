@@ -24,18 +24,22 @@ public class PlayController {
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {
         List<PlayResult> playResults = playService.play(splitNames(playRequestDto.getNames()), playRequestDto.getCount());
-        playService.savePlayResults(playResults, playRequestDto.getCount());
+        String winners = joinNames(playService.findWinners(playResults));
 
-        String winners = playService.findWinners(playResults);
+        playService.savePlayResults(playRequestDto.getCount(), winners, playResults);
+
         List<RacingCar> racingCars = playResults.stream()
                 .map(playResult -> new RacingCar(playResult.getNameValue(), playResult.getPositionValue()))
                 .collect(Collectors.toList());
-
         return new PlayResponseDto(winners, racingCars);
     }
 
     private String[] splitNames(String names) {
         return names.split(CAR_NAME_SEPARATOR);
+    }
+
+    private String joinNames(String[] names) {
+        return String.join(CAR_NAME_SEPARATOR, names);
     }
 
 }
