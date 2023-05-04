@@ -10,6 +10,11 @@ public class RacingCar {
     this.position = 0;
   }
 
+  public RacingCar(String name,int position){
+    this.name = name;
+    this.position = position;
+  }
+
   public String getName() {
     return this.name;
   }
