@@ -2,16 +2,21 @@ package racingcar.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CarsTest {
 
     @Test
     void create() {
-        String[] carNames = {"carA", "carB", "carC"};
-        assertThat(Cars.createCars(carNames))
-                .hasSize(3)
-                .containsExactly(new Car("carA"), new Car("carB"), new Car("carC"));
+        Cars cars = new Cars(new String[]{"carA", "carB", "carC"});
+
+        assertThat(cars).isEqualTo(new Cars(List.of(
+                new Car("carA"),
+                new Car("carB"),
+                new Car("carC")
+        )));
     }
 
 }

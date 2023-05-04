@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class ResultView {
 
-    public static final String RESULT_MESSAGE = "-";
+    private static final String RESULT_MESSAGE = "-";
 
     public static void printTitle() {
         printNewLine();

@@ -15,7 +15,7 @@ public enum MovingStrategyType {
     public static MovingStrategy getStrategy(MovingStrategyType givenType) {
         return Stream.of(values())
                 .filter(type -> type.equals(givenType))
-                .findFirst()
+                .findAny()
                 .map(type -> type.strategySupplier.get())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 strategy type 입니다"));
     }
