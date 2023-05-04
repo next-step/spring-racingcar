@@ -16,7 +16,7 @@ public class Car {
 		this.name = validateNamesOfCar(name);
 	}
 
-	public static String validateNamesOfCar(String name) {
+	public String validateNamesOfCar(String name) {
 		if (isNullOrEmpty(name) || isFiveLetterWords(name)) {
 			throw new IllegalArgumentException(ErrorMessage.INPUT_NAME_ERROR);
 		}
