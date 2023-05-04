@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.PlayResult;
+import racingcar.strategy.TestMovingStrategy;
 import racingcar.web.dao.PlayHistoryDao;
 import racingcar.web.dao.PlayHistoryDetailDao;
 import racingcar.web.entity.PlayHistory;
@@ -25,18 +26,33 @@ class PlayServiceTest {
     @Autowired
     private PlayService playService;
     @Autowired
+    private TestMovingStrategy movingStrategy;
+    @Autowired
     private PlayHistoryDao playHistoryDao;
     @Autowired
     private PlayHistoryDetailDao playHistoryDetailDao;
 
     @Test
-    void play() {
+    void play_movingstrategy_true() {
+        movingStrategy.setShouldMove(true);
         List<PlayResult> playResults = playService.play(new String[]{"carA", "carB", "carC"}, 3);
 
         assertThat(playResults).isNotNull();
         assertThat(playResults).hasSize(3);
         assertThat(playResults).flatExtracting(PlayResult::getNameValue).containsOnly("carA", "carB", "carC");
         assertThat(playResults).flatExtracting(PlayResult::getPositionValue).containsOnly(3);
+    }
+
+    @Test
+    void play_movingstrategy_false() {
+        movingStrategy.setShouldMove(false);
+        List<PlayResult> playResults = playService.play(new String[]{"carA", "carB", "carC"}, 3);
+
+
+        assertThat(playResults).isNotNull();
+        assertThat(playResults).hasSize(3);
+        assertThat(playResults).flatExtracting(PlayResult::getNameValue).containsOnly("carA", "carB", "carC");
+        assertThat(playResults).flatExtracting(PlayResult::getPositionValue).containsOnly(0);
     }
 
     @ParameterizedTest(name = "{2}")

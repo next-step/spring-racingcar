@@ -10,9 +10,9 @@
 - [x] PlayService 에서 랜덤 로직 분리하고 테스트 작성
 
 ## Step 2 리팩토링 요구사항
-- [ ] PlayService 관련
-  - [ ] MovingStrategy 테스트용 클래스 만들어서 Component로 등록
-  - [ ] MovingStrategy 에 따른 PlayResult 반환 값 테스트
+- [x] PlayService 관련
+  - [x] MovingStrategy 테스트용 클래스 만들어서 Component로 등록
+  - [x] MovingStrategy 에 따른 PlayResult 반환 값 테스트
 
 ## Step 2 미션 요구사항
 - [ ] 게임 플레이 이력 조회 API 구현
