@@ -8,9 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
+import racingcar.dto.RacingCarResponse;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -51,9 +51,8 @@ public class RacingResultRepository {
                 throw new RuntimeException("racingcars json -> List<RacingCar> 변환실패");
             }
             return PlayResult.builder()
-                    .winners(rs.getString("winners"))
                     .trialCount(rs.getInt("trial_count"))
-                    .racingCars(racingCars)
+                    .racingCars(RacingCarResponse.listOf(racingCars))
                     .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                     .build();
         });

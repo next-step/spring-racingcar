@@ -3,12 +3,11 @@ package racingcar.service;
 import org.springframework.stereotype.Service;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
+import racingcar.dto.RacingCarResponse;
 import racingcar.dto.RacingPlaysRequest;
 import racingcar.dto.RacingPlaysResponse;
 import racingcar.repository.RacingResultRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -26,26 +25,21 @@ public class RacingService {
     }
 
     public RacingPlaysResponse playRace(RacingPlaysRequest racingPlaysRequest){
-        List<RacingCar> racingCars = convertRequestNameToCarList(racingPlaysRequest);
+        List<RacingCar> racingCars = racingPlaysRequest.getConvertRequestNameToCarList();
 
         playRound(racingCars, racingPlaysRequest.getCount());
-        String winners = String.join(", ", getWinners(racingCars));
 
-        racingResultRepository.insertGameResult(new PlayResult(winners, racingPlaysRequest.getCount(), racingCars));
+        racingResultRepository.insertGameResult(
+                PlayResult.builder()
+                        .trialCount(racingPlaysRequest.getCount())
+                        .racingCars(RacingCarResponse.listOf(racingCars))
+                        .build()
+        );
 
         PlayResult playResult =  racingResultRepository.getResults();
 
         return RacingPlaysResponse.of(playResult);
 
-    }
-
-
-    private List<RacingCar> convertRequestNameToCarList(RacingPlaysRequest racingPlaysRequest){
-        List<RacingCar> result = new ArrayList<>();
-        Arrays.stream(racingPlaysRequest.getNames().split(",")).forEach(
-                car -> result.add(new RacingCar(car))
-        );
-        return result;
     }
 
     private static void playRound(List<RacingCar> racingCars, int requestRound) {
@@ -58,21 +52,6 @@ public class RacingService {
             }
         }
 
-    }
-
-    private List<String> getWinners(List<RacingCar> racingCars){
-        int maxPosition = 0;
-        List<String> winners = new ArrayList<>();
-        for (RacingCar racingCar : racingCars) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
-            if (racingCar.getPosition() >= maxPosition) {
-                winners.add(racingCar.getName());
-            }
-        }
-        return winners;
     }
 
 }
