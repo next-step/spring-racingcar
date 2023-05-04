@@ -1,14 +1,17 @@
 package racingcar.repository;
 
+import static racingcar.domain.RaceResult.getWinnersString;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import racingcar.domain.RaceResult;
 import racingcar.domain.RacingCar;
-import racingcar.mapper.RaceResultRowMapper;
 
 @RequiredArgsConstructor
 @Repository
@@ -29,10 +32,22 @@ public class RacingCarRepository {
     }
   }
 
-
-  public List<RacingCar> findAll() {
+  public List<RaceResult> findAll() {
     String sql = "SELECT * FROM RACING_GAME_HISTORY";
-    return jdbcTemplate.query(sql, (rs, rowNum) -> new RacingCar(rs.getString("NAME"), rs.getInt("POSITION")));
+    Map<LocalDateTime, List<RacingCar>> resultMap = new LinkedHashMap<>();
+    jdbcTemplate.query(sql, (rs, rowNum) -> {
+      LocalDateTime racingDate = rs.getTimestamp("RACING_DATE").toLocalDateTime();
+      RacingCar racingCar = new RacingCar(rs.getString("NAME"), rs.getInt("POSITION"));
+      resultMap.computeIfAbsent(racingDate, k -> new ArrayList<>()).add(racingCar);
+      return racingCar;
+    });
+
+    List<RaceResult> results = new ArrayList<>();
+    for (Map.Entry<LocalDateTime, List<RacingCar>> entry : resultMap.entrySet()) {
+      List<RacingCar> racingCars = entry.getValue();
+      results.add(new RaceResult(getWinnersString(racingCars), racingCars));
+    }
+    return results;
   }
 
 }

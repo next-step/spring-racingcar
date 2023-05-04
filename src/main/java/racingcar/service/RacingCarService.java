@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import racingcar.domain.RaceResult;
@@ -43,10 +42,7 @@ public class RacingCarService {
   }
 
   public List<RaceResult> findAll() {
-    List<RaceResult> results = new ArrayList<>();
-    List<RacingCar> racingCars = racingCarRepository.findAll();
-    results.add(new RaceResult(getWinner(racingCars), racingCars));
-    return results;
+    return racingCarRepository.findAll();
   }
 
 
