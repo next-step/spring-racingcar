@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import racingcar.game.domain.PlayResult;
-import racingcar.game.domain.PlayerHistory;
+import racingcar.game.domain.PlayResultEntity;
+import racingcar.game.domain.PlayerHistoryEntity;
 import racingcar.game.domain.RacingCar;
 
 @RequiredArgsConstructor
@@ -25,13 +25,13 @@ public class PlayResultResponse {
                 .collect(Collectors.toUnmodifiableList()));
     }
 
-    public static PlayResultResponse from(PlayResult playResults,
-        Map<Long, List<PlayerHistory>> groupedPlayerHistoriesByPlayResultId) {
-        List<PlayerHistory> playerHistories = groupedPlayerHistoriesByPlayResultId.get(playResults.getId());
+    public static PlayResultResponse from(PlayResultEntity playResultEntity,
+        Map<Long, List<PlayerHistoryEntity>> groupedPlayerHistoriesByPlayResultId) {
+        List<PlayerHistoryEntity> playerHistories = groupedPlayerHistoriesByPlayResultId.get(playResultEntity.getId());
 
         String winners = playerHistories.stream()
-            .filter(PlayerHistory::getIs_winner)
-            .map(PlayerHistory::getName)
+            .filter(PlayerHistoryEntity::isWinner)
+            .map(PlayerHistoryEntity::getName)
             .collect(Collectors.joining(JOIN_DELIMITER));
 
         return new PlayResultResponse(winners,

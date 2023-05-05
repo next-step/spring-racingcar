@@ -13,4 +13,4 @@
 ### 구현할 기능 목록
 
 - [x] 게임 플레이 이력을 모두 조회한다.
-- [ ] console application과 web application의 중복 코드를 제거한다.
+- [x] console application과 web application의 중복 코드를 제거한다.

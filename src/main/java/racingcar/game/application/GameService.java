@@ -5,11 +5,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import racingcar.game.dao.PlayResultDao;
-import racingcar.game.dao.PlayerHistoryDao;
-import racingcar.game.domain.PlayerHistory;
-import racingcar.game.domain.RacingGame;
 import racingcar.game.domain.PlayResult;
+import racingcar.game.domain.PlayResultRepository;
+import racingcar.game.domain.PlayerHistory;
+import racingcar.game.domain.PlayerHistoryEntity;
+import racingcar.game.domain.PlayerHistoryRepository;
+import racingcar.game.domain.RacingGame;
 import racingcar.game.domain.RandomMoveStrategy;
 import racingcar.game.dto.PlayRequest;
 import racingcar.game.dto.PlayResultResponse;
@@ -17,12 +18,12 @@ import racingcar.game.dto.PlayResultResponse;
 @Service
 public class GameService {
 
-    private final PlayResultDao playResultDao;
-    private final PlayerHistoryDao playerHistoryDao;
+    private final PlayResultRepository playResultRepository;
+    private final PlayerHistoryRepository playerHistoryRepository;
 
-    public GameService(PlayResultDao playResultDao, PlayerHistoryDao playerHistoryDao) {
-        this.playResultDao = playResultDao;
-        this.playerHistoryDao = playerHistoryDao;
+    public GameService(PlayResultRepository playResultRepository, PlayerHistoryRepository playerHistoryRepository) {
+        this.playResultRepository = playResultRepository;
+        this.playerHistoryRepository = playerHistoryRepository;
     }
 
     @Transactional
@@ -30,12 +31,12 @@ public class GameService {
         RacingGame racingGame = playRequest.toRacingGame();
         racingGame.playRound(playRequest.getCount(), new RandomMoveStrategy());
 
-        Long savedId = playResultDao.save(PlayResult.of(playRequest.getCount()));
-        playerHistoryDao.saveAll(converterPlayers(savedId, racingGame));
+        Long savedId = playResultRepository.save(PlayResult.of(playRequest.getCount()));
+        playerHistoryRepository.saveAll(converterPlayerHistories(savedId, racingGame));
         return PlayResultResponse.from(racingGame.getWinners(), racingGame.getRacingCars());
     }
 
-    private List<PlayerHistory> converterPlayers(Long playResultId, RacingGame racingGame) {
+    private List<PlayerHistory> converterPlayerHistories(Long playResultId, RacingGame racingGame) {
         return racingGame.getRacingCars()
             .stream()
             .map(racingCar -> PlayerHistory.of(playResultId, racingCar, racingGame.isWinner(racingCar.getName())))
@@ -44,19 +45,16 @@ public class GameService {
 
     @Transactional(readOnly = true)
     public List<PlayResultResponse> loadGameHistory() {
-        return converterPlayResultResponses(groupedPlayerHistoriesByPlayResultId());
+        Map<Long, List<PlayerHistoryEntity>> groupedPlayerHistoryEntitiesByPlayResultId = playerHistoryRepository.findAll()
+            .stream()
+            .collect(Collectors.groupingBy(PlayerHistoryEntity::getPlayResultId));
+        return converterPlayResultResponses(groupedPlayerHistoryEntitiesByPlayResultId);
     }
 
-    private Map<Long, List<PlayerHistory>> groupedPlayerHistoriesByPlayResultId() {
-        return playerHistoryDao.findAll()
+    private List<PlayResultResponse> converterPlayResultResponses(Map<Long, List<PlayerHistoryEntity>> groupedPlayerHistoryEntitiesByPlayResultId) {
+        return playResultRepository.findAll()
             .stream()
-            .collect(Collectors.groupingBy(PlayerHistory::getPlayResultId));
-    }
-
-    private List<PlayResultResponse> converterPlayResultResponses(Map<Long, List<PlayerHistory>> groupedPlayerHistoriesByPlayResultId) {
-        return playResultDao.findAll()
-            .stream()
-            .map(playResult -> PlayResultResponse.from(playResult, groupedPlayerHistoriesByPlayResultId))
+            .map(playResultEntity -> PlayResultResponse.from(playResultEntity, groupedPlayerHistoryEntitiesByPlayResultId))
             .collect(Collectors.toUnmodifiableList());
     }
 }

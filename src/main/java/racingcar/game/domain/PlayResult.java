@@ -8,11 +8,14 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class PlayResult {
 
-    private final Long id;
     private final Integer trialCount;
     private final LocalDateTime createdAt;
 
     public static PlayResult of(Integer trialCount) {
-        return new PlayResult(null, trialCount, null);
+        return new PlayResult(trialCount, LocalDateTime.now());
+    }
+
+    public PlayResultEntity toPlayResultEntity(Long id) {
+        return new PlayResultEntity(id, this);
     }
 }
