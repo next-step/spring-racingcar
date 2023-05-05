@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PlaysRequestDto {
     private String names;
-    private Integer count;
+    private Integer trialCount;
 
 }

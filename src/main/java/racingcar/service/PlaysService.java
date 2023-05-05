@@ -23,10 +23,10 @@ public class PlaysService {
                                            .map(RacingCar::new)
                                            .collect(Collectors.toList());
 
-        playRound(racingCars, playsRequestDto.getCount());
+        playRound(racingCars, playsRequestDto.getTrialCount());
         List<String> winners = getWinners(racingCars);
         Long latestGame = getLatestGame();
-        winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getCount(), latestGame + 1));
+        winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getTrialCount(), latestGame + 1));
         racingCars.forEach(racingCar -> playDao.insertPlayPositionAndGame(racingCar.getName(), racingCar.getPosition(), latestGame + 1));
         return new PlaysResponseDto( winners, racingCars );
     }

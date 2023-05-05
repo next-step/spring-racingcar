@@ -20,9 +20,9 @@ public class PlayDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void insertWinner(String winner, Integer count, Long game) {
+    public void insertWinner(String winner, Integer trialCount, Long game) {
         String SQL = "insert into PLAY_RESULT(winner, trial_count, game) values (?, ?, ?)";
-        jdbcTemplate.update(SQL, winner, count, game);
+        jdbcTemplate.update(SQL, winner, trialCount, game);
     }
 
     public void insertPlayPositionAndGame(String name, Integer position, Long game) {
