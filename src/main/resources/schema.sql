@@ -6,7 +6,7 @@ CREATE TABLE PLAY_RESULT (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE PLAYER (
+CREATE TABLE PLAYER_HISTORY (
     id              BIGINT      NOT NULL AUTO_INCREMENT,
     play_result_id  BIGINT      NOT NULL,
     name            VARCHAR(10) NOT NULL,
