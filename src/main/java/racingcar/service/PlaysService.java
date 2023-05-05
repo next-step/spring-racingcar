@@ -19,13 +19,15 @@ public class PlaysService {
     }
 
     public PlaysResponseDto play(PlaysRequestDto playsRequestDto) {
-        List<RacingCar> racingCars = Arrays.stream(playsRequestDto.getNames().split(",")).map(RacingCar::new).collect(Collectors.toList());
+        List<RacingCar> racingCars = Arrays.stream(playsRequestDto.getNames().split(","))
+                                           .map(RacingCar::new)
+                                           .collect(Collectors.toList());
 
         playRound(racingCars, playsRequestDto.getCount());
         List<String> winners = getWinners(racingCars);
         Long latestGame = getLatestGame();
         winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getCount(), latestGame + 1));
-        racingCars.forEach(racingCar -> playDao.insertPlayTravelDistance(racingCar.getName(), racingCar.getPosition(), latestGame + 1));
+        racingCars.forEach(racingCar -> playDao.insertPlayPositionAndGame(racingCar.getName(), racingCar.getPosition(), latestGame + 1));
         return new PlaysResponseDto( winners, racingCars );
     }
 
@@ -60,7 +62,7 @@ public class PlaysService {
     public List<PlayHistories> getPlayHistories() {
         //경기를 기준으로 조회
         Map<Long, List<PlayResultWinnersAndGame>> winnersGames = playDao.getWinnersAndGames();
-        Map<Long, List<PlayFinalTravelDistance>> allPlayFinalTravelDistance = playDao.getAllPlayFinalTravelDistance();
+        Map<Long, List<PlayFinalPositionAndGame>> allPlayFinalTravelDistance = playDao.getAllPlayFinalPositionAndGame();
 
         return getTotalOfGame().stream()
                                .map(game -> {

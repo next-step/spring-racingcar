@@ -3,8 +3,10 @@ package racingcar.dtos.response;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class PlayFinalTravelDistanceGame {
+@Setter
+public class PlayFinalPositionAndGame {
+    private String name;
+    private Integer position;
     private Long game;
 }
