@@ -1,5 +1,6 @@
 package racingcar.repository;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,10 +15,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class PlayDao {
+@Qualifier("web")
+public class RacingCarPlayDaoImpl implements RacingCarDao {
     private JdbcTemplate jdbcTemplate;
 
-    public PlayDao(JdbcTemplate jdbcTemplate) {
+    public RacingCarPlayDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

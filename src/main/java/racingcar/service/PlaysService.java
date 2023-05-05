@@ -1,21 +1,22 @@
 package racingcar.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import racingcar.domain.RacingCar;
 import racingcar.dtos.request.PlaysRequestDto;
 import racingcar.dtos.response.*;
-import org.springframework.stereotype.Service;
-import racingcar.repository.PlayDao;
+import racingcar.repository.RacingCarDao;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class PlaysService {
-    private final PlayDao playDao;
+    private final RacingCarDao racingCarDao;
     private final Random random = new Random();
 
-    public PlaysService(PlayDao playDao) {
-        this.playDao = playDao;
+    public PlaysService(@Qualifier("web")RacingCarDao racingCarDao) {
+        this.racingCarDao = racingCarDao;
     }
 
     public PlaysResponseDto play(PlaysRequestDto playsRequestDto) {
@@ -26,8 +27,8 @@ public class PlaysService {
         playRound(racingCars, playsRequestDto.getTrialCount());
         List<String> winners = getWinners(racingCars);
         Long latestGame = getLatestGame();
-        winners.forEach(winner -> playDao.insertWinner(winner, playsRequestDto.getTrialCount(), latestGame + 1));
-        racingCars.forEach(racingCar -> playDao.insertPlayPositionAndGame(racingCar.getName(), racingCar.getPosition(), latestGame + 1));
+        winners.forEach(winner -> racingCarDao.insertWinner(winner, playsRequestDto.getTrialCount(), latestGame + 1));
+        racingCars.forEach(racingCar -> racingCarDao.insertPlayPositionAndGame(racingCar.getName(), racingCar.getPosition(), latestGame + 1));
         return new PlaysResponseDto( winners, racingCars );
     }
 
@@ -54,8 +55,8 @@ public class PlaysService {
     }
 
     private Long getLatestGame() {
-        Optional<Long> latestGame = playDao.selectLatestGame();
-        if (Objects.isNull(latestGame))
+        Optional<Long> latestGame = racingCarDao.selectLatestGame();
+        if (Objects.isNull(latestGame) || latestGame.isEmpty())
             return 0L;
         return latestGame.get();
 
@@ -63,8 +64,8 @@ public class PlaysService {
 
     public List<PlayHistories> getPlayHistories() {
         //경기를 기준으로 조회
-        Map<Long, List<PlayResultWinnersAndGame>> winnersGames = playDao.getWinnersAndGames();
-        Map<Long, List<PlayFinalPositionAndGame>> allPlayFinalTravelDistance = playDao.getAllPlayFinalPositionAndGame();
+        Map<Long, List<PlayResultWinnersAndGame>> winnersGames = racingCarDao.getWinnersAndGames();
+        Map<Long, List<PlayFinalPositionAndGame>> allPlayFinalTravelDistance = racingCarDao.getAllPlayFinalPositionAndGame();
 
         return getTotalOfGame().stream()
                                .map(game -> {
@@ -84,6 +85,6 @@ public class PlaysService {
     }
 
     private List<Long> getTotalOfGame() {
-        return playDao.getTotalNumberOfGame();
+        return racingCarDao.getTotalNumberOfGame();
     }
 }
