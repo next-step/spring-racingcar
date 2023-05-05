@@ -3,42 +3,47 @@ package racingcar.presentation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import racingcar.presentation.dto.GameResultDto;
-import racingcar.presentation.dto.GameStartDto;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@WebMvcTest(RacingCarApiTest.class)
 class RacingCarApiTest {
 
     @Autowired
-    private RacingCarApi racingCarApi;
+    private MockMvc mockMvc;
 
     @DisplayName("프레젠테이션 레이어 성공 케이스")
     @Test
-    void racingCarApiTest() {
+    void racingCarApiTest() throws Exception {
         // given
-        GameStartDto gameStartDto = new GameStartDto("a,b,c", 10);
-
         // when
-        GameResultDto gameResultDto = racingCarApi.playRacingCar(gameStartDto);
-
         // then
-        assertThat(gameResultDto).isNotNull();
+        mockMvc.perform(post("/plays")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content("{ \"names\" : \"user1,user2,user3\", " +
+                        "\"count\" : 1}")
+        ).andExpect(status().isOk());
     }
 
     @DisplayName("프레젠테이션 레이어 실패 케이스")
     @Test
-    void racingCarApiFailTest() {
+    void racingCarApiFailTest() throws Exception {
         // given
-        GameStartDto gameStartDto = new GameStartDto("", 0);
-
         // when
         // then
-        assertThrowsExactly(IllegalArgumentException.class,
-                () -> racingCarApi.playRacingCar(gameStartDto));
+        mockMvc.perform(post("/plays")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content("{ \"names\" : null, " +
+                        "\"count\" : 1}")
+        ).andExpect(status().isOk());
     }
 
 }

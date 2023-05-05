@@ -1,5 +1,6 @@
 package racingcar.data;
 
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import racingcar.RacingCars;
@@ -7,8 +8,9 @@ import racingcar.RacingCars;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class HistoryRepository {
@@ -21,19 +23,16 @@ public class HistoryRepository {
                 .usingGeneratedKeyColumns("id");
     }
 
-    public int insertHistory(long gameResultId, RacingCars cars) {
-        AtomicInteger insertCount = new AtomicInteger();
-        cars.getCars().forEach(racingCar -> {
+    public void insertHistory(long gameResultId, RacingCars cars) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Map<String, Object>> histories = cars.getCars().stream().map(racingCar -> {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("play_result_id", gameResultId);
             parameters.put("player_name", racingCar.getName());
             parameters.put("position", racingCar.getPosition());
-            parameters.put("created_at", LocalDateTime.now());
-
-            if (simpleJdbcInsert.execute(parameters) == 1) {
-                insertCount.incrementAndGet();
-            }
-        });
-        return insertCount.get();
+            parameters.put("created_at", now);
+            return parameters;
+        }).collect(Collectors.toList());
+        simpleJdbcInsert.executeBatch(SqlParameterSourceUtils.createBatch(histories));
     }
 }
