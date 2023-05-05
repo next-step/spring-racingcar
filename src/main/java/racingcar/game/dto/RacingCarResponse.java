@@ -1,8 +1,8 @@
-package racingcar.play.application.dto;
+package racingcar.game.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import racingcar.play.domain.RacingCar;
+import racingcar.game.domain.RacingCar;
 
 @RequiredArgsConstructor
 @Getter

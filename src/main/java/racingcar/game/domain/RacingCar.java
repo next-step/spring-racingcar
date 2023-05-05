@@ -1,4 +1,4 @@
-package racingcar.play.domain;
+package racingcar.game.domain;
 
 public class RacingCar {
     private final String name;

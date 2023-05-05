@@ -1,4 +1,4 @@
-package racingcar.play.api.dto;
+package racingcar.game.dto;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import racingcar.play.domain.RacingCar;
-import racingcar.play.domain.RacingCars;
+import racingcar.game.domain.RacingGame;
+import racingcar.game.domain.RacingCar;
 
 @RequiredArgsConstructor
 @Getter
@@ -23,8 +23,8 @@ public class PlayRequest {
     @Min(value = 1, message = "플래이 횟수는 최소 {value}보다 커야 합니다.")
     private final Integer count;
 
-    public RacingCars toRacingCars() {
-        return new RacingCars(Arrays.stream(names.split(","))
+    public RacingGame toRacingGame() {
+        return new RacingGame(Arrays.stream(names.split(","))
             .map(RacingCar::new)
             .collect(Collectors.toUnmodifiableList()));
     }

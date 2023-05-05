@@ -1,25 +1,26 @@
-package racingcar.play.dao;
+package racingcar.game.dao;
+
 
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import racingcar.play.domain.Player;
+import racingcar.game.domain.PlayResult;
 
 @Repository
-public class PlayerDao {
+public class PlayResultDao {
 
     private final SimpleJdbcInsert jdbcInsert;
 
-    public PlayerDao(DataSource dataSource) {
+    public PlayResultDao(DataSource dataSource) {
         this.jdbcInsert = new SimpleJdbcInsert(dataSource)
-            .withTableName("player")
+            .withTableName("play_result")
             .usingGeneratedKeyColumns("id", "created_at");
     }
 
-    public Long save(Player player) {
-        SqlParameterSource param = new BeanPropertySqlParameterSource(player);
+    public Long save(PlayResult playerResult) {
+        SqlParameterSource param = new BeanPropertySqlParameterSource(playerResult);
         return (Long) jdbcInsert.executeAndReturnKeyHolder(param)
             .getKeys()
             .get("id");

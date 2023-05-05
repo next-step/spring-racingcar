@@ -1,4 +1,4 @@
-package racingcar.play.api;
+package racingcar.game.web;
 
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import racingcar.play.api.dto.PlayRequest;
-import racingcar.play.application.PlayService;
-import racingcar.play.application.dto.PlayResultResponse;
+import racingcar.game.dto.PlayRequest;
+import racingcar.game.application.GameService;
+import racingcar.game.dto.PlayResultResponse;
 
 @RequestMapping("/plays")
 @RestController
 @AllArgsConstructor
-public class PlayController {
+public class GameController {
 
-    private final PlayService playService;
+    private final GameService gameService;
 
     @PostMapping
     public PlayResultResponse play(@RequestBody @Valid PlayRequest playRequest) {
-        return playService.playGame(playRequest);
+        return gameService.play(playRequest);
     }
 }
