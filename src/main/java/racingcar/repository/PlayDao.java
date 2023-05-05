@@ -10,6 +10,7 @@ import racingcar.dtos.response.TotalNumberOfGame;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -30,15 +31,15 @@ public class PlayDao {
         jdbcTemplate.update(SQL, name, position, game);
     }
 
-    public Long selectLatestGame() {
+    public Optional<Long> selectLatestGame() {
         try {
-            return jdbcTemplate.queryForObject(
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
                     "SELECT * FROM PLAY_FINAL_POSITION_GAME ORDER BY created_at desc limit 1", (resultSet, rowNum) -> {
                         GameOfPlayFinalPositionAndGame gameOfPlayFinalPositionAndGame = new GameOfPlayFinalPositionAndGame();
                         gameOfPlayFinalPositionAndGame.setGame(resultSet.getLong("game"));
                         return gameOfPlayFinalPositionAndGame.getGame();
                     }
-            );
+            ));
         } catch (IncorrectResultSizeDataAccessException error) {
             return null;
         }

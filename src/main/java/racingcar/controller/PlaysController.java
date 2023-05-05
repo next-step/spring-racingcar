@@ -9,6 +9,7 @@ import racingcar.dtos.response.PlayHistories;
 import racingcar.dtos.response.PlaysResponseDto;
 import racingcar.service.PlaysService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class PlaysController {
     }
 
     @PostMapping("/plays")
-    public PlaysResponseDto getRacingCars(@RequestBody PlaysRequestDto playsRequestDto) {
+    public PlaysResponseDto getRacingCars(@RequestBody @Valid PlaysRequestDto playsRequestDto) {
         return playsService.play(playsRequestDto);
     }
 

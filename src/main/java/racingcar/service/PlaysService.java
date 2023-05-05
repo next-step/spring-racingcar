@@ -54,9 +54,11 @@ public class PlaysService {
     }
 
     private Long getLatestGame() {
-        if (Objects.isNull(playDao.selectLatestGame()))
+        Optional<Long> latestGame = playDao.selectLatestGame();
+        if (Objects.isNull(latestGame))
             return 0L;
-        return playDao.selectLatestGame();
+        return latestGame.get();
+
     }
 
     public List<PlayHistories> getPlayHistories() {
