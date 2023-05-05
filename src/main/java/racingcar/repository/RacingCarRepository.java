@@ -1,7 +1,5 @@
 package racingcar.repository;
 
-import static racingcar.domain.RaceResult.getWinnersString;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,8 +18,8 @@ public class RacingCarRepository {
   private final JdbcTemplate jdbcTemplate;
 
   public void insertRacingResult(RaceResult raceResult, LocalDateTime racingDate) {
-    String winners = raceResult.getWinners();
     List<RacingCar> racingCars = raceResult.getRacingCars();
+    String winners = raceResult.getWinner(racingCars);
     String sql = "INSERT INTO RACING_GAME (WINNERS, RACING_DATE) VALUES (?, ?)";
     jdbcTemplate.update(sql, winners, racingDate);
     for (RacingCar racingCar : racingCars) {
@@ -45,7 +43,7 @@ public class RacingCarRepository {
     List<RaceResult> results = new ArrayList<>();
     for (Map.Entry<LocalDateTime, List<RacingCar>> entry : resultMap.entrySet()) {
       List<RacingCar> racingCars = entry.getValue();
-      results.add(new RaceResult(getWinnersString(racingCars), racingCars));
+      results.add(new RaceResult(racingCars));
     }
     return results;
   }

@@ -20,25 +20,19 @@ public class RacingCarService {
   private final RacingCarRepository racingCarRepository;
 
   public RacingResultDto playRacing(RacingRequestDto racingRequestDto) {
-    // RacingCars 만들기
     String names = racingRequestDto.getNames();
-    List<RacingCar> racingCars = this.makeRacingCars(names);
+    List<RacingCar> racingCars = makeRacingCars(names);
 
-    // count 만큼 racing play
     int count = racingRequestDto.getCount();
     for (int i = 0; i < count; i++) {
-      this.playRacingGame(racingCars);
+      playRound(racingCars);
     }
 
-    // 우승자 구하기
-    String winners = this.getWinner(racingCars);
-
-    //레이싱 히스토리 적재
-    RaceResult result = new RaceResult(winners, racingCars);
+    RaceResult result = new RaceResult(racingCars);
     racingCarRepository.insertRacingResult(result, LocalDateTime.now());
     System.out.println("히스토리 적재완료");
 
-    return new RacingResultDto(winners, racingCars);
+    return new RacingResultDto(result.getWinner(racingCars), result.getRacingCars());
   }
 
   public List<RaceResult> findAll() {
@@ -46,35 +40,12 @@ public class RacingCarService {
   }
 
 
-  private String getWinner(List<RacingCar> racingCars) {
-    // RacingCar 객체들을 position 속성값으로 내림차순으로 정렬
-    racingCars.sort(Comparator.comparingInt(RacingCar::getPosition).reversed());
-
-    // 우승자 이름 저장할 리스트
-    List<String> winners = new ArrayList<>();
-    int maxPosition = racingCars.get(0).getPosition();
-    winners.add(racingCars.get(0).getName());
-
-    for (int i = 1; i < racingCars.size(); i++) {
-      RacingCar car = racingCars.get(i);
-      if (car.getPosition() == maxPosition) {
-        winners.add(car.getName());
-      } else {
-        break;
-      }
-    }
-
-    // 우승자 이름을 쉼표로 구분하여 String 형태로 반환
-    return String.join(",", winners);
-  }
-
-
-  private void playRacingGame(List<RacingCar> racingCars) {
+  public void playRound(List<RacingCar> racingCars) {
     //게임 돌리기
     Random random = new Random();
     for (RacingCar racingCar : racingCars) {
-      int ranDomNum = random.nextInt();
-      racingCar.move(ranDomNum);
+      int randomNumber = random.nextInt(10);
+      racingCar.move(randomNumber);
     }
   }
 

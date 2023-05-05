@@ -28,7 +28,7 @@ public class RacingController {
   }
 
   @GetMapping("/plays")
-  public ResponseEntity<List<RaceResult>> findAll(){
+  public ResponseEntity<List<RaceResult>> findAll() {
     return ResponseEntity.ok(racingCarService.findAll());
   }
 }
