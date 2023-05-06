@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
 public class PlayHistoryDto {
 
     private String winners;
-    private List<PlayResponseDto.RacingCar> racingCars;
+    private List<PlayHistoryDto.RacingCar> racingCars;
 
     @Getter
     @AllArgsConstructor
@@ -22,7 +23,11 @@ public class PlayHistoryDto {
     }
 
     public PlayResponseDto toPlayResponseDto() {
-        return new PlayResponseDto(winners, racingCars);
+        List<PlayResponseDto.RacingCar> playResponseDtoRacingCars = this.racingCars.stream()
+                .map(racingCar -> new PlayResponseDto.RacingCar(racingCar.name, racingCar.position))
+                .collect(Collectors.toList());
+
+        return new PlayResponseDto(winners, playResponseDtoRacingCars);
     }
 
 }

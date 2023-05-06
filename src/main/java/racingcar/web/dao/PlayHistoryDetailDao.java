@@ -30,7 +30,7 @@ public class PlayHistoryDetailDao {
         return jdbcTemplate.query(sql, playHistoryDetailRowMapper(), id);
     }
 
-    public Long insert(PlayHistoryDetail playHistoryDetail) {
+    public Long save(PlayHistoryDetail playHistoryDetail) {
         String sql = "INSERT INTO play_history_detail (play_history_id, name, position) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

@@ -8,13 +8,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import racingcar.web.entity.PlayHistory;
 import racingcar.web.entity.PlayHistoryDetail;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @JdbcTest
 class PlayHistoryDetailDaoTest {
 
-    @Autowired JdbcTemplate jdbcTemplate;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
     PlayHistoryDetailDao playHistoryDetailDao;
     PlayHistoryDao playHistoryDao;
 
@@ -25,11 +28,11 @@ class PlayHistoryDetailDaoTest {
     }
 
     @Test
-    void insert() {
-        Long playHistoryId = playHistoryDao.insert(new PlayHistory(3, "carA"));
+    void save() {
+        Long playHistoryId = playHistoryDao.save(new PlayHistory(3, "carA"));
 
         PlayHistoryDetail givenPlayHistoryDetail = new PlayHistoryDetail(playHistoryId, "carA", 3);
-        Long id = playHistoryDetailDao.insert(givenPlayHistoryDetail);
+        Long id = playHistoryDetailDao.save(givenPlayHistoryDetail);
 
         assertThat(id).isNotNull();
 
@@ -37,5 +40,24 @@ class PlayHistoryDetailDaoTest {
         assertThat(findPlayHistoryDetail.getPlayHistoryId()).isEqualTo(playHistoryId);
         assertThat(findPlayHistoryDetail.getName()).isEqualTo("carA");
         assertThat(findPlayHistoryDetail.getPosition()).isEqualTo(3);
+    }
+
+    @Test
+    void findByPlayHistoryId() {
+        Long playHistoryId = playHistoryDao.save(new PlayHistory(3, "carA"));
+
+        List<PlayHistoryDetail> givenPlayHistoryDetailList = List.of(
+                new PlayHistoryDetail(playHistoryId, "carA", 3),
+                new PlayHistoryDetail(playHistoryId, "carB", 2)
+        );
+        for (PlayHistoryDetail playHistoryDetail : givenPlayHistoryDetailList) {
+            playHistoryDetailDao.save(playHistoryDetail);
+        }
+
+        List<PlayHistoryDetail> findPlayHistoryDetailList = playHistoryDetailDao.findByPlayHistoryId(playHistoryId);
+        assertThat(findPlayHistoryDetailList).hasSize(2);
+        assertThat(findPlayHistoryDetailList).flatExtracting(PlayHistoryDetail::getName).containsExactly("carA", "carB");
+        assertThat(findPlayHistoryDetailList).flatExtracting(PlayHistoryDetail::getPosition).containsExactly(3, 2);
+
     }
 }

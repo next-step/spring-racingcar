@@ -12,6 +12,7 @@ import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.entity.PlayHistory;
 import racingcar.web.entity.PlayHistoryDetail;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,22 +45,34 @@ public class PlayService {
     @Transactional
     public Long savePlayResults(int playCount, String winners, List<PlayResult> playResults) {
         PlayHistory playHistory = new PlayHistory(playCount, winners);
-        Long playHistoryId = playHistoryDao.insert(playHistory);
+        Long playHistoryId = playHistoryDao.save(playHistory);
 
         List<PlayHistoryDetail> playHistoryDetails = playResults.stream()
                 .map(playResult -> new PlayHistoryDetail(playHistoryId, playResult.getNameValue(), playResult.getPositionValue()))
                 .collect(Collectors.toList());
 
         for (PlayHistoryDetail playHistoryDetail : playHistoryDetails) {
-            playHistoryDetailDao.insert(playHistoryDetail);
+            playHistoryDetailDao.save(playHistoryDetail);
         }
 
         return playHistoryId;
     }
 
-    // TODO Service 로직 구현
     public List<PlayHistoryDto> history() {
-        return List.of();
+        List<PlayHistoryDto> results = new ArrayList<>();
+
+        List<PlayHistory> playHistoryList = playHistoryDao.findAll();
+        // TODO mapping 로직 개선
+        for (PlayHistory playHistory : playHistoryList) {
+            List<PlayHistoryDetail> playHistoryDetailList = playHistoryDetailDao.findByPlayHistoryId(playHistory.getId());
+            List<PlayHistoryDto.RacingCar> racingCarList = playHistoryDetailList.stream()
+                    .map(playHistoryDetail -> new PlayHistoryDto.RacingCar(playHistoryDetail.getName(), playHistoryDetail.getPosition()))
+                    .collect(Collectors.toList());
+
+            results.add(new PlayHistoryDto(playHistory.getWinners(), racingCarList));
+        }
+
+        return results;
     }
 
 }

@@ -11,6 +11,7 @@ import racingcar.domain.PlayResult;
 import racingcar.strategy.TestMovingStrategy;
 import racingcar.web.dao.PlayHistoryDao;
 import racingcar.web.dao.PlayHistoryDetailDao;
+import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.entity.PlayHistory;
 import racingcar.web.entity.PlayHistoryDetail;
 
@@ -69,7 +70,6 @@ class PlayServiceTest {
                 new PlayResult(2, "carB")
         );
         int playCount = 10;
-
         Long playHistoryId = playService.savePlayResults(playCount, "carA", playResults);
 
         PlayHistory playHistory = assertDoesNotThrow(playHistoryDao.findById(playHistoryId)::get);
@@ -79,6 +79,25 @@ class PlayServiceTest {
         assertThat(playHistory.getTrialCount()).isEqualTo(playCount);
         assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getName)).containsOnly("carA", "carB");
         assertThat(playHistoryDetails.stream().map(PlayHistoryDetail::getPosition)).containsOnly(3, 2);
+    }
+
+    @Test
+    @Transactional
+    void history() {
+        List<PlayResult> playResults = List.of(
+                new PlayResult(3, "carA"),
+                new PlayResult(2, "carB")
+        );
+        int playCount = 10;
+        playService.savePlayResults(playCount, "carA", playResults);
+
+        PlayHistoryDto playHistoryDto = playService.history().get(0);
+
+        assertThat(playHistoryDto.getWinners()).isEqualTo("carA");
+        assertThat(playHistoryDto.getRacingCars())
+                .flatExtracting(PlayHistoryDto.RacingCar::getName).containsExactly("carA", "carB");
+        assertThat(playHistoryDto.getRacingCars())
+                .flatExtracting(PlayHistoryDto.RacingCar::getPosition).containsExactly(3, 2);
     }
 
     private static Stream<Arguments> playResultsProvider() {

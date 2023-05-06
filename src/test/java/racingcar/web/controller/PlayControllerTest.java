@@ -72,12 +72,12 @@ class PlayControllerTest {
     void history() throws Exception {
         List<PlayHistoryDto> playHistoryDtoList = List.of(
                 new PlayHistoryDto("carA", List.of(
-                        new PlayResponseDto.RacingCar("carA", 1),
-                        new PlayResponseDto.RacingCar("carB", 0)
+                        new PlayHistoryDto.RacingCar("carA", 1),
+                        new PlayHistoryDto.RacingCar("carB", 0)
                 )),
                 new PlayHistoryDto("carB", List.of(
-                        new PlayResponseDto.RacingCar("carA", 0),
-                        new PlayResponseDto.RacingCar("carB", 1)
+                        new PlayHistoryDto.RacingCar("carA", 0),
+                        new PlayHistoryDto.RacingCar("carB", 1)
                 ))
         );
 
