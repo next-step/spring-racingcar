@@ -2,7 +2,6 @@ package racingcar.advice;
 
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestValueException;
@@ -13,12 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice(annotations = RestController.class)
-public class ExControllerAdvice {
+public class ExceptionControllerAdvice {
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
