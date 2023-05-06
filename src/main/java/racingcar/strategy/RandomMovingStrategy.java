@@ -1,12 +1,7 @@
 package racingcar.strategy;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Component;
-
 import java.util.Random;
 
-@ConditionalOnMissingBean(MovingStrategy.class)
-@Component
 public class RandomMovingStrategy implements MovingStrategy {
 
     private static final int RANDOM_NUMBER_LIMIT = 10;
