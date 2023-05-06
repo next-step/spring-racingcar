@@ -15,8 +15,13 @@ import java.util.List;
 
 @Getter
 public class RacingPlaysRequest {
-    private String names;
-    private int count;
+    private final String names;
+    private final int count;
+
+    public RacingPlaysRequest(String names, int count) {
+        this.names = names;
+        this.count = count;
+    }
 
     public List<RacingCar> getConvertRequestNameToCarList(){
         List<RacingCar> result = new ArrayList<>();

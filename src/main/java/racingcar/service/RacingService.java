@@ -3,6 +3,7 @@ package racingcar.service;
 import org.springframework.stereotype.Service;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
+import racingcar.domain.RacingCars;
 import racingcar.dto.RacingCarResponse;
 import racingcar.dto.RacingPlaysRequest;
 import racingcar.dto.RacingPlaysResponse;
@@ -31,6 +32,7 @@ public class RacingService {
 
         racingResultRepository.insertGameResult(
                 PlayResult.builder()
+                        .winners(new RacingCars(racingCars).getWinnersToString())
                         .trialCount(racingPlaysRequest.getCount())
                         .racingCars(RacingCarResponse.listOf(racingCars))
                         .build()

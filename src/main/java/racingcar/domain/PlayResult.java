@@ -16,38 +16,18 @@ import java.util.stream.Collectors;
  */
 @Getter
 public class PlayResult {
-    private String winners;
-    private int trialCount;
-    private List<RacingCarResponse> racingCars;
-    private LocalDateTime createdAt;
+    private final String winners;
+    private final int trialCount;
+    private final List<RacingCarResponse> racingCars;
+    private final LocalDateTime createdAt;
 
     @Builder
-    public PlayResult(int trialCount, List<RacingCarResponse> racingCars, LocalDateTime createdAt) {
-        this.winners = getWinnersStringFromList(getWinners(racingCars));
+    public PlayResult(String winners, int trialCount, List<RacingCarResponse> racingCars, LocalDateTime createdAt) {
+        this.winners = winners;
         this.trialCount = trialCount;
         this.racingCars = racingCars;
         this.createdAt = createdAt;
     }
 
-    private List<RacingCarResponse> getWinners(List<RacingCarResponse> racingCars){
-        int maxPosition = 0;
-        List<RacingCarResponse> winners = new ArrayList<>();
-        for (RacingCarResponse racingCar : racingCars) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
-            if (racingCar.getPosition() >= maxPosition) {
-                winners.add(new RacingCarResponse(racingCar.getName(), racingCar.getPosition()));
-            }
-        }
-        return winners;
-    }
-
-    private String getWinnersStringFromList(List<RacingCarResponse> racingCars){
-        return racingCars.stream()
-                .map(RacingCarResponse::getName)
-                .collect(Collectors.joining(", "));
-    }
 
 }
