@@ -40,8 +40,8 @@ class RacingGameFacadeTest {
         this.racingGameRepository = Mockito.mock(RacingGameRepository.class);
         this.calculateRaceService = Mockito.spy(CalculateRaceService.class);
         this.racingGameService = new RacingGameService(Mockito.mock(RacingGameRepository.class));
-        this.racingPlayerService = new RacingPlayerService(Mockito.mock(RacingPlayerRepository.class), calculateRaceService);
-        this.racingGameFacade = new RacingGameFacadeImpl(racingGameService, racingPlayerService);
+        this.racingPlayerService = new RacingPlayerService(Mockito.mock(RacingPlayerRepository.class));
+        this.racingGameFacade = new RacingGameFacadeImpl(racingGameService, racingPlayerService, calculateRaceService);
     }
 
     @BeforeEach

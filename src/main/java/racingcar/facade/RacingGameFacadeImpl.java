@@ -6,6 +6,7 @@ import racingcar.entity.RacingGame;
 import racingcar.entity.RacingGameResponse;
 import racingcar.entity.RacingPlayer;
 import racingcar.entity.RacingPlayerResponse;
+import racingcar.service.CalculateRaceService;
 import racingcar.service.RacingGameService;
 import racingcar.service.RacingPlayerService;
 
@@ -20,11 +21,14 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
 
     private final RacingGameService racingGameService;
     private final RacingPlayerService racingPlayerService;
+    private final CalculateRaceService calculateRaceService;
+
 
     @Autowired
-    public RacingGameFacadeImpl(RacingGameService racingGameService, RacingPlayerService racingPlayerService) {
+    public RacingGameFacadeImpl(RacingGameService racingGameService, RacingPlayerService racingPlayerService, CalculateRaceService calculateRaceService) {
         this.racingGameService = racingGameService;
         this.racingPlayerService = racingPlayerService;
+        this.calculateRaceService = calculateRaceService;
     }
 
 
@@ -32,7 +36,7 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
     public CreateRacingGameResponse createRacingGame(String names, Integer trialCount) {
         List<String> nameList = this.getNameList(names);
         RacingGame racingGame = racingGameService.createRacingGame(trialCount);
-        List<Integer> positions = racingPlayerService.getPositions(nameList, racingGame.getTrialCount());
+        List<Integer> positions = this.getPositions(nameList, racingGame.getTrialCount());
         Integer maxValue = racingPlayerService.getMaxValue(positions);
 
         List<RacingPlayer> racingPlayers = this.createRacingPlayers(nameList, racingGame, positions, maxValue);
@@ -53,5 +57,16 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
         return IntStream.range(0, nameList.size())
                 .mapToObj(i -> racingPlayerService.createRacingPlayer(nameList.get(i), positions.get(i), racingPlayerService.isWinner(positions.get(i), maxValue), racingGame))
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 레이싱 결과물을 구한다.
+     * @param names 플레이어 이름
+     * @param count 차수
+     * @return 레이싱 결과물
+     */
+    public List<Integer> getPositions(List<String> names, int count) {
+        return IntStream.range(0, names.size()).mapToObj(i -> calculateRaceService.getPosition(count)).collect(Collectors.toList());
     }
 }

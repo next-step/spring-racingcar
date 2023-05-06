@@ -13,13 +13,11 @@ import java.util.stream.IntStream;
 @Service
 public class RacingPlayerService {
     private final RacingPlayerRepository racingPlayerRepository;
-    private final CalculateRaceService calculateRaceService;
 
 
     @Autowired
-    public RacingPlayerService(RacingPlayerRepository racingPlayerRepository, CalculateRaceService calculateRaceService) {
+    public RacingPlayerService(RacingPlayerRepository racingPlayerRepository) {
         this.racingPlayerRepository = racingPlayerRepository;
-        this.calculateRaceService = calculateRaceService;
     }
 
 
@@ -49,16 +47,6 @@ public class RacingPlayerService {
      */
     public Integer getMaxValue(List<Integer> distances) {
         return distances.stream().max(Integer::compareTo).orElseThrow(RuntimeException::new);
-    }
-
-    /**
-     * 레이싱 결과물을 구한다.
-     * @param names 플레이어 이름
-     * @param count 차수
-     * @return 레이싱 결과물
-     */
-    public List<Integer> getPositions(List<String> names, int count) {
-        return IntStream.range(0, names.size()).mapToObj(i -> calculateRaceService.getPosition(count)).collect(Collectors.toList());
     }
 
 }
