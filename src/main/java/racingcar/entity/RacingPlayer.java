@@ -1,8 +1,15 @@
 package racingcar.entity;
 
+import racingcar.support.GeneratedValue;
+import racingcar.support.IdField;
+
 import javax.validation.constraints.NotNull;
 
 public class RacingPlayer extends BaseEntity {
+
+    @IdField
+    @GeneratedValue
+    private Long id;
     private Long racingGameId;
     @NotNull
     private final String name;
@@ -35,5 +42,14 @@ public class RacingPlayer extends BaseEntity {
 
     public Boolean isWinner() {
         return isWinner;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return id == null;
     }
 }

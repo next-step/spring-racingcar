@@ -5,6 +5,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import racingcar.entity.RacingGame;
 import racingcar.entity.RacingPlayer;
 import racingcar.entity.RacingPlayerResponse;
@@ -20,34 +23,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@Transactional
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class RacingGameFacadeTest {
 
-    RacingPlayerRepository racingPlayerRepository;
-    RacingGameRepository racingGameRepository;
+    @Autowired private RacingPlayerRepository racingPlayerRepository;
+    @Autowired private RacingGameRepository racingGameRepository;
 
-    private final RacingGameFacade racingGameFacade;
-    private RacingPlayerService racingPlayerService;
-    private CalculateRaceService calculateRaceService;
-    private RacingGameService racingGameService;
-    @Mock
-    RacingGame racingGame;
-
-    public RacingGameFacadeTest() {
-        this.racingPlayerRepository = Mockito.mock(RacingPlayerRepository.class);
-        this.racingGameRepository = Mockito.mock(RacingGameRepository.class);
-        this.calculateRaceService = Mockito.spy(CalculateRaceService.class);
-        this.racingGameService = new RacingGameService(Mockito.mock(RacingGameRepository.class));
-        this.racingPlayerService = new RacingPlayerService(Mockito.mock(RacingPlayerRepository.class));
-        this.racingGameFacade = new RacingGameFacadeImpl(racingGameService, racingPlayerService, calculateRaceService);
-    }
-
-    @BeforeEach
-    void init() {
-        BDDMockito.given(racingGameRepository.save(any())).willReturn(racingGame);
-    }
+    @Autowired private RacingGameFacade racingGameFacade;
+    @Autowired private RacingPlayerService racingPlayerService;
+    @Autowired private CalculateRaceService calculateRaceService;
+    @Autowired private RacingGameService racingGameService;
 
     @DisplayName("trialCount가 음수라면")
     @Nested
@@ -95,11 +82,6 @@ class RacingGameFacadeTest {
         @Nested
         class player5 {
 
-            @BeforeEach
-            void init() {
-                BDDMockito.given(racingGameRepository.save(racingGame)).willReturn(racingGame);
-            }
-
             @DisplayName("참가자를 다섯 생성한다.")
             @Test
             void createPlayer() {
@@ -119,6 +101,4 @@ class RacingGameFacadeTest {
             }
         }
     }
-
-
 }

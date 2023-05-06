@@ -5,11 +5,14 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import racingcar.entity.BaseEntity;
+import racingcar.support.GeneratedValue;
+import racingcar.support.IdField;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDateTime;
@@ -27,6 +30,39 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
         this.validator = validator;
     }
 
+    protected ID getId(T entity) {
+        for (Field field : entity.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(IdField.class)) {
+                field.setAccessible(true);
+                try {
+                    return (ID) field.get(entity);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Unable to access ID field", e);
+                } catch (ClassCastException e) {
+                    throw new RuntimeException("ID field cannot cast", e);
+                }
+            }
+        }
+        throw new RuntimeException("No ID field found");
+    }
+
+    protected void setId(T entity, ID id) {
+        for (Field field : entity.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(IdField.class)) {
+                field.setAccessible(true);
+                try {
+                    field.set(entity, id);
+                    return;
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Unable to access ID field", e);
+                } catch (ClassCastException e) {
+                    throw new RuntimeException("ID field cannot cast", e);
+                }
+            }
+        }
+        throw new RuntimeException("No ID field found");
+    }
+
     /**
      * 객체가 저장되지 않은 엔티티라고 판단하면 저장한다.
      *
@@ -35,7 +71,7 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
      */
     public T save(T entity) {
         this.validate(entity);
-        if (entity.getId() == null) {
+        if (entity.isNew()) {
             return insert(entity);
         } else {
             throw new IllegalArgumentException("이미 저장된 데이터입니다.");
@@ -50,8 +86,17 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
      * @return 저장된 엔티티
      */
     protected T insert(T entity, String insertSql, PreparedStatementSetter pss) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         entity.setCreatedDate(LocalDateTime.now());
+        if (isGeneratedValueEntity(entity)) {
+            return insertGeneratedValue(entity, insertSql, pss);
+        } else {
+            throw new IllegalArgumentException("현재 지원하지 않는 기능입니다.");
+        }
+    }
+    protected T insertGeneratedValue(T entity, String insertSql, PreparedStatementSetter pss) {
+        entity.setCreatedDate(LocalDateTime.now());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
@@ -59,7 +104,8 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
             return ps;
         }, keyHolder);
 
-        entity.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
+        Number id = Objects.requireNonNull(keyHolder.getKey());
+        setId(entity, (ID) id);
 
         return entity;
     }
@@ -76,10 +122,19 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
      * 객체의 유효성을 검사한다.
      * @param entity 단일 엔티티
      */
-    protected void validate(T entity) {
+    private void validate(T entity) {
         Set<ConstraintViolation<T>> violations = validator.validate(entity);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+    }
+
+    private boolean isGeneratedValueEntity(T entity) {
+        for (Field field : entity.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(IdField.class) && field.isAnnotationPresent(GeneratedValue.class)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

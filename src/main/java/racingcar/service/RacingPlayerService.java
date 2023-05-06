@@ -32,8 +32,7 @@ public class RacingPlayerService {
     public RacingPlayer createRacingPlayer(String name, Integer position, Boolean isWinner, RacingGame racingGame) {
         RacingPlayer racingPlayer = new RacingPlayer(name, position, isWinner);
         racingPlayer.injectRacingGameId(racingGame.getId());
-        racingPlayerRepository.save(racingPlayer);
-        return racingPlayer;
+        return racingPlayerRepository.save(racingPlayer);
     }
 
     public boolean isWinner(int position, int maxValue) {

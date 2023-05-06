@@ -20,7 +20,6 @@ public class RacingGameService {
 
     public RacingGame createRacingGame(int trialCount) {
         RacingGame racingGame = new RacingGame(trialCount);
-        racingGameRepository.save(racingGame);
-        return racingGame;
+        return racingGameRepository.save(racingGame);
     }
 }
