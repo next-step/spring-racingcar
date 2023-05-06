@@ -11,6 +11,7 @@ import racingcar.repository.RacingResultRepository;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author a1101466 on 2023/05/02
@@ -38,9 +39,19 @@ public class RacingService {
                         .build()
         );
 
-        PlayResult playResult =  racingResultRepository.getResults();
+        PlayResult playResult =  racingResultRepository.getResult();
 
         return RacingPlaysResponse.of(playResult);
+
+    }
+
+    public List<RacingPlaysResponse> playRaceList(){
+
+        List<PlayResult> playListResult =  racingResultRepository.getResultAll();
+
+        return racingResultRepository.getResultAll().stream()
+                .map(RacingPlaysResponse::of)
+                .collect(Collectors.toList());
 
     }
 

@@ -12,6 +12,7 @@ import racingcar.domain.RacingCars;
 import racingcar.dto.RacingCarResponse;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,18 +40,11 @@ public class RacingResultRepository {
 
     }
 
-    public PlayResult getResults() {
+    public PlayResult getResult() {
         String sql = "SELECT * FROM play_result order by id desc limit 1";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
 
-            String jsonRacingCars = rs.getString("racing_cars").replaceAll("\\\\", "");
-            jsonRacingCars = jsonRacingCars.substring(1, jsonRacingCars.length()-1);
-            List<RacingCar> racingCars = null;
-            try {
-                racingCars = objectMapper.readValue(jsonRacingCars, new TypeReference<>() {});
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("racingcars json -> List<RacingCar> 변환실패");
-            }
+            List<RacingCar> racingCars = getRacingCarListToJson(rs.getString("racing_cars").replaceAll("\\\\", ""));
             return PlayResult.builder()
                     .winners(new RacingCars(racingCars).getWinnersToString())
                     .trialCount(rs.getInt("trial_count"))
@@ -58,6 +52,34 @@ public class RacingResultRepository {
                     .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                     .build();
         });
+    }
+
+
+    public List<PlayResult> getResultAll() {
+        String sql = "SELECT * FROM play_result order by id";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+
+            List<RacingCar> racingCars = getRacingCarListToJson(rs.getString("racing_cars").replaceAll("\\\\", ""));
+            return PlayResult.builder()
+                    .winners(new RacingCars(racingCars).getWinnersToString())
+                    .trialCount(rs.getInt("trial_count"))
+                    .racingCars(RacingCarResponse.listOf(racingCars))
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .build();
+        });
+    }
+
+
+    private List<RacingCar> getRacingCarListToJson(String jsonString){
+        List<RacingCar> racingCars = null;
+        try {
+            jsonString = jsonString.substring(1, jsonString.length()-1);
+            racingCars = objectMapper.readValue(jsonString, new TypeReference<>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("racingcars json -> List<RacingCar> 변환실패");
+        }
+
+        return racingCars;
     }
 
 }
