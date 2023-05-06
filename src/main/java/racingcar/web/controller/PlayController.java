@@ -1,10 +1,12 @@
 package racingcar.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import racingcar.domain.PlayResult;
+import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.dto.PlayRequestDto;
 import racingcar.web.dto.PlayResponseDto;
 import racingcar.web.dto.PlayResponseDto.RacingCar;
@@ -21,6 +23,16 @@ public class PlayController {
 
     private final PlayService playService;
 
+    @GetMapping("/plays")
+    public List<PlayResponseDto> history() {
+        List<PlayHistoryDto> historyDtoList = playService.history();
+
+        return historyDtoList.stream()
+                .map(PlayHistoryDto::toPlayResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    // TODO mapping 로직 책임 고민
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {
         List<PlayResult> playResults = playService.play(splitNames(playRequestDto.getNames()), playRequestDto.getCount());

@@ -8,6 +8,7 @@ import racingcar.domain.RacingCarGame;
 import racingcar.strategy.MovingStrategy;
 import racingcar.web.dao.PlayHistoryDao;
 import racingcar.web.dao.PlayHistoryDetailDao;
+import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.entity.PlayHistory;
 import racingcar.web.entity.PlayHistoryDetail;
 
@@ -54,6 +55,11 @@ public class PlayService {
         }
 
         return playHistoryId;
+    }
+
+    // TODO Service 로직 구현
+    public List<PlayHistoryDto> history() {
+        return List.of();
     }
 
 }

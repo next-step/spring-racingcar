@@ -16,7 +16,7 @@
 
 ## Step 2 미션 요구사항
 - [ ] 게임 플레이 이력 조회 API 구현
-  - [ ] ResponseDto, Controller, test 구현
+  - [x] ResponseDto, Controller, test 구현
   - [ ] Service 로직, dao, test 구현
 - [ ] console application 출력 방식 변경
   - [ ] 중간 과정 출력 로직 제거

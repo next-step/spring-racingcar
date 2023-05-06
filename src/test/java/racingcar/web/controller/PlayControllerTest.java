@@ -8,13 +8,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import racingcar.domain.PlayResult;
+import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.dto.PlayRequestDto;
 import racingcar.web.dto.PlayResponseDto;
 import racingcar.web.service.PlayService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,5 +66,30 @@ class PlayControllerTest {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Error Message"));
+    }
+
+    @Test
+    void history() throws Exception {
+        List<PlayHistoryDto> playHistoryDtoList = List.of(
+                new PlayHistoryDto("carA", List.of(
+                        new PlayResponseDto.RacingCar("carA", 1),
+                        new PlayResponseDto.RacingCar("carB", 0)
+                )),
+                new PlayHistoryDto("carB", List.of(
+                        new PlayResponseDto.RacingCar("carA", 0),
+                        new PlayResponseDto.RacingCar("carB", 1)
+                ))
+        );
+
+        given(playService.history()).willReturn(playHistoryDtoList);
+
+        List<PlayResponseDto> playResponseDtoList = playHistoryDtoList.stream()
+                .map(PlayHistoryDto::toPlayResponseDto)
+                .collect(Collectors.toList());
+
+        mvc.perform(get("/plays")
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(playResponseDtoList)));
     }
 }
