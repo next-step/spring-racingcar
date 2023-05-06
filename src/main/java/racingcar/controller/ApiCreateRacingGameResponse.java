@@ -8,6 +8,8 @@ import java.util.List;
 public class ApiCreateRacingGameResponse {
 
     String winners;
+    List<ApiCreateRacingPlayerResponse> racingCars;
+
 
     public String getWinners() {
         return winners;
@@ -22,5 +24,4 @@ public class ApiCreateRacingGameResponse {
         this.racingCars = racingCars;
     }
 
-    List<ApiCreateRacingPlayerResponse> racingCars;
 }

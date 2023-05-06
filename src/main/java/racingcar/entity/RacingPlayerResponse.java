@@ -6,9 +6,9 @@ public class RacingPlayerResponse {
     private final Long id;
     private final String name;
 
-    public Long getId() {
-        return id;
-    }
+    private final Integer position;
+    private final Boolean isWinner;
+
 
     public RacingPlayerResponse(Long id, String name, Integer position, Boolean isWinner) {
         this.id = id;
@@ -17,8 +17,9 @@ public class RacingPlayerResponse {
         this.isWinner = isWinner;
     }
 
-    private final Integer position;
-    private final Boolean isWinner;
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
