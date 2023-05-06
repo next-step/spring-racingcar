@@ -7,33 +7,18 @@ import java.util.stream.Collectors;
 
 public class ResultView {
 
-    private static final String RESULT_MESSAGE = "-";
-
-    public static void printTitle() {
-        printNewLine();
-        System.out.println("실행 결과");
-    }
-
-    public static void printPlayResults(List<PlayResult> playResults) {
-        for (PlayResult playResult : playResults) {
-            System.out.println(playResult.getNameValue() + " : "
-                    + resolvePositionResultMessage(playResult.getPositionValue()));
-        }
-        printNewLine();
-    }
-
-    private static String resolvePositionResultMessage(int position) {
-        return RESULT_MESSAGE.repeat(Math.max(0, position));
-    }
-
     public static void printWinners(List<PlayResult> playResults) {
         String winnerCarNames = playResults.stream()
                 .map(PlayResult::getNameValue)
                 .collect(Collectors.joining(", "));
-        System.out.println(winnerCarNames + "가 최종 우승했습니다.");
+        System.out.println("\n우승자 : " + winnerCarNames);
     }
 
-    private static void printNewLine() {
-        System.out.println();
+    public static void printPlayResults(List<PlayResult> playResults) {
+        System.out.println("\n결과 : ");
+        for (PlayResult playResult : playResults) {
+            System.out.println("Name : " + playResult.getNameValue() + ", Position : " + playResult.getPositionValue());
+        }
     }
+
 }

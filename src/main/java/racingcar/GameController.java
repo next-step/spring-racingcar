@@ -18,17 +18,14 @@ public class GameController {
     public static void main(String[] args) {
         RacingCarGame racingCarGame = RacingCarGameFactory.getInstance();
 
-        ResultView.printTitle();
-
         List<PlayResult> playResults = null;
         while (!racingCarGame.isEnd()) {
             racingCarGame.play(MOVING_STRATEGY);
             playResults = racingCarGame.getPlayResults();
-
-            ResultView.printPlayResults(playResults);
         }
 
         ResultView.printWinners(RacingCarGame.findWinners(playResults));
+        ResultView.printPlayResults(playResults);
     }
 
 }

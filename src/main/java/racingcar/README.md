@@ -18,8 +18,8 @@
 - [x] 게임 플레이 이력 조회 API 구현
   - [x] ResponseDto, Controller, test 구현
   - [x] Service 로직, dao, test 구현
-- [ ] console application 출력 방식 변경
-  - [ ] 중간 과정 출력 로직 제거
-  - [ ] 결과 출력 방식을 '우승자, player 별 최종 이동거리' 로 변경
+- [x] console application 출력 방식 변경
+  - [x] 중간 과정 출력 로직 제거
+  - [x] 결과 출력 방식을 '우승자, player 별 최종 이동거리' 로 변경
 - [ ] 중복 코드 제거
   - [ ] PlayService 활용해 중복 코드 제거하기
