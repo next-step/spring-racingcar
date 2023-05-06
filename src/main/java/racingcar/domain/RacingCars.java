@@ -5,6 +5,7 @@ import racingcar.dto.RacingCarResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -35,5 +36,17 @@ public class RacingCars {
         return winners.stream()
                 .map(RacingCarResponse::getName)
                 .collect(Collectors.joining(", "));
+    }
+
+    public  void playRound(int requestRound) {
+
+        Random random = new Random();
+        for (int i = 0; i < requestRound; i++) {
+            for (RacingCar racingCar : racingCars) {
+                int randomNumber = random.nextInt(10);
+                racingCar.move(randomNumber);
+            }
+        }
+
     }
 }

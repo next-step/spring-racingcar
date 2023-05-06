@@ -27,15 +27,16 @@ public class RacingService {
     }
 
     public RacingPlaysResponse playRace(RacingPlaysRequest racingPlaysRequest){
-        List<RacingCar> racingCars = racingPlaysRequest.getConvertRequestNameToCarList();
 
-        playRound(racingCars, racingPlaysRequest.getCount());
+        RacingCars racingCars = new RacingCars(racingPlaysRequest.getConvertRequestNameToCarList());
+
+        racingCars.playRound(racingPlaysRequest.getCount());
 
         racingResultRepository.insertGameResult(
                 PlayResult.builder()
-                        .winners(new RacingCars(racingCars).getWinnersToString())
+                        .winners(racingCars.getWinnersToString())
                         .trialCount(racingPlaysRequest.getCount())
-                        .racingCars(RacingCarResponse.listOf(racingCars))
+                        .racingCars(RacingCarResponse.listOf(racingCars.getRacingCars()))
                         .build()
         );
 
@@ -52,18 +53,6 @@ public class RacingService {
         return racingResultRepository.getResultAll().stream()
                 .map(RacingPlaysResponse::of)
                 .collect(Collectors.toList());
-
-    }
-
-    private static void playRound(List<RacingCar> racingCars, int requestRound) {
-
-        Random random = new Random();
-        for (int i = 0; i < requestRound; i++) {
-            for (RacingCar racingCar : racingCars) {
-                int randomNumber = random.nextInt(10);
-                racingCar.move(randomNumber);
-            }
-        }
 
     }
 

@@ -17,6 +17,7 @@ import java.util.List;
  * @description
  */
 @RestController
+@RequestMapping("/plays")
 public class RacingCarController {
     private final RacingService racingService;
 
@@ -24,12 +25,12 @@ public class RacingCarController {
         this.racingService = racingService;
     }
 
-    @PostMapping("/plays")
+    @PostMapping
     public RacingPlaysResponse plays(@RequestBody RacingPlaysRequest racingPlaysRequest){
         return racingService.playRace(racingPlaysRequest);
     }
 
-    @GetMapping("/plays")
+    @GetMapping
     public List<RacingPlaysResponse> getPlayList(){
         return racingService.playRaceList();
     }
