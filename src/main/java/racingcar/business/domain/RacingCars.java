@@ -1,4 +1,4 @@
-package racingcar;
+package racingcar.business.domain;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class RacingCars {
         return cars;
     }
 
-    public String getWinners() {
+    public String getWinnersNames() {
         Optional<Integer> maxPosition = cars.stream().map(RacingCar::getPosition).max(Integer::compareTo);
         return cars.stream().filter(racingCar -> racingCar.getPosition() == maxPosition.orElseThrow())
                 .map(RacingCar::getName).collect(Collectors.joining(","));

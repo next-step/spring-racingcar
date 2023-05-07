@@ -4,8 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import racingcar.RacingCars;
+import racingcar.data.entity.PlayResult;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
@@ -14,31 +13,30 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 class RacingRepositoryTest {
 
     @Autowired
-    private RacingRepository racingRepository;
+    private PlayResultRepositoryImpl racingRepository;
 
     @DisplayName("게임 결과 성공 케이스")
     @Test
     void insertGameResultTest() {
         // given
         String winners = "A";
-        RacingCars racingCars = new RacingCars(winners);
+        PlayResult playResult = new PlayResult(winners);
 
         // when
         // then
-        assertDoesNotThrow(() -> racingRepository.insertGameResult(racingCars));
+        assertDoesNotThrow(() -> racingRepository.insertGameResult(playResult));
     }
 
     @DisplayName("게임 결과 실패 케이스")
     @Test
     void insertGameResultFailTest() {
         // given
-        String winners = null;
-        RacingCars racingCars = new RacingCars(winners);
+        PlayResult playResult = new PlayResult(null);
 
         // when
         // then
-        assertThrowsExactly(DataIntegrityViolationException.class,
-                () -> racingRepository.insertGameResult(racingCars));
+        assertThrowsExactly(RuntimeException.class,
+                () -> racingRepository.insertGameResult(playResult));
     }
 
 }
