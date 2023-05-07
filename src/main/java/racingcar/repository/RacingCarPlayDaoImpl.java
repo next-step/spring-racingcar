@@ -36,11 +36,9 @@ public class RacingCarPlayDaoImpl implements RacingCarDao {
     public Optional<Long> selectLatestGame() {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    "SELECT * FROM PLAY_FINAL_POSITION_GAME ORDER BY created_at desc limit 1", (resultSet, rowNum) -> {
-                        GameOfPlayFinalPositionAndGame gameOfPlayFinalPositionAndGame = new GameOfPlayFinalPositionAndGame();
-                        gameOfPlayFinalPositionAndGame.setGame(resultSet.getLong("game"));
-                        return gameOfPlayFinalPositionAndGame.getGame();
-                    }
+                    "SELECT * FROM PLAY_FINAL_POSITION_GAME ORDER BY created_at desc limit 1", (resultSet, rowNum) ->
+                         resultSet.getLong("game")
+
             ));
         } catch (IncorrectResultSizeDataAccessException error) {
             return null;
