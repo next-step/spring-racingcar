@@ -2,8 +2,6 @@ package racingcar.service;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -141,7 +139,7 @@ class CalculateRaceServiceTest {
             // given
             int n = 100;
             // when
-            List<Integer> result = IntStream.range(0, 100000).mapToObj(i -> calculateRaceService.getPosition(n)).collect(Collectors.toList());
+            List<Integer> result = IntStream.range(0, 100000).mapToObj(i -> calculateRaceService.calculatePosition(n)).collect(Collectors.toList());
             // then
 
             long count = result.stream().filter(r -> r > n).count();

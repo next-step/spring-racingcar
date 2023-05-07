@@ -7,6 +7,7 @@ import racingcar.entity.RacingPlayer;
 import racingcar.repository.RacingPlayerRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,6 +19,14 @@ public class RacingPlayerService {
     @Autowired
     public RacingPlayerService(RacingPlayerRepository racingPlayerRepository) {
         this.racingPlayerRepository = racingPlayerRepository;
+    }
+
+    public List<RacingPlayer> createRacingPlayers(List<String> nameList, RacingGame racingGame, List<Integer> positions) {
+        List<Boolean> separateWinners = this.separateWinners(positions);
+
+        return IntStream.range(0, nameList.size())
+                .mapToObj(i -> this.createRacingPlayer(nameList.get(i), positions.get(i), separateWinners.get(i), racingGame))
+                .collect(Collectors.toList());
     }
 
 
@@ -35,8 +44,14 @@ public class RacingPlayerService {
         return racingPlayerRepository.save(racingPlayer);
     }
 
-    public boolean isWinner(int position, int maxValue) {
+    public boolean isWinner(int position, List<Integer> positions) {
+        Integer maxValue = this.calculateConditionOfVictory(positions);
         return maxValue == position;
+    }
+
+    public List<Boolean> separateWinners(List<Integer> positions) {
+        Integer maxValue = this.calculateConditionOfVictory(positions);
+        return positions.stream().map(position -> Objects.equals(position, maxValue)).collect(Collectors.toList());
     }
 
     /**
@@ -44,7 +59,7 @@ public class RacingPlayerService {
      * @param distances 레이싱 결과물
      * @return 최댓값
      */
-    public Integer getMaxValue(List<Integer> distances) {
+    public Integer calculateConditionOfVictory(List<Integer> distances) {
         return distances.stream().max(Integer::compareTo).orElseThrow(RuntimeException::new);
     }
 

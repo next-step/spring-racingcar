@@ -19,6 +19,7 @@ import racingcar.service.RacingGameService;
 import racingcar.service.RacingPlayerService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,15 +29,21 @@ import static org.mockito.ArgumentMatchers.any;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class RacingGameFacadeTest {
 
-    @Autowired private RacingPlayerRepository racingPlayerRepository;
-    @Autowired private RacingGameRepository racingGameRepository;
+    @Autowired
+    private RacingPlayerRepository racingPlayerRepository;
+    @Autowired
+    private RacingGameRepository racingGameRepository;
 
-    @Autowired private RacingGameFacade racingGameFacade;
-    @Autowired private RacingPlayerService racingPlayerService;
-    @Autowired private CalculateRaceService calculateRaceService;
-    @Autowired private RacingGameService racingGameService;
+    @Autowired
+    private RacingGameFacade racingGameFacade;
+    @Autowired
+    private RacingPlayerService racingPlayerService;
+    @Autowired
+    private CalculateRaceService calculateRaceService;
+    @Autowired
+    private RacingGameService racingGameService;
 
-    @DisplayName("trialCount가 음수라면")
+    @DisplayName("trialCount가 음수일 때")
     @Nested
     class minus {
 
@@ -55,30 +62,30 @@ class RacingGameFacadeTest {
         }
     }
 
-    @DisplayName("trialCount가 양수라면")
+    @DisplayName("trialCount가 양수이며")
     @Nested
     class plus {
         int trialCount = 500;
 
-        @DisplayName("참가자가 0명이라면")
+        @DisplayName("참가자가 0명일 때")
         @Nested
         class zero {
 
-                @DisplayName("에러를 발생시킨다.")
-                @Test
-                void createPlayer() {
-                    // given
-                    String names = "";
+            @DisplayName("에러를 발생시킨다.")
+            @Test
+            void createPlayer() {
+                // given
+                String names = "";
 
 
-                    // when
+                // when
 
-                    // then
-                    Assertions.assertThatThrownBy(() -> racingGameFacade.createRacingGame(names, trialCount)).isInstanceOf(RuntimeException.class);
-                }
+                // then
+                Assertions.assertThatThrownBy(() -> racingGameFacade.createRacingGame(names, trialCount)).isInstanceOf(RuntimeException.class);
+            }
         }
 
-        @DisplayName("참가자가 다섯명이라면")
+        @DisplayName("참가자가 다섯명일 때")
         @Nested
         class player5 {
 
@@ -95,9 +102,9 @@ class RacingGameFacadeTest {
                 List<RacingPlayerResponse> racingPlayers = response.getPlayers();
                 assertThat(racingPlayers).hasSize(5);
                 assertThat(racingPlayers.stream().map(RacingPlayerResponse::getName)).containsOnly("드록바", "존테리", "램파드", "에슐리콜", "체흐");
-                Integer integer = racingPlayers.stream().map(RacingPlayerResponse::getPosition).max(Integer::compareTo).get();
-                assertThat(racingPlayers.stream().filter(r -> racingPlayerService.isWinner(r.getPosition(), integer)).allMatch(RacingPlayerResponse::getWinner)).isTrue();
-                assertThat(racingPlayers.stream().filter(r -> !racingPlayerService.isWinner(r.getPosition(), integer)).noneMatch(RacingPlayerResponse::getWinner)).isTrue();
+                List<Integer> positions = racingPlayers.stream().map(RacingPlayerResponse::getPosition).collect(Collectors.toList());
+                assertThat(racingPlayers.stream().filter(r -> racingPlayerService.isWinner(r.getPosition(), positions)).allMatch(RacingPlayerResponse::getWinner)).isTrue();
+                assertThat(racingPlayers.stream().filter(r -> !racingPlayerService.isWinner(r.getPosition(), positions)).noneMatch(RacingPlayerResponse::getWinner)).isTrue();
             }
         }
     }
