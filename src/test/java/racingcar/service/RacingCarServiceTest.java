@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import racingcar.controller.dto.request.PlayRacingCarRequest;
 import racingcar.controller.dto.response.PlayRacingCarResponse;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
@@ -27,5 +29,21 @@ class RacingCarServiceTest {
         // then
         assertThat(response.getWinners()).isNotEmpty();
         assertThat(response.getRacingCars().size()).isEqualTo(5);
+    }
+
+    @Test
+    @DisplayName("자동차 경주 게임의 결과가 조회된다.")
+    void playResult() {
+        // given
+        racingCarService.play(new PlayRacingCarRequest("test1,test2,test3", 5));
+        racingCarService.play(new PlayRacingCarRequest("test1,test2,test3", 5));
+
+        // when
+        List<PlayRacingCarResponse> response = racingCarService.playResult();
+
+        // then
+        assertThat(response.size()).isEqualTo(2);
+        assertThat(response.get(0).getWinners()).isNotEmpty();
+        assertThat(response.get(0).getRacingCars().size()).isEqualTo(3);
     }
 }
