@@ -1,6 +1,5 @@
 package racingcar.service;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import racingcar.domain.RacingCar;
 import racingcar.dtos.request.PlaysRequestDto;
@@ -15,7 +14,7 @@ public class PlaysService {
     private final RacingCarDao racingCarDao;
     private final Random random = new Random();
 
-    public PlaysService(@Qualifier("web")RacingCarDao racingCarDao) {
+    public PlaysService(RacingCarDao racingCarDao) {
         this.racingCarDao = racingCarDao;
     }
 
