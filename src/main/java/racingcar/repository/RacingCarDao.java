@@ -15,7 +15,6 @@ public interface RacingCarDao {
 
     Map<Long, List<PlayResultWinnersAndGame>> getWinnersAndGames();
 
-
     Map<Long, List<PlayFinalPositionAndGame>> getAllPlayFinalPositionAndGame();
 
     List<Long> getTotalNumberOfGame();
