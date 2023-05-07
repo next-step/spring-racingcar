@@ -5,9 +5,7 @@ import lombok.Getter;
 import racingcar.dto.RacingCarResponse;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author a1101466 on 2023/05/02
