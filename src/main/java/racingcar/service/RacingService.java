@@ -48,8 +48,6 @@ public class RacingService {
 
     public List<RacingPlaysResponse> playRaceList(){
 
-        List<PlayResult> playListResult =  racingResultRepository.getResultAll();
-
         return racingResultRepository.getResultAll().stream()
                 .map(RacingPlaysResponse::of)
                 .collect(Collectors.toList());
