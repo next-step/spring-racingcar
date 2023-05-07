@@ -2,6 +2,8 @@ package racingcar.domain.dto;
 
 import racingcar.domain.Name;
 import racingcar.domain.Position;
+import racingcar.web.dto.PlayResponseDto;
+import racingcar.web.entity.PlayHistoryDetail;
 
 public class PlayResultDto {
 
@@ -35,6 +37,14 @@ public class PlayResultDto {
 
     public String getNameValue() {
         return name.getName();
+    }
+
+    public PlayResponseDto.RacingCar toPlayResponseDtoRacingCar() {
+        return new PlayResponseDto.RacingCar(getNameValue(), getPositionValue());
+    }
+
+    public PlayHistoryDetail toPlayHistoryDetail(Long playHistoryId) {
+        return new PlayHistoryDetail(playHistoryId, getNameValue(), getPositionValue());
     }
 
 }

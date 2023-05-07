@@ -32,7 +32,6 @@ public class PlayController {
                 .collect(Collectors.toList());
     }
 
-    // TODO mapping 로직 책임 고민
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {
         List<PlayResultDto> playResultDtos = playService.play(splitNames(playRequestDto.getNames()), playRequestDto.getCount());
@@ -41,7 +40,7 @@ public class PlayController {
         playService.savePlayResults(playRequestDto.getCount(), winners, playResultDtos);
 
         List<RacingCar> racingCars = playResultDtos.stream()
-                .map(playResult -> new RacingCar(playResult.getNameValue(), playResult.getPositionValue()))
+                .map(PlayResultDto::toPlayResponseDtoRacingCar)
                 .collect(Collectors.toList());
         return new PlayResponseDto(winners, racingCars);
     }
