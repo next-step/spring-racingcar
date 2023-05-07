@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import racingcar.dtos.response.PlayFinalPositionAndGame;
 import racingcar.dtos.response.PlayResultWinnersAndGame;
-import racingcar.dtos.response.GameOfPlayFinalPositionAndGame;
 import racingcar.dtos.response.TotalNumberOfGame;
 
 import java.util.List;
