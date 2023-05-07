@@ -1,4 +1,4 @@
-package racingcar.strategy;
+package racingcar.domain.strategy;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;

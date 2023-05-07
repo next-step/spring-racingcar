@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import racingcar.domain.PlayResult;
+import racingcar.domain.dto.PlayResultDto;
 import racingcar.strategy.TestMovingStrategy;
 import racingcar.web.dao.PlayHistoryDao;
 import racingcar.web.dao.PlayHistoryDetailDao;
@@ -33,44 +33,51 @@ class PlayServiceTest {
     @Autowired
     private PlayHistoryDetailDao playHistoryDetailDao;
 
-    @Test
-    void play_movingstrategy_true() {
-        movingStrategy.setShouldMove(true);
-        List<PlayResult> playResults = playService.play(new String[]{"carA", "carB", "carC"}, 3);
+    @ParameterizedTest(name = "{2}")
+    @MethodSource("movingStrategyProvider")
+    void play(boolean shouldMove, int expectedPosition, String displayMessage) {
+        movingStrategy.setShouldMove(shouldMove);
+        List<PlayResultDto> playResultDtos = playService.play(new String[]{"carA", "carB", "carC"}, 3);
 
-        assertThat(playResults).isNotNull();
-        assertThat(playResults).hasSize(3);
-        assertThat(playResults).flatExtracting(PlayResult::getNameValue).containsOnly("carA", "carB", "carC");
-        assertThat(playResults).flatExtracting(PlayResult::getPositionValue).containsOnly(3);
+        assertThat(playResultDtos).isNotNull();
+        assertThat(playResultDtos).hasSize(3);
+        assertThat(playResultDtos).flatExtracting(PlayResultDto::getNameValue).containsOnly("carA", "carB", "carC");
+        assertThat(playResultDtos).flatExtracting(PlayResultDto::getPositionValue).containsOnly(expectedPosition);
     }
 
-    @Test
-    void play_movingstrategy_false() {
-        movingStrategy.setShouldMove(false);
-        List<PlayResult> playResults = playService.play(new String[]{"carA", "carB", "carC"}, 3);
-
-
-        assertThat(playResults).isNotNull();
-        assertThat(playResults).hasSize(3);
-        assertThat(playResults).flatExtracting(PlayResult::getNameValue).containsOnly("carA", "carB", "carC");
-        assertThat(playResults).flatExtracting(PlayResult::getPositionValue).containsOnly(0);
+    private static Stream<Arguments> movingStrategyProvider() {
+        return Stream.of(
+                Arguments.of(true, 3, "play - movingStrategy_true"),
+                Arguments.of(false, 0, "play - movingStrategy_false")
+        );
     }
 
     @ParameterizedTest(name = "{2}")
     @MethodSource("playResultsProvider")
-    void findWinners(List<PlayResult> playResults, String[] expected, String displayMessage) {
-        assertThat(playService.findWinners(playResults)).isEqualTo(expected);
+    void findWinners(List<PlayResultDto> playResultDtos, String[] expected, String displayMessage) {
+        assertThat(playService.findWinners(playResultDtos)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> playResultsProvider() {
+        return Stream.of(
+                Arguments.of(List.of(
+                        new PlayResultDto(3, "carA"),
+                        new PlayResultDto(2, "carB")), new String[]{"carA"}, "findWinners - 우승자가 한명인 경우"),
+                Arguments.of(List.of(
+                        new PlayResultDto(3, "carA"),
+                        new PlayResultDto(3, "carB")), new String[]{"carA", "carB"}, "findWinners - 우승자가 여러명인 경우")
+        );
     }
 
     @Test
     @Transactional
     void savePlayResults() {
-        List<PlayResult> playResults = List.of(
-                new PlayResult(3, "carA"),
-                new PlayResult(2, "carB")
+        List<PlayResultDto> playResultDtos = List.of(
+                new PlayResultDto(3, "carA"),
+                new PlayResultDto(2, "carB")
         );
         int playCount = 10;
-        Long playHistoryId = playService.savePlayResults(playCount, "carA", playResults);
+        Long playHistoryId = playService.savePlayResults(playCount, "carA", playResultDtos);
 
         PlayHistory playHistory = assertDoesNotThrow(playHistoryDao.findById(playHistoryId)::get);
         List<PlayHistoryDetail> playHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistoryId);
@@ -84,12 +91,12 @@ class PlayServiceTest {
     @Test
     @Transactional
     void history() {
-        List<PlayResult> playResults = List.of(
-                new PlayResult(3, "carA"),
-                new PlayResult(2, "carB")
+        List<PlayResultDto> playResultDtos = List.of(
+                new PlayResultDto(3, "carA"),
+                new PlayResultDto(2, "carB")
         );
         int playCount = 10;
-        playService.savePlayResults(playCount, "carA", playResults);
+        playService.savePlayResults(playCount, "carA", playResultDtos);
 
         PlayHistoryDto playHistoryDto = playService.history().get(0);
 
@@ -98,17 +105,6 @@ class PlayServiceTest {
                 .flatExtracting(PlayHistoryDto.RacingCar::getName).containsExactly("carA", "carB");
         assertThat(playHistoryDto.getRacingCars())
                 .flatExtracting(PlayHistoryDto.RacingCar::getPosition).containsExactly(3, 2);
-    }
-
-    private static Stream<Arguments> playResultsProvider() {
-        return Stream.of(
-                Arguments.of(List.of(
-                        new PlayResult(3, "carA"),
-                        new PlayResult(2, "carB")), new String[]{"carA"}, "findWinners - 우승자가 한명인 경우"),
-                Arguments.of(List.of(
-                        new PlayResult(3, "carA"),
-                        new PlayResult(3, "carB")), new String[]{"carA", "carB"}, "findWinners - 우승자가 여러명인 경우")
-        );
     }
 
 }

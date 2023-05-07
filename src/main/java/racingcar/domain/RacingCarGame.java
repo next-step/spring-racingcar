@@ -1,6 +1,7 @@
 package racingcar.domain;
 
-import racingcar.strategy.MovingStrategy;
+import racingcar.domain.dto.PlayResultDto;
+import racingcar.domain.strategy.MovingStrategy;
 
 import java.util.Comparator;
 import java.util.List;
@@ -23,19 +24,19 @@ public class RacingCarGame {
         return playCount;
     }
 
-    public static List<PlayResult> findWinners(List<PlayResult> playResults) {
-        return findWinners(playResults, getMaxPosition(playResults));
+    public static List<PlayResultDto> findWinners(List<PlayResultDto> playResultDtos) {
+        return findWinners(playResultDtos, getMaxPosition(playResultDtos));
     }
 
-    private static List<PlayResult> findWinners(List<PlayResult> playResults, Position maxPosition) {
-        return playResults.stream()
+    private static List<PlayResultDto> findWinners(List<PlayResultDto> playResultDtos, Position maxPosition) {
+        return playResultDtos.stream()
                 .filter(playResult -> playResult.isPositionEquals(maxPosition))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private static Position getMaxPosition(List<PlayResult> playResults) {
-        return playResults.stream().max(Comparator.comparing(PlayResult::getPosition))
-                .map(PlayResult::getPosition)
+    private static Position getMaxPosition(List<PlayResultDto> playResultDtos) {
+        return playResultDtos.stream().max(Comparator.comparing(PlayResultDto::getPosition))
+                .map(PlayResultDto::getPosition)
                 .orElseThrow(() -> new IllegalArgumentException("PlayResult가 존재하지 않습니다."));
     }
 
@@ -44,7 +45,7 @@ public class RacingCarGame {
         cars.move(movingStrategy);
     }
 
-    public List<PlayResult> getPlayResults() {
+    public List<PlayResultDto> getPlayResults() {
         return cars.getPlayResults();
     }
 

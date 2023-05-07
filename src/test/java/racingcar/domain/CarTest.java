@@ -3,7 +3,7 @@ package racingcar.domain;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import racingcar.strategy.MovingStrategy;
+import racingcar.domain.strategy.MovingStrategy;
 
 import java.util.stream.Stream;
 

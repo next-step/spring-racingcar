@@ -1,15 +1,18 @@
-package racingcar.domain;
+package racingcar.domain.dto;
 
-public class PlayResult {
+import racingcar.domain.Name;
+import racingcar.domain.Position;
+
+public class PlayResultDto {
 
     private final Position position;
     private final Name name;
 
-    public PlayResult(int position, String name) {
+    public PlayResultDto(int position, String name) {
         this(new Position(position), new Name(name));
     }
 
-    public PlayResult(Position position, Name name) {
+    public PlayResultDto(Position position, Name name) {
         this.position = position;
         this.name = name;
     }

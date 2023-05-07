@@ -1,6 +1,7 @@
 package racingcar.strategy;
 
 import org.springframework.stereotype.Component;
+import racingcar.domain.strategy.MovingStrategy;
 
 @Component
 public class TestMovingStrategy implements MovingStrategy {

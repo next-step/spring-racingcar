@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import racingcar.domain.PlayResult;
+import racingcar.domain.dto.PlayResultDto;
 import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.dto.PlayRequestDto;
 import racingcar.web.dto.PlayResponseDto;
@@ -35,12 +35,12 @@ public class PlayController {
     // TODO mapping 로직 책임 고민
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {
-        List<PlayResult> playResults = playService.play(splitNames(playRequestDto.getNames()), playRequestDto.getCount());
-        String winners = joinNames(playService.findWinners(playResults));
+        List<PlayResultDto> playResultDtos = playService.play(splitNames(playRequestDto.getNames()), playRequestDto.getCount());
+        String winners = joinNames(playService.findWinners(playResultDtos));
 
-        playService.savePlayResults(playRequestDto.getCount(), winners, playResults);
+        playService.savePlayResults(playRequestDto.getCount(), winners, playResultDtos);
 
-        List<RacingCar> racingCars = playResults.stream()
+        List<RacingCar> racingCars = playResultDtos.stream()
                 .map(playResult -> new RacingCar(playResult.getNameValue(), playResult.getPositionValue()))
                 .collect(Collectors.toList());
         return new PlayResponseDto(winners, racingCars);

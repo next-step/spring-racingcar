@@ -3,6 +3,7 @@ package racingcar.domain;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import racingcar.domain.dto.PlayResultDto;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,12 +31,12 @@ public class RacingCarGameTest {
 
     @Test
     void findWinners() {
-        PlayResult playResult1 = new PlayResult(2, "carA");
-        PlayResult playResult2 = new PlayResult(3, "carB");
-        PlayResult playResult3 = new PlayResult(3, "carC");
-        List<PlayResult> playResults = Arrays.asList(playResult1, playResult2, playResult3);
+        PlayResultDto playResultDto1 = new PlayResultDto(2, "carA");
+        PlayResultDto playResultDto2 = new PlayResultDto(3, "carB");
+        PlayResultDto playResultDto3 = new PlayResultDto(3, "carC");
+        List<PlayResultDto> playResultDtos = Arrays.asList(playResultDto1, playResultDto2, playResultDto3);
 
-        assertThat(RacingCarGame.findWinners(playResults)).containsExactly(playResult2, playResult3);
+        assertThat(RacingCarGame.findWinners(playResultDtos)).containsExactly(playResultDto2, playResultDto3);
     }
 
     @Test
@@ -44,7 +45,7 @@ public class RacingCarGameTest {
         racingCarGame.play(() -> true);
 
         assertThat(racingCarGame.getPlayResults())
-                .flatExtracting(PlayResult::getPosition)
+                .flatExtracting(PlayResultDto::getPosition)
                 .containsOnly(new Position(1));
     }
 

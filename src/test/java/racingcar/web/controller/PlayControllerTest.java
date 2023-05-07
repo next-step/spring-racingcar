@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import racingcar.domain.PlayResult;
+import racingcar.domain.dto.PlayResultDto;
 import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.dto.PlayRequestDto;
 import racingcar.web.dto.PlayResponseDto;
@@ -41,12 +41,12 @@ class PlayControllerTest {
                 new PlayResponseDto.RacingCar("carB", 0)
         ));
 
-        List<PlayResult> playResults = List.of(
-                new PlayResult(1, "carA"),
-                new PlayResult(0, "carB")
+        List<PlayResultDto> playResultDtos = List.of(
+                new PlayResultDto(1, "carA"),
+                new PlayResultDto(0, "carB")
         );
-        given(playService.play(new String[]{"carA","carB"}, 3)).willReturn(playResults);
-        given(playService.findWinners(playResults)).willReturn(new String[]{"carA"});
+        given(playService.play(new String[]{"carA","carB"}, 3)).willReturn(playResultDtos);
+        given(playService.findWinners(playResultDtos)).willReturn(new String[]{"carA"});
 
         mvc.perform(post("/plays")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
