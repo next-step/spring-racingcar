@@ -1,7 +1,5 @@
 package racingcar.domain;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,21 +15,16 @@ public class RaceResult {
 
   public String getWinner(List<RacingCar> racingCars) {
     // RacingCar 객체들을 position 속성값으로 내림차순으로 정렬
-    racingCars.sort(Comparator.comparingInt(RacingCar::getPosition).reversed());
+    int winner = 0;
+    List<RacingCar> sortedCars = racingCars.stream()
+        .sorted(Comparator.comparingInt(RacingCar::getPosition).reversed())
+        .collect(Collectors.toList());
 
-    // 우승자 이름 저장할 리스트
-    List<String> winners = new ArrayList<>();
-    int maxPosition = racingCars.get(0).getPosition();
-    winners.add(racingCars.get(0).getName());
-
-    for (int i = 1; i < racingCars.size(); i++) {
-      RacingCar car = racingCars.get(i);
-      if (car.getPosition() == maxPosition) {
-        winners.add(car.getName());
-      } else {
-        break;
-      }
-    }
+    int maxPosition = sortedCars.get(winner).getPosition();
+    List<String> winners = sortedCars.stream()
+        .filter(car -> car.getPosition() == maxPosition)
+        .map(RacingCar::getName)
+        .collect(Collectors.toList());
 
     // 우승자 이름을 쉼표로 구분하여 String 형태로 반환
     return String.join(",", winners);

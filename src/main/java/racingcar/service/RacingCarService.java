@@ -30,7 +30,6 @@ public class RacingCarService {
 
     RaceResult result = new RaceResult(racingCars);
     racingCarRepository.insertRacingResult(result, LocalDateTime.now());
-    System.out.println("히스토리 적재완료");
 
     return new RacingResultDto(result.getWinner(racingCars), result.getRacingCars());
   }
