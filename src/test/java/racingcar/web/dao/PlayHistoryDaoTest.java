@@ -37,20 +37,19 @@ class PlayHistoryDaoTest {
 
     @Test
     void findAll() {
-        // TODO List 네이밍 컨벤션 통일
-        List<PlayHistory> givenPlayHistoryList = List.of(
+        List<PlayHistory> givenPlayHistorys = List.of(
                 new PlayHistory(1, "carA"),
                 new PlayHistory(3, "carB"),
                 new PlayHistory(2, "carC")
         );
-        for (PlayHistory playHistory : givenPlayHistoryList) {
+        for (PlayHistory playHistory : givenPlayHistorys) {
             playHistoryDao.save(playHistory);
         }
 
-        List<PlayHistory> findPlayHistoryList = playHistoryDao.findAll();
-        assertThat(findPlayHistoryList).hasSize(3);
-        assertThat(findPlayHistoryList).flatExtracting(PlayHistory::getTrialCount).containsExactly(1, 3, 2);
-        assertThat(findPlayHistoryList).flatExtracting(PlayHistory::getWinners).containsExactly("carA", "carB", "carC");
+        List<PlayHistory> findPlayHistorys = playHistoryDao.findAll();
+        assertThat(findPlayHistorys).hasSize(3);
+        assertThat(findPlayHistorys).flatExtracting(PlayHistory::getTrialCount).containsExactly(1, 3, 2);
+        assertThat(findPlayHistorys).flatExtracting(PlayHistory::getWinners).containsExactly("carA", "carB", "carC");
     }
 
 }

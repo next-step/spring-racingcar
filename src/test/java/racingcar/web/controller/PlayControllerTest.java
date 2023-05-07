@@ -70,7 +70,7 @@ class PlayControllerTest {
 
     @Test
     void history() throws Exception {
-        List<PlayHistoryDto> playHistoryDtoList = List.of(
+        List<PlayHistoryDto> playHistoryDtos = List.of(
                 new PlayHistoryDto("carA", List.of(
                         new PlayHistoryDto.RacingCar("carA", 1),
                         new PlayHistoryDto.RacingCar("carB", 0)
@@ -81,15 +81,15 @@ class PlayControllerTest {
                 ))
         );
 
-        given(playService.history()).willReturn(playHistoryDtoList);
+        given(playService.history()).willReturn(playHistoryDtos);
 
-        List<PlayResponseDto> playResponseDtoList = playHistoryDtoList.stream()
+        List<PlayResponseDto> playResponseDtos = playHistoryDtos.stream()
                 .map(PlayHistoryDto::toPlayResponseDto)
                 .collect(Collectors.toList());
 
         mvc.perform(get("/plays")
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(playResponseDtoList)));
+                .andExpect(content().string(objectMapper.writeValueAsString(playResponseDtos)));
     }
 }

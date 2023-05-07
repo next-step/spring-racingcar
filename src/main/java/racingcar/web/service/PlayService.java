@@ -58,15 +58,15 @@ public class PlayService {
     public List<PlayHistoryDto> history() {
         List<PlayHistoryDto> results = new ArrayList<>();
 
-        List<PlayHistory> playHistoryList = playHistoryDao.findAll();
+        List<PlayHistory> playHistorys = playHistoryDao.findAll();
         // TODO mapping 로직 개선
-        for (PlayHistory playHistory : playHistoryList) {
-            List<PlayHistoryDetail> playHistoryDetailList = playHistoryDetailDao.findByPlayHistoryId(playHistory.getId());
-            List<PlayHistoryDto.RacingCar> racingCarList = playHistoryDetailList.stream()
+        for (PlayHistory playHistory : playHistorys) {
+            List<PlayHistoryDetail> playHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistory.getId());
+            List<PlayHistoryDto.RacingCar> racingCars = playHistoryDetails.stream()
                     .map(playHistoryDetail -> new PlayHistoryDto.RacingCar(playHistoryDetail.getName(), playHistoryDetail.getPosition()))
                     .collect(Collectors.toList());
 
-            results.add(new PlayHistoryDto(playHistory.getWinners(), racingCarList));
+            results.add(new PlayHistoryDto(playHistory.getWinners(), racingCars));
         }
 
         return results;

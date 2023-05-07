@@ -25,9 +25,9 @@ public class PlayController {
 
     @GetMapping("/plays")
     public List<PlayResponseDto> history() {
-        List<PlayHistoryDto> historyDtoList = playService.history();
+        List<PlayHistoryDto> historyDtos = playService.history();
 
-        return historyDtoList.stream()
+        return historyDtos.stream()
                 .map(PlayHistoryDto::toPlayResponseDto)
                 .collect(Collectors.toList());
     }
