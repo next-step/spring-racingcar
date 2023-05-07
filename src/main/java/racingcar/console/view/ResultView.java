@@ -6,10 +6,8 @@ import java.util.List;
 
 public class ResultView {
 
-    private static final String CAR_NAME_SEPARATOR = ", ";
-
-    public static void printWinners(String[] carNames) {
-        System.out.println("\n우승자 : " + String.join(CAR_NAME_SEPARATOR, carNames));
+    public static void printWinners(String winners) {
+        System.out.println("\n우승자 : " + winners);
     }
 
     public static void printPlayResults(List<PlayResultDto> playResultDtos) {

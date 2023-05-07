@@ -3,7 +3,7 @@ package racingcar.domain.dto;
 import racingcar.domain.Name;
 import racingcar.domain.Position;
 import racingcar.web.dto.PlayResponseDto;
-import racingcar.web.entity.PlayHistoryDetail;
+import racingcar.entity.PlayHistoryDetail;
 
 public class PlayResultDto {
 

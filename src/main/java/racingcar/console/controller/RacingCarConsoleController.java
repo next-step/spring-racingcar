@@ -1,27 +1,37 @@
 package racingcar.console.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import racingcar.console.view.InputView;
 import racingcar.console.view.ResultView;
 import racingcar.domain.dto.PlayResultDto;
-import racingcar.domain.service.RacingCarGameService;
-import racingcar.domain.strategy.MovingStrategy;
-import racingcar.domain.strategy.MovingStrategyType;
+import racingcar.service.PlayService;
 
 import java.util.List;
 
-import static racingcar.domain.strategy.MovingStrategyType.RANDOM;
-
+@RequiredArgsConstructor
+@Component
 public class RacingCarConsoleController {
 
-    private static final MovingStrategy MOVING_STRATEGY = MovingStrategyType.getStrategy(RANDOM);
+    private static final String CAR_NAME_SEPARATOR = ", ";
 
-    private final RacingCarGameService racingCarGameService = new RacingCarGameService(MOVING_STRATEGY);
+    private final PlayService playService;
 
     public void play() {
-        List<PlayResultDto> playResultDtos = racingCarGameService.play(InputView.getCarNames(), InputView.getPlayCount());
+        String[] carNames = InputView.getCarNames();
+        int playCount = InputView.getPlayCount();
 
-        ResultView.printWinners(racingCarGameService.findWinners(playResultDtos));
+        List<PlayResultDto> playResultDtos = playService.play(carNames, playCount);
+        String winners = joinNames(playService.findWinners(playResultDtos));
+
+        playService.savePlayResults(playCount, winners, playResultDtos);
+
+        ResultView.printWinners(winners);
         ResultView.printPlayResults(playResultDtos);
+    }
+
+    private String joinNames(String[] carNames) {
+        return String.join(CAR_NAME_SEPARATOR, carNames);
     }
 
 }

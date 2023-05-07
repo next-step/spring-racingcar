@@ -10,7 +10,7 @@ import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.dto.PlayRequestDto;
 import racingcar.web.dto.PlayResponseDto;
 import racingcar.web.dto.PlayResponseDto.RacingCar;
-import racingcar.web.service.PlayService;
+import racingcar.service.PlayService;
 
 import java.util.List;
 import java.util.stream.Collectors;

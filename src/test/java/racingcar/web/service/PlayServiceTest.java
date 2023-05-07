@@ -6,14 +6,16 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import racingcar.domain.dto.PlayResultDto;
+import racingcar.service.PlayService;
 import racingcar.strategy.TestMovingStrategy;
-import racingcar.web.dao.PlayHistoryDao;
-import racingcar.web.dao.PlayHistoryDetailDao;
+import racingcar.entity.dao.PlayHistoryDao;
+import racingcar.entity.dao.PlayHistoryDetailDao;
 import racingcar.web.dto.PlayHistoryDto;
-import racingcar.web.entity.PlayHistory;
-import racingcar.web.entity.PlayHistoryDetail;
+import racingcar.entity.PlayHistory;
+import racingcar.entity.PlayHistoryDetail;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -21,6 +23,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class PlayServiceTest {
 

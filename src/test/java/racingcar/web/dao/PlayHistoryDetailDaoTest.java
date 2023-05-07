@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import racingcar.web.entity.PlayHistory;
-import racingcar.web.entity.PlayHistoryDetail;
+import racingcar.entity.dao.PlayHistoryDao;
+import racingcar.entity.dao.PlayHistoryDetailDao;
+import racingcar.entity.PlayHistory;
+import racingcar.entity.PlayHistoryDetail;
 
 import java.util.List;
 

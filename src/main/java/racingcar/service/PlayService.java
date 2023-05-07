@@ -1,42 +1,45 @@
-package racingcar.web.service;
+package racingcar.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import racingcar.domain.RacingCarGame;
 import racingcar.domain.dto.PlayResultDto;
-import racingcar.domain.service.RacingCarGameService;
 import racingcar.domain.strategy.MovingStrategy;
-import racingcar.web.dao.PlayHistoryDao;
-import racingcar.web.dao.PlayHistoryDetailDao;
+import racingcar.entity.dao.PlayHistoryDao;
+import racingcar.entity.dao.PlayHistoryDetailDao;
 import racingcar.web.dto.PlayHistoryDto;
-import racingcar.web.entity.PlayHistory;
-import racingcar.web.entity.PlayHistoryDetail;
+import racingcar.entity.PlayHistory;
+import racingcar.entity.PlayHistoryDetail;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class PlayService {
 
+    private final MovingStrategy movingStrategy;
     private final PlayHistoryDao playHistoryDao;
     private final PlayHistoryDetailDao playHistoryDetailDao;
-    private final RacingCarGameService racingCarGameService;
-
-    @Autowired
-    public PlayService(MovingStrategy movingStrategy, PlayHistoryDao playHistoryDao, PlayHistoryDetailDao playHistoryDetailDao) {
-        this.playHistoryDao = playHistoryDao;
-        this.playHistoryDetailDao = playHistoryDetailDao;
-
-        this.racingCarGameService = new RacingCarGameService(movingStrategy);
-    }
 
     public List<PlayResultDto> play(String[] carNames, int playCount) {
-        return racingCarGameService.play(carNames, playCount);
+        RacingCarGame racingCarGame = new RacingCarGame(carNames, playCount);
+        List<PlayResultDto> playResultDtos = null;
+
+        while (!racingCarGame.isEnd()) {
+            racingCarGame.play(movingStrategy);
+            playResultDtos = racingCarGame.getPlayResults();
+        }
+
+        return playResultDtos;
     }
 
     public String[] findWinners(List<PlayResultDto> playResultDtos) {
-        return racingCarGameService.findWinners(playResultDtos);
+        return RacingCarGame.findWinners(playResultDtos).stream()
+                .map(PlayResultDto::getNameValue)
+                .toArray(String[]::new);
     }
 
     @Transactional
@@ -55,6 +58,7 @@ public class PlayService {
         return playHistoryId;
     }
 
+    @Transactional(readOnly = true)
     public List<PlayHistoryDto> history() {
         List<PlayHistoryDto> results = new ArrayList<>();
 

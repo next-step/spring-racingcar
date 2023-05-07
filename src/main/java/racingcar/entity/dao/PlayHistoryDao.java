@@ -1,4 +1,4 @@
-package racingcar.web.dao;
+package racingcar.entity.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import racingcar.web.entity.PlayHistory;
+import racingcar.entity.PlayHistory;
 
 import java.sql.PreparedStatement;
 import java.util.List;
