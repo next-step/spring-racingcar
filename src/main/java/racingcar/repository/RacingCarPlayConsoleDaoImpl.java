@@ -5,7 +5,7 @@ import racingcar.dtos.response.PlayResultWinnersAndGame;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.OptionalLong;
 
 public class RacingCarPlayConsoleDaoImpl implements RacingCarDao{
     @Override
@@ -19,8 +19,8 @@ public class RacingCarPlayConsoleDaoImpl implements RacingCarDao{
     }
 
     @Override
-    public Optional<Long> selectLatestGame() {
-        return Optional.empty();
+    public OptionalLong selectLatestGame() {
+        return OptionalLong.empty();
     }
 
     @Override

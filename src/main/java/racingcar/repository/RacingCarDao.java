@@ -5,13 +5,13 @@ import racingcar.dtos.response.PlayResultWinnersAndGame;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.OptionalLong;
 
 public interface RacingCarDao {
     void insertWinner(String winner, Integer trialCount, Long game);
     void insertPlayPositionAndGame(String name, Integer position, Long game);
 
-    Optional<Long> selectLatestGame();
+    OptionalLong selectLatestGame();
 
     Map<Long, List<PlayResultWinnersAndGame>> getWinnersAndGames();
 

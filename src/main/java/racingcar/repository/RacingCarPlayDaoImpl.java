@@ -10,7 +10,7 @@ import racingcar.dtos.response.TotalNumberOfGame;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.stream.Collectors;
 
 @Repository
@@ -32,15 +32,15 @@ public class RacingCarPlayDaoImpl implements RacingCarDao {
         jdbcTemplate.update(SQL, name, position, game);
     }
 
-    public Optional<Long> selectLatestGame() {
+    public OptionalLong selectLatestGame() {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
+            return jdbcTemplate.queryForObject(
                     "SELECT * FROM PLAY_FINAL_POSITION_GAME ORDER BY created_at desc limit 1", (resultSet, rowNum) ->
-                         resultSet.getLong("game")
+                            OptionalLong.of(resultSet.getLong("game"))
 
-            ));
+            );
         } catch (IncorrectResultSizeDataAccessException error) {
-            return null;
+            return OptionalLong.empty();
         }
     }
 

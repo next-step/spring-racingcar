@@ -55,11 +55,7 @@ public class PlaysService {
     }
 
     private Long getLatestGame() {
-        Optional<Long> latestGame = racingCarDao.selectLatestGame();
-        if (Objects.isNull(latestGame) || latestGame.isEmpty())
-            return 0L;
-        return latestGame.get();
-
+        return racingCarDao.selectLatestGame().orElseGet(() -> 0L);
     }
 
     public List<PlayHistories> getPlayHistories() {
