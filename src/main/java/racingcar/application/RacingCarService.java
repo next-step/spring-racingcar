@@ -7,14 +7,16 @@ import racingcar.constant.GameEnvironment;
 import racingcar.domain.MovementPolicy;
 import racingcar.domain.Names;
 import racingcar.domain.RacingCars;
-import racingcar.repository.GameHistoryRepository;
-import racingcar.repository.RoundHistoryRepository;
+import racingcar.dto.GameHistory;
 import racingcar.dto.RacingCarNamePosition;
 import racingcar.dto.RacingCarPlayResponse;
 import racingcar.dto.RacingCarRoundResult;
+import racingcar.repository.GameHistoryRepository;
+import racingcar.repository.RoundHistoryRepository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,6 +67,18 @@ public class RacingCarService {
                     .carName(car.getName())
                     .position(car.getPosition())
                     .build())
+        .collect(Collectors.toList());
+  }
+
+  public List<RacingCarPlayResponse> findGameHistory() {
+    List<GameHistory> gameHistories = this.gameHistoryRepository.findAllWithHistory();
+
+    Map<Integer, List<GameHistory>> groupByGameId =
+        gameHistories.stream().collect(Collectors.groupingBy(GameHistory::getGameId));
+
+    return groupByGameId.values().stream()
+        .filter(histories -> histories.size() > 0)
+        .map(histories -> RacingCarPlayResponse.of(histories))
         .collect(Collectors.toList());
   }
 }
