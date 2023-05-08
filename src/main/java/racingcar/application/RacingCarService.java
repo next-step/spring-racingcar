@@ -7,7 +7,8 @@ import racingcar.constant.GameEnvironment;
 import racingcar.domain.MovementPolicy;
 import racingcar.domain.Names;
 import racingcar.domain.RacingCars;
-import racingcar.domain.repository.RacingCarRepository;
+import racingcar.domain.repository.GameHistoryRepository;
+import racingcar.domain.repository.RoundHistoryRepository;
 import racingcar.dto.RacingCarNamePosition;
 import racingcar.dto.RacingCarPlayResponse;
 import racingcar.dto.RacingCarRoundResult;
@@ -20,7 +21,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RacingCarService {
 
-  private final RacingCarRepository racingCarRepository;
+  private final GameHistoryRepository gameHistoryRepository;
+  private final RoundHistoryRepository roundHistoryRepository;
 
   @Transactional
   public RacingCarPlayResponse play(String names, int count) {
@@ -34,9 +36,9 @@ public class RacingCarService {
     }
 
     String winners = cars.getWinners();
-    Integer gameId = this.racingCarRepository.saveGameHistory(names, count);
-    this.racingCarRepository.saveRoundHistory(gameId, roundResults);
-    this.racingCarRepository.updateWinners(gameId, winners);
+    Integer gameId = this.gameHistoryRepository.save(names, count);
+    this.roundHistoryRepository.save(gameId, roundResults);
+    this.gameHistoryRepository.updateWinners(gameId, winners);
 
     List<RacingCarNamePosition> racingCarNamePositions =
         cars.getValues().stream()

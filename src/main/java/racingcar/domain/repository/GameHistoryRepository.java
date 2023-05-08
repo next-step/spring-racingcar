@@ -5,18 +5,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import racingcar.dto.RacingCarRoundResult;
 
 import java.sql.PreparedStatement;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class RacingCarRepository {
+public class GameHistoryRepository {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public Integer saveGameHistory(String names, int count) {
+  public Integer save(String names, int count) {
     String query = "INSERT INTO GAME_HISTORY(TRIAL_COUNt, CAR_NAMES) VALUES(?, ?)";
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -32,21 +30,6 @@ public class RacingCarRepository {
         keyHolder);
 
     return keyHolder.getKey().intValue();
-  }
-
-  public void saveRoundHistory(int gameId, List<RacingCarRoundResult> roundResults) {
-    String query = "INSERT INTO ROUND_HISTORY(GAME_ID, ROUND, NAME, POSITION) VALUES(?, ?, ?, ?)";
-
-    jdbcTemplate.batchUpdate(
-        query,
-        roundResults,
-        roundResults.size(),
-        (preparedStatement, roundResult) -> {
-          preparedStatement.setInt(1, gameId);
-          preparedStatement.setInt(2, roundResult.getRound());
-          preparedStatement.setString(3, roundResult.getCarName());
-          preparedStatement.setInt(4, roundResult.getPosition());
-        });
   }
 
   public void updateWinners(Integer gameId, String winners) {
