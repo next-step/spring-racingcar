@@ -34,7 +34,7 @@ public class RacingCarRepository {
     return keyHolder.getKey().intValue();
   }
 
-  public void saveRoundHistory(List<RacingCarRoundResult> roundResults) {
+  public void saveRoundHistory(int gameId, List<RacingCarRoundResult> roundResults) {
     String query = "INSERT INTO ROUND_HISTORY(GAME_ID, ROUND, NAME, POSITION) VALUES(?, ?, ?, ?)";
 
     jdbcTemplate.batchUpdate(
@@ -42,7 +42,7 @@ public class RacingCarRepository {
         roundResults,
         roundResults.size(),
         (preparedStatement, roundResult) -> {
-          preparedStatement.setInt(1, roundResult.getGameId());
+          preparedStatement.setInt(1, gameId);
           preparedStatement.setInt(2, roundResult.getRound());
           preparedStatement.setString(3, roundResult.getCarName());
           preparedStatement.setInt(4, roundResult.getPosition());

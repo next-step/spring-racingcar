@@ -24,18 +24,18 @@ public class RacingCarService {
 
   @Transactional
   public RacingCarPlayResponse play(String names, int count) {
-    Integer gameId = this.racingCarRepository.saveGameHistory(names, count);
     RacingCars cars = new RacingCars(new Names(names, GameEnvironment.CAR_NAME_DELIMITER));
 
     List<RacingCarRoundResult> roundResults = new LinkedList<>();
     MovementPolicy movementPolicy = new MovementPolicy();
     for (int i = 1; i <= count; i++) {
       cars.playEachRound(movementPolicy);
-      roundResults.addAll(createRoundResults(gameId, i, cars));
+      roundResults.addAll(createRoundResults(i, cars));
     }
 
     String winners = cars.getWinners();
-    this.racingCarRepository.saveRoundHistory(roundResults);
+    Integer gameId = this.racingCarRepository.saveGameHistory(names, count);
+    this.racingCarRepository.saveRoundHistory(gameId, roundResults);
     this.racingCarRepository.updateWinners(gameId, winners);
 
     List<RacingCarNamePosition> racingCarNamePositions =
@@ -54,13 +54,11 @@ public class RacingCarService {
         .build();
   }
 
-  private List<RacingCarRoundResult> createRoundResults(
-      Integer gameId, int count, RacingCars cars) {
+  private List<RacingCarRoundResult> createRoundResults(int count, RacingCars cars) {
     return cars.getValues().stream()
         .map(
             car ->
                 RacingCarRoundResult.builder()
-                    .gameId(gameId)
                     .round(count)
                     .carName(car.getName())
                     .position(car.getPosition())
