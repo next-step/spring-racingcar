@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import racingcar.game.application.GameService;
-import racingcar.game.dto.PlayRequest;
-import racingcar.game.dto.PlayResultResponse;
+import racingcar.game.web.dto.PlayRequest;
+import racingcar.game.web.dto.PlayResultResponse;
 
 @RequestMapping("/plays")
 @RestController
@@ -22,11 +22,11 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<PlayResultResponse>> loadGameHistory() {
-        return ResponseEntity.ok(gameService.loadGameHistory());
+        return ResponseEntity.ok(PlayResultResponse.from(gameService.loadGameHistory()));
     }
 
     @PostMapping
     public ResponseEntity<PlayResultResponse> play(@RequestBody @Valid PlayRequest playRequest) {
-        return ResponseEntity.ok(gameService.play(playRequest));
+        return ResponseEntity.ok(PlayResultResponse.from(gameService.play(playRequest.toGameStartData())));
     }
 }

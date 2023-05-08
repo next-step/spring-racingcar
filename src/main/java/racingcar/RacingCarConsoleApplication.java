@@ -4,8 +4,8 @@ import java.util.Scanner;
 import racingcar.game.application.GameService;
 import racingcar.game.dao.MemoryPlayHistoryDao;
 import racingcar.game.dao.MemoryPlayResultDao;
-import racingcar.game.dto.PlayRequest;
-import racingcar.game.dto.PlayResultResponse;
+import racingcar.game.application.dto.GameResult;
+import racingcar.game.application.dto.GameStartData;
 
 public class RacingCarConsoleApplication {
     public static void main(String[] args) {
@@ -17,10 +17,10 @@ public class RacingCarConsoleApplication {
 
         // 경주 시작
         GameService gameService = new GameService(new MemoryPlayResultDao(), new MemoryPlayHistoryDao());
-        PlayResultResponse playResultResponse = gameService.play(new PlayRequest(names, count));
+        GameResult gameResult = gameService.play(new GameStartData(names, count));
 
         // 우승자 조회
-        OutputView.printGameResult(playResultResponse);
+        OutputView.printGameResult(gameResult);
     }
 
     static class InputView {
@@ -40,9 +40,9 @@ public class RacingCarConsoleApplication {
 
     static class OutputView {
 
-        public static void printGameResult(PlayResultResponse playResultResponse) {
+        public static void printGameResult(GameResult gameResult) {
             System.out.println();
-            System.out.println("최종 우승자: " + playResultResponse.getWinners());
+            System.out.println("최종 우승자: " + gameResult.getWinners());
         }
     }
 }

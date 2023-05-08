@@ -12,8 +12,8 @@ import racingcar.game.domain.PlayerHistoryEntity;
 import racingcar.game.domain.PlayerHistoryRepository;
 import racingcar.game.domain.RacingGame;
 import racingcar.game.domain.RandomMoveStrategy;
-import racingcar.game.dto.PlayRequest;
-import racingcar.game.dto.PlayResultResponse;
+import racingcar.game.application.dto.GameResult;
+import racingcar.game.application.dto.GameStartData;
 
 @Service
 public class GameService {
@@ -27,13 +27,12 @@ public class GameService {
     }
 
     @Transactional
-    public PlayResultResponse play(PlayRequest playRequest) {
-        RacingGame racingGame = playRequest.toRacingGame();
-        racingGame.playRound(playRequest.getCount(), new RandomMoveStrategy());
-
-        Long savedId = playResultRepository.save(PlayResult.of(playRequest.getCount()));
+    public GameResult play(GameStartData gameStartData) {
+        RacingGame racingGame = gameStartData.toRacingGame();
+        racingGame.playRound(gameStartData.getCount(), new RandomMoveStrategy());
+        Long savedId = playResultRepository.save(PlayResult.of(gameStartData.getCount()));
         playerHistoryRepository.saveAll(converterPlayerHistories(savedId, racingGame));
-        return PlayResultResponse.from(racingGame.getWinners(), racingGame.getRacingCars());
+        return GameResult.from(racingGame);
     }
 
     private List<PlayerHistory> converterPlayerHistories(Long playResultId, RacingGame racingGame) {
@@ -44,17 +43,17 @@ public class GameService {
     }
 
     @Transactional(readOnly = true)
-    public List<PlayResultResponse> loadGameHistory() {
+    public List<GameResult> loadGameHistory() {
         Map<Long, List<PlayerHistoryEntity>> groupedPlayerHistoryEntitiesByPlayResultId = playerHistoryRepository.findAll()
             .stream()
             .collect(Collectors.groupingBy(PlayerHistoryEntity::getPlayResultId));
         return converterPlayResultResponses(groupedPlayerHistoryEntitiesByPlayResultId);
     }
 
-    private List<PlayResultResponse> converterPlayResultResponses(Map<Long, List<PlayerHistoryEntity>> groupedPlayerHistoryEntitiesByPlayResultId) {
+    private List<GameResult> converterPlayResultResponses(Map<Long, List<PlayerHistoryEntity>> groupedPlayerHistoryEntitiesByPlayResultId) {
         return playResultRepository.findAll()
             .stream()
-            .map(playResultEntity -> PlayResultResponse.from(playResultEntity, groupedPlayerHistoryEntitiesByPlayResultId))
+            .map(playResultEntity -> GameResult.from(playResultEntity, groupedPlayerHistoryEntitiesByPlayResultId))
             .collect(Collectors.toUnmodifiableList());
     }
 }
