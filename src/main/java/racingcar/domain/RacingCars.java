@@ -38,4 +38,8 @@ public class RacingCars {
 
     return String.join(",", winners.toArray(String[]::new));
   }
+
+  public void playEachRound(MovementPolicy movementPolicy) {
+    this.values.forEach(car -> car.move(movementPolicy.action()));
+  }
 }

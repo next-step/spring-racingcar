@@ -35,7 +35,7 @@ public class RacingCarService {
     // 게임 라운드 진행
     MovementPolicy movementPolicy = new MovementPolicy();
     for (int i = 1; i <= count; i++) {
-      playEachRound(cars, movementPolicy);
+      cars.playEachRound(movementPolicy);
       roundResults.addAll(createRoundResults(gameId, i, cars));
     }
 
@@ -63,10 +63,6 @@ public class RacingCarService {
         .winners(winners)
         .racingCars(racingCarNamePositions)
         .build();
-  }
-
-  private void playEachRound(RacingCars cars, MovementPolicy movementPolicy) {
-    cars.getValues().forEach(car -> car.move(movementPolicy.action()));
   }
 
   private List<RacingCarRoundResult> createRoundResults(
