@@ -14,7 +14,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.projectlombok:lombok:1.18.26'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
+	implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '8.0.0.Final'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	runtimeOnly 'com.h2database:h2'
 

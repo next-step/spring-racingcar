@@ -19,8 +19,8 @@
     <label for="names">자동차 이름:</label>
     <input type="text" id="names" name="names">
 
-    <label for="count">시도할 횟수:</label>
-    <input type="text" id="count" name="count">
+    <label for="trialCount">시도할 횟수:</label>
+    <input type="text" id="trialCount" name="trialCount">
   </div>
 
   <button type="submit">Submit</button>
@@ -36,10 +36,10 @@
 <script>
   function submitForm() {
     const names = document.getElementById("names").value;
-    const count = document.getElementById("count").value;
+    const trialCount = document.getElementById("trialCount").value;
     const data = {
       names: names,
-      count: count
+      trialCount: trialCount
     };
     fetch("/plays", {
       method: "POST",
