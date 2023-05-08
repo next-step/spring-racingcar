@@ -10,4 +10,8 @@ import java.util.List;
 public class RacingResponse {
     private String winners;
     private List<RacingCarResponse> racingCars;
+
+    public static RacingResponse of(String winners, List<RacingCarResponse> racingCars) {
+        return new RacingResponse(winners, racingCars);
+    }
 }

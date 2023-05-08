@@ -40,7 +40,7 @@
       두 application의 비즈니스 로직은 XXXService라는 객체를 도출 하여 중복 제거 가능
 
 ### 리뷰 요구사항
-> - [ ] ConsoleApplication 에서  'static' 빼기
-> - [ ] Dao 를 추상화하여 구현체를 만들고 RacingService 에서 구현체 선택할 수 있도록 구현하기
+> - [x] ConsoleApplication 에서  'static' 빼기
+> - [x] Dao 를 추상화하여 구현체를 만들고 RacingService 에서 구현체 선택할 수 있도록 구현하기
 
 
