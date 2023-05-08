@@ -3,6 +3,7 @@ package racingcar.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import racingcar.constant.GameEnvironment;
 import racingcar.domain.MovementPolicy;
 import racingcar.domain.Names;
 import racingcar.domain.RacingCars;
@@ -27,7 +28,7 @@ public class RacingCarService {
     Integer gameId = this.racingCarRepository.saveGameHistory(names, count);
 
     // 차량 인스턴스 생성
-    RacingCars cars = new RacingCars(new Names(names));
+    RacingCars cars = new RacingCars(new Names(names, GameEnvironment.CAR_NAME_DELIMITER));
 
     // 배치 쿼리를 위한 데이터 리스트 생성
     List<RacingCarRoundResult> roundResults = new LinkedList<>();

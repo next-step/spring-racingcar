@@ -9,14 +9,13 @@ import java.util.stream.Collectors;
 @Getter
 public class Names {
   private final List<String> values;
-  private static final String CAR_NAME_DELIMITER = ",";
 
-  public Names(String names) {
-    this.values = generate(splitByDelimiter(names));
+  public Names(String names, String delimiter) {
+    this.values = generate(splitByDelimiter(names, delimiter));
   }
 
-  private String[] splitByDelimiter(String names) {
-    return names.split(CAR_NAME_DELIMITER);
+  private String[] splitByDelimiter(String names, String delimiter) {
+    return names.split(delimiter);
   }
 
   private List<String> generate(String[] splitNames) {
