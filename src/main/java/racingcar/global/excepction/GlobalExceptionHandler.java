@@ -15,9 +15,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST, e));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException() {
+        return ResponseEntity.internalServerError()
             .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,
                 "예상치 못한 에러가 발생했습니다. 잠시후 요청 바랍니다."));
     }
