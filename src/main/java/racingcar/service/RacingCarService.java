@@ -2,7 +2,6 @@ package racingcar.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class RacingCarService {
   }
 
 
-  public void playRound(List<RacingCar> racingCars) {
+  public static void playRound(List<RacingCar> racingCars) {
     //게임 돌리기
     Random random = new Random();
     for (RacingCar racingCar : racingCars) {
@@ -48,7 +47,7 @@ public class RacingCarService {
     }
   }
 
-  private List<RacingCar> makeRacingCars(String names) {
+  public static List<RacingCar> makeRacingCars(String names) {
     String[] carNames = names.split(",");
     List<RacingCar> racingCars = new ArrayList<>();
 
