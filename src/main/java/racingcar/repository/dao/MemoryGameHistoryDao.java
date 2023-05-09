@@ -21,8 +21,7 @@ public class MemoryGameHistoryDao implements GameHistoryRepository {
 				String name = gameHistory.getName();
 				int position = gameHistory.getPosition();
 				Car car = new Car(name, position);
-				RacingCarResponseDto responseDto = new RacingCarResponseDto(null, Collections.singletonList(car));
-				return responseDto;
+				return new RacingCarResponseDto(null, Collections.singletonList(car));
 			})
 			.collect(Collectors.toList());
 
