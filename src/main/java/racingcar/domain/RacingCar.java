@@ -17,12 +17,6 @@ public class RacingCar {
     return this.position;
   }
 
-  public void move(int randomNumber) {
-    if (randomNumber >= 4) {
-      this.position++;
-    }
-  }
-
   public void move(MovementAction movementAction) {
     if (movementAction.isMove()) {
       this.position++;
