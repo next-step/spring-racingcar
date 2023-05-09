@@ -30,8 +30,9 @@ public class RacingCarService {
 		RacingGame racingGame = RacingGame.of(initCars, new RandomMovingStrategy());
 		racingGame.play(finalRound);
 
-		int playResultId = saveGameResult(racingGame, finalRound);
-		saveGameHistories(playResultId, initCars);
+		RacingGame racingGame = RacingGame.convertCarsToRacingGame(racingCars.getCars());
+		racingGame.play(playCount, new RandomMovingStrategy());
+		String winners = racingGame.getWinners();
 
 		return new RacingCarResponseDto(racingGame.getWinners(), initCars);
 	}

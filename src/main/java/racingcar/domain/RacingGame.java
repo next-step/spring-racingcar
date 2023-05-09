@@ -25,9 +25,9 @@ public class RacingGame {
 		return new RacingGame(cars);
 	}
 
-	public void play(int finalRound) {
+	public void play(int finalRound, MovingStrategy movingStrategy) {
 		while (!isLastRound(finalRound)) {
-			run();
+			run(movingStrategy);
 		}
 	}
 
