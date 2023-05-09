@@ -29,11 +29,7 @@ public class ResultView {
 	}
 
 	public static String printLocationByCar(final Car car) {
-		final StringBuilder stringBuilder = new StringBuilder();
-		for (int i = 0; i < car.getPosition(); i++) {
-			stringBuilder.append(DISPLAY_MOVEMENT);
-		}
-		return stringBuilder.toString();
+		return DISPLAY_MOVEMENT.repeat(Math.max(0, car.getPosition()));
 	}
 }
 
