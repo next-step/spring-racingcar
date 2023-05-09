@@ -10,8 +10,8 @@ public class Car {
 	private final String name;
 	private int position;
 
-	public Car(String name) {
-		this.position = DEFAULT_DISTANCE;
+	public Car(String name,int position) {
+		this.position = position;
 		this.name = validateNamesOfCar(name);
 	}
 

@@ -14,8 +14,15 @@ public class RacingGame {
 		this.round = 1;
 	}
 
-	public static RacingGame of(List<Car> cars, MovingStrategy movingStrategy) {
-		return new RacingGame(cars, movingStrategy);
+	public static RacingGame convertCarsToRacingGame(List<Car> cars) {
+		return new RacingGame(cars);
+	}
+
+	public static RacingGame of(List<String> names) {
+		List<Car> cars = names.stream()
+			.map(name -> new Car(name,0))
+			.collect(Collectors.toUnmodifiableList());
+		return new RacingGame(cars);
 	}
 
 	public void play(int finalRound) {
