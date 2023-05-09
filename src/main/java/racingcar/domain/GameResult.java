@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public class GameResult {
 	private final String winners;
 	private final int trialCount;
-	private long id;
-	private LocalDateTime createdAt;
+	private final long id;
+	private final LocalDateTime createdAt;
 
 	public GameResult(long id, String winners, int trialCount, LocalDateTime createdAt) {
 		this.id = id;
@@ -19,7 +19,7 @@ public class GameResult {
 		return new GameResultBuilder();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

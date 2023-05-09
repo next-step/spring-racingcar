@@ -66,4 +66,8 @@ public class RacingGame {
 			.max()
 			.orElseThrow(RuntimeException::new);
 	}
+
+	public List<Car> getCars() {
+		return cars;
+	}
 }

@@ -1,8 +1,12 @@
 package racingcar.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import racingcar.domain.Car;
+import racingcar.domain.GameHistory;
+import racingcar.domain.GameResult;
+import racingcar.domain.RacingGame;
 
 public class RacingCarResponseDto {
 	private final String winners;
