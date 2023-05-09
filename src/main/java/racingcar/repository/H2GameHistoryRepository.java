@@ -1,23 +1,24 @@
-package racingcar.domain.repository;
+package racingcar.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import racingcar.dto.RacingCarRoundResult;
+import racingcar.dto.GameHistory;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class RacingCarRepository {
+public class H2GameHistoryRepository implements BaseGameHistoryRepository {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public Integer saveGameHistory(String names, int count) {
-    String query = "INSERT INTO GAME_HISTORY(TRIAL_COUNt, CAR_NAMES) VALUES(?, ?)";
+  public Integer save(String names, int count) {
+    String query = "INSERT INTO GAME_HISTORY(TRIAL_COUNT, CAR_NAMES) VALUES(?, ?)";
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(
@@ -34,21 +35,6 @@ public class RacingCarRepository {
     return keyHolder.getKey().intValue();
   }
 
-  public void saveRoundHistory(List<RacingCarRoundResult> roundResults) {
-    String query = "INSERT INTO ROUND_HISTORY(GAME_ID, ROUND, NAME, POSITION) VALUES(?, ?, ?, ?)";
-
-    jdbcTemplate.batchUpdate(
-        query,
-        roundResults,
-        roundResults.size(),
-        (preparedStatement, roundResult) -> {
-          preparedStatement.setInt(1, roundResult.getGameId());
-          preparedStatement.setInt(2, roundResult.getRound());
-          preparedStatement.setString(3, roundResult.getCarName());
-          preparedStatement.setInt(4, roundResult.getPosition());
-        });
-  }
-
   public void updateWinners(Integer gameId, String winners) {
     String query = "UPDATE GAME_HISTORY SET WINNERS = ? where ID = ?";
 
@@ -61,5 +47,17 @@ public class RacingCarRepository {
 
           return preparedStatement;
         });
+  }
+
+  public List<GameHistory> findAllWithHistory() {
+    String sql =
+        "SELECT GH.ID as gameId, GH.WINNERS AS winners, RH.NAME AS name, RH.POSITION AS position "
+            + "FROM GAME_HISTORY GH "
+            + "LEFT JOIN ROUND_HISTORY RH "
+            + "ON GH.ID = RH.GAME_ID "
+            + "WHERE GH.TRIAL_COUNT = RH.ROUND "
+            + "ORDER BY GH.ID, RH.POSITION DESC";
+
+    return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(GameHistory.class));
   }
 }
