@@ -49,10 +49,11 @@ public class JdbcGameHistoryDao implements GameHistoryRepository {
 
 	@Override
 	public GameHistoryResponseDto findAllWithGameResults() {
-		String sql = "SELECT gh.id, gh.play_result_id, gh.name, gh.position, gh.created_at, gr.winners, gr.trial_count " +
-			"FROM game_history gh " +
-			"JOIN game_result gr ON gh.play_result_id = gr.id " +
-			"ORDER BY gh.play_result_id";
+		String sql =
+			"SELECT gh.id, gh.play_result_id, gh.name, gh.position, gh.created_at, gr.winners, gr.trial_count " +
+				"FROM game_history gh " +
+				"JOIN game_result gr ON gh.play_result_id = gr.id " +
+				"ORDER BY gh.play_result_id";
 		return jdbcTemplate.query(sql, new GameHistoryWithGameResultExtractor());
 	}
 

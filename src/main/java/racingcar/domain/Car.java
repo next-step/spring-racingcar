@@ -10,16 +10,9 @@ public class Car {
 	private final String name;
 	private int position;
 
-	public Car(String name,int position) {
+	public Car(String name, int position) {
 		this.position = position;
 		this.name = validateNamesOfCar(name);
-	}
-
-	public String validateNamesOfCar(String name) {
-		if (isNullOrEmpty(name) || isFiveLetterWords(name)) {
-			throw new IllegalArgumentException(ErrorMessage.INPUT_NAME_ERROR);
-		}
-		return name;
 	}
 
 	static boolean isNullOrEmpty(String name) {
@@ -28,6 +21,13 @@ public class Car {
 
 	static boolean isFiveLetterWords(String carName) {
 		return carName.trim().length() > MAX_INPUT_NAME_VALUE;
+	}
+
+	public String validateNamesOfCar(String name) {
+		if (isNullOrEmpty(name) || isFiveLetterWords(name)) {
+			throw new IllegalArgumentException(ErrorMessage.INPUT_NAME_ERROR);
+		}
+		return name;
 	}
 
 	public void move(final MovingStrategy movingStrategy) {
@@ -47,4 +47,5 @@ public class Car {
 	public String getName() {
 		return name;
 	}
+
 }

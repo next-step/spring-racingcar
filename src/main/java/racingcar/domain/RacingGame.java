@@ -20,7 +20,7 @@ public class RacingGame {
 
 	public static RacingGame of(List<String> names) {
 		List<Car> cars = names.stream()
-			.map(name -> new Car(name,0))
+			.map(name -> new Car(name, 0))
 			.collect(Collectors.toUnmodifiableList());
 		return new RacingGame(cars);
 	}
