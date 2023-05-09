@@ -23,7 +23,7 @@ public class RacingCarApi {
         if (gameStartDto.isNotValid()) {
             throw new IllegalArgumentException();
         }
-        return racingService.game(gameStartDto);
+        return racingService.game(gameStartDto.getNames(), gameStartDto.getCount());
     }
 
     @GetMapping

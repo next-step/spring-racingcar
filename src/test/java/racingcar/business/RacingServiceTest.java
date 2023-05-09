@@ -37,9 +37,8 @@ class RacingServiceTest {
     @Test
     void gameTest() {
         // given
-        GameStartDto gameStartDto = new GameStartDto("A,B,C", 100);
         // when
         // then
-        assertThat(racingService.game(gameStartDto)).isNotNull();
+        assertThat(racingService.game("A,B,C", 100)).isNotNull();
     }
 }
