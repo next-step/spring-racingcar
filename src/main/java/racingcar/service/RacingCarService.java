@@ -10,6 +10,8 @@ import racingcar.behavior.RandomMovingStrategy;
 import racingcar.domain.GameHistory;
 import racingcar.domain.GameResult;
 import racingcar.domain.RacingGame;
+import racingcar.dto.GameHistoryResponseDto;
+import racingcar.dto.RacingCarRequestDto;
 import racingcar.dto.RacingCarResponseDto;
 import racingcar.repository.GameHistoryRepository;
 import racingcar.repository.GameResultRepository;
@@ -24,17 +26,23 @@ public class RacingCarService {
 		this.gameResultRepository = gameResultRepository;
 	}
 
-	public RacingCarResponseDto game(String nameOfCars, int finalRound) {
-		List<Car> initCars = createCars(nameOfCars);
+	@Transactional
+	public RacingCarResponseDto game(RacingCarRequestDto request) {
+		List<String> names = Arrays.stream(request.getNames().split(","))
+			.map(String::trim)
+			.collect(Collectors.toList());
 
-		RacingGame racingGame = RacingGame.of(initCars, new RandomMovingStrategy());
-		racingGame.play(finalRound);
+		RacingGame racingCars = RacingGame.of(names);
+		int playCount = request.getCount();
 
 		RacingGame racingGame = RacingGame.convertCarsToRacingGame(racingCars.getCars());
 		racingGame.play(playCount, new RandomMovingStrategy());
 		String winners = racingGame.getWinners();
 
-		return new RacingCarResponseDto(racingGame.getWinners(), initCars);
+		long playResultId = saveGameResult(racingGame, playCount);
+		saveGameHistories(playResultId, racingCars);
+
+		return RacingCarResponseDto.from(winners, racingCars);
 	}
 
 	private long saveGameResult(RacingGame racingGame, int round) {
