@@ -1,5 +1,6 @@
 package racingcar.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class RacingCarService {
 	private final GameResultRepository gameResultRepository;
 	private final JdbcGameHistoryDao jdbcGameHistoryDao;
 
-	public RacingCarService(GameHistoryRepository gameHistoryRepository, GameResultRepository gameResultRepository,
+	public RacingCarService(@Qualifier("gameHistoryDao")GameHistoryRepository gameHistoryRepository, @Qualifier("gameResultDao")GameResultRepository gameResultRepository,
 		JdbcGameHistoryDao jdbcGameHistoryDao) {
 		this.gameHistoryRepository = gameHistoryRepository;
 		this.gameResultRepository = gameResultRepository;
