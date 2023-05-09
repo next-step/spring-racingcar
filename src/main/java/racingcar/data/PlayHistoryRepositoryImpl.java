@@ -1,6 +1,8 @@
 package racingcar.data;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -39,12 +41,17 @@ public class PlayHistoryRepositoryImpl implements PlayHistoryRepository {
     }
 
     @Override
-    public List<PlayHistory> getPlayHistoriesByPlayResultId(long playResultId) {
+    public List<PlayHistory> getPlayHistoriesWhereIn(List<Long> ids) {
         JdbcTemplate jdbcTemplate = simpleJdbcInsert.getJdbcTemplate();
         String sql = "select id, play_result_id, player_name, position, " +
                 "from PLAY_HISTORY " +
-                "where play_result_id = ?";
-        return jdbcTemplate.query(sql, new Object[]{playResultId}, (rs, rowNum) -> {
+                "where play_result_id in (:ids)";
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate =
+                new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("ids", ids);
+        return namedParameterJdbcTemplate.query(sql, parameters, (rs, rowNum) -> {
             long id = rs.getLong("id");
             long playResultId1 = rs.getLong("play_result_id");
             String playerName = rs.getString("player_name");

@@ -8,6 +8,6 @@ public interface PlayHistoryRepository {
 
     void insertHistory(List<PlayHistory> playHistories);
 
-    List<PlayHistory> getPlayHistoriesByPlayResultId(long resultId);
+    List<PlayHistory> getPlayHistoriesWhereIn(List<Long> ids);
 
 }
