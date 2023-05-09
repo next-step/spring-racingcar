@@ -1,5 +1,9 @@
 package racingcar;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import racingcar.domain.plays.PlaysRepository;
+import racingcar.domain.plays.PlaysService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +13,11 @@ import java.util.stream.Collectors;
 
 public class RacingCarConsoleApplication {
     public static void main(String[] args) {
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        PlaysRepository playsRepository = new PlaysRepository(jdbcTemplate);
+        PlaysService playsService = new PlaysService(playsRepository);
+
         // 자동차 입력
         Scanner scanner = new Scanner(System.in);
         System.out.println("경주할 자동차 이름을 입력하세요(이름은 쉼표(,)를 기준으로 구분).");
@@ -21,32 +30,12 @@ public class RacingCarConsoleApplication {
         int count = scanner.nextInt();
 
         // 경주 시작
-        for (int i = 0; i < count; i++) {
-            playRound(racingCars);
-        }
+        playsService.playRound(count, racingCars);
 
         // 우승자 조회
-        int maxPosition = 0;
-        List<String> winners = new ArrayList<>();
-        for (RacingCar racingCar : racingCars) {
-            if (racingCar.getPosition() > maxPosition) {
-                maxPosition = racingCar.getPosition();
-                winners.clear();
-            }
-            if (racingCar.getPosition() >= maxPosition) {
-                winners.add(racingCar.getName());
-            }
-        }
+        String winners = playsService.getWinners(racingCars);
 
         System.out.println();
         System.out.println("최종 우승자: " + String.join(", ", winners));
-    }
-
-    private static void playRound(List<RacingCar> racingCars) {
-        Random random = new Random();
-        for (RacingCar racingCar : racingCars) {
-            int randomNumber = random.nextInt(10);
-            racingCar.move(randomNumber);
-        }
     }
 }
