@@ -1,6 +1,7 @@
 package racingcar.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,11 +62,11 @@ public class RacingCarService {
 		gameHistoryRepository.saveAll(gameHistories);
 	}
 
-	private List<Car> createCars(String nameOfCars) {
-		String[] nameOfCarsArr = nameOfCars.replaceAll("\"", "").split(",");
-		return Arrays.stream(nameOfCarsArr)
-			.map(Car::new)
-			.collect(Collectors.toList());
-	}
+	@Transactional(readOnly = true)
+	public GameHistoryResponseDto loadGameHistory() {
+		List<GameResult> results = gameResultRepository.findAll();
+		List<GameHistory> playHistories = gameHistoryRepository.findAll();
 
+		return GameHistoryResponseDto.of(results, playHistories);
+	}
 }
