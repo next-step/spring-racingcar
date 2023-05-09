@@ -1,4 +1,4 @@
-package racingcar.domain.dao;
+package racingcar.repository.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class JdbcGameResultDao implements GameResultRepository {
 	@Override
 	public long save(GameResult gameResult) {
 		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(gameResult);
-		return (long) jdbcInsert.executeAndReturnKeyHolder(parameterSource)
+		return (long)jdbcInsert.executeAndReturnKeyHolder(parameterSource)
 			.getKeys()
 			.get("id");
 	}
