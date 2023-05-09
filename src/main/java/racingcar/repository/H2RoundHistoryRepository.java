@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class RoundHistoryRepository {
+public class H2RoundHistoryRepository implements BaseRoundHistoryRepository {
 
   private final JdbcTemplate jdbcTemplate;
 

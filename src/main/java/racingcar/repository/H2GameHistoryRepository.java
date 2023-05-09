@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class GameHistoryRepository {
+public class H2GameHistoryRepository implements BaseGameHistoryRepository {
 
   private final JdbcTemplate jdbcTemplate;
 
