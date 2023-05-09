@@ -3,6 +3,7 @@ package racingcar.service;
 import org.springframework.stereotype.Service;
 import racingcar.domain.PlayResult;
 import racingcar.domain.RacingCar;
+import racingcar.domain.RacingCars;
 import racingcar.dto.RacingCarResponse;
 import racingcar.dto.RacingPlaysRequest;
 import racingcar.dto.RacingPlaysResponse;
@@ -10,6 +11,7 @@ import racingcar.repository.RacingResultRepository;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author a1101466 on 2023/05/02
@@ -25,32 +27,30 @@ public class RacingService {
     }
 
     public RacingPlaysResponse playRace(RacingPlaysRequest racingPlaysRequest){
-        List<RacingCar> racingCars = racingPlaysRequest.getConvertRequestNameToCarList();
 
-        playRound(racingCars, racingPlaysRequest.getCount());
+        RacingCars racingCars = new RacingCars(racingPlaysRequest.getConvertRequestNameToCarList());
+
+        racingCars.playRound(racingPlaysRequest.getCount());
 
         racingResultRepository.insertGameResult(
                 PlayResult.builder()
+                        .winners(racingCars.getWinnersToString())
                         .trialCount(racingPlaysRequest.getCount())
-                        .racingCars(RacingCarResponse.listOf(racingCars))
+                        .racingCars(RacingCarResponse.listOf(racingCars.getRacingCars()))
                         .build()
         );
 
-        PlayResult playResult =  racingResultRepository.getResults();
+        PlayResult playResult =  racingResultRepository.getResult();
 
         return RacingPlaysResponse.of(playResult);
 
     }
 
-    private static void playRound(List<RacingCar> racingCars, int requestRound) {
+    public List<RacingPlaysResponse> playRaceList(){
 
-        Random random = new Random();
-        for (int i = 0; i < requestRound; i++) {
-            for (RacingCar racingCar : racingCars) {
-                int randomNumber = random.nextInt(10);
-                racingCar.move(randomNumber);
-            }
-        }
+        return racingResultRepository.getResultAll().stream()
+                .map(RacingPlaysResponse::of)
+                .collect(Collectors.toList());
 
     }
 
