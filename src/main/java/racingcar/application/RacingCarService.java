@@ -11,8 +11,8 @@ import racingcar.dto.GameHistory;
 import racingcar.dto.RacingCarNamePosition;
 import racingcar.dto.RacingCarPlayResponse;
 import racingcar.dto.RacingCarRoundResult;
-import racingcar.repository.GameHistoryRepository;
-import racingcar.repository.RoundHistoryRepository;
+import racingcar.repository.BaseGameHistoryRepository;
+import racingcar.repository.BaseRoundHistoryRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RacingCarService {
 
-  private final GameHistoryRepository gameHistoryRepository;
-  private final RoundHistoryRepository roundHistoryRepository;
+  private final BaseGameHistoryRepository gameHistoryRepository;
+  private final BaseRoundHistoryRepository roundHistoryRepository;
 
   @Transactional
   public RacingCarPlayResponse play(String names, int count) {
