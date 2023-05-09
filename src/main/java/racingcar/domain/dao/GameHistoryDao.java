@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import racingcar.domain.GameHistory;
+import racingcar.dto.GameHistoryResponseDto;
 import racingcar.repository.GameHistoryRepository;
 
 @Repository
@@ -24,6 +25,11 @@ public class GameHistoryDao implements GameHistoryRepository {
 		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName(TABLE_NAME)
 			.usingGeneratedKeyColumns(ID_COLUMN, DATE_COLUMN);
+	}
+
+	@Override
+	public GameHistoryResponseDto findAllWithGameResults() {
+		return null;
 	}
 
 	@Override
