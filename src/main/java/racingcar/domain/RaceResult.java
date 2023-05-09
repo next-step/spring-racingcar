@@ -26,8 +26,9 @@ public class RaceResult {
         .map(RacingCar::getName)
         .collect(Collectors.toList());
 
+    String delimiter = ",";
     // 우승자 이름을 쉼표로 구분하여 String 형태로 반환
-    return String.join(",", winners);
+    return String.join(delimiter, winners);
   }
 
   public RaceResult(String winners, List<RacingCar> racingCars) {
