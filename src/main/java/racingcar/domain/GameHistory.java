@@ -2,15 +2,16 @@ package racingcar.domain;
 
 import java.time.LocalDateTime;
 
-public class GameHistory {
-	private final int id;
-	private final int playResultId;
+public class
+GameHistory {
+	private final long id;
+	private final long playResultId;
 	private final String name;
 	private final int position;
 
 	private final LocalDateTime createdAt;
 
-	public GameHistory(int id, int playResultId, String name, int position, LocalDateTime createdAt) {
+	public GameHistory(long id, long playResultId, String name, int position, LocalDateTime createdAt) {
 		this.id = id;
 		this.playResultId = playResultId;
 		this.name = name;
@@ -18,7 +19,7 @@ public class GameHistory {
 		this.createdAt = createdAt;
 	}
 
-	public static GameHistory of(int gameResultId, Car car) {
+	public static GameHistory of(long gameResultId, Car car) {
 		return GameHistory.builder()
 			.playResultId(gameResultId)
 			.name(car.getName())
@@ -30,11 +31,11 @@ public class GameHistory {
 		return new GameHistoryBuilder();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public int getPlayResultId() {
+	public long getPlayResultId() {
 		return playResultId;
 	}
 
@@ -51,19 +52,19 @@ public class GameHistory {
 	}
 
 	public static class GameHistoryBuilder {
-		private int id;
-		private int playResultId;
+		private long id;
+		private long playResultId;
 		private String name;
 		private int position;
 
 		private LocalDateTime createdAt;
 
-		public GameHistoryBuilder id(int id) {
+		public GameHistoryBuilder id(long id) {
 			this.id = id;
 			return this;
 		}
 
-		public GameHistoryBuilder playResultId(int playResultId) {
+		public GameHistoryBuilder playResultId(long playResultId) {
 			this.playResultId = playResultId;
 			return this;
 		}

@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 public class GameResult {
 	private final String winners;
 	private final int trialCount;
-
+	private long id;
 	private LocalDateTime createdAt;
 
-	public GameResult(int id, String winners, int trialCount, LocalDateTime createdAt) {
+	public GameResult(long id, String winners, int trialCount, LocalDateTime createdAt) {
 		this.id = id;
 		this.winners = winners;
 		this.trialCount = trialCount;
@@ -36,13 +36,13 @@ public class GameResult {
 	}
 
 	public static class GameResultBuilder {
-		private int id;
+		private long id;
 		private String winners;
 		private int trialCount;
 
 		private LocalDateTime createdAt;
 
-		public GameResultBuilder id(int id) {
+		public GameResultBuilder id(long id) {
 			this.id = id;
 			return this;
 		}

@@ -1,5 +1,5 @@
 CREATE TABLE GAME_RESULT (
-    id          INT         NOT NULL AUTO_INCREMENT,
+    id          long         NOT NULL AUTO_INCREMENT,
     winners     VARCHAR(50) NOT NULL,
     trial_count INT         NOT NULL,
     created_at  DATETIME    NOT NULL default current_timestamp,
@@ -7,7 +7,7 @@ CREATE TABLE GAME_RESULT (
 );
 CREATE TABLE GAME_HISTORY
 (
-    id             INT         NOT NULL AUTO_INCREMENT,
+    id             long         NOT NULL AUTO_INCREMENT,
     play_result_id INT         NOT NULL,
     name           VARCHAR(50) NOT NULL,
     position       INT         NOT NULL,

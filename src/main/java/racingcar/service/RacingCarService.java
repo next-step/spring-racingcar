@@ -36,7 +36,7 @@ public class RacingCarService {
 		return new RacingCarResponseDto(racingGame.getWinners(), initCars);
 	}
 
-	private int saveGameResult(RacingGame racingGame, int round) {
+	private long saveGameResult(RacingGame racingGame, int round) {
 		GameResult gameResult = GameResult.builder()
 			.winners(racingGame.getNameOfWinnerCar())
 			.trialCount(round)
@@ -44,9 +44,10 @@ public class RacingCarService {
 		return gameResultRepository.save(gameResult);
 	}
 
-	private void saveGameHistories(int playerResultId, List<Car> cars) {
-		List<GameHistory> gameHistories = cars.stream()
-			.map(car -> GameHistory.of(playerResultId, car))
+	private void saveGameHistories(long playResultId, RacingGame cars) {
+		List<GameHistory> gameHistories = cars.getCars()
+			.stream()
+			.map(it -> GameHistory.of(playResultId, it))
 			.collect(Collectors.toList());
 		gameHistoryRepository.saveAll(gameHistories);
 	}
