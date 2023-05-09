@@ -20,8 +20,8 @@ public class PlaysService {
         List<RacingCar> racingCars = createRacingCars(request.getNames());
         playRound(request.getCount(), racingCars);
         String winners = getWinners(racingCars);
-        playsRepository.insertPlayResult(winners, request.getCount());
-        insertPlayPositions(racingCars);
+        Long resultId = playsRepository.insertPlayResult(winners, request.getCount());
+        insertPlayPositions(racingCars, resultId);
         return createResponse(winners, racingCars);
     }
 
@@ -29,8 +29,8 @@ public class PlaysService {
         return playsRepository.findAll();
     }
 
-    private void insertPlayPositions(List<RacingCar> racingCars) {
-        racingCars.forEach(racingCar -> playsRepository.insertPlayPosition(racingCar.getName(), racingCar.getPosition()));
+    private void insertPlayPositions(List<RacingCar> racingCars, Long resultId) {
+        racingCars.forEach(racingCar -> playsRepository.insertPlayPosition(resultId, racingCar.getName(), racingCar.getPosition()));
     }
 
     private List<RacingCar> createRacingCars(String names) {
