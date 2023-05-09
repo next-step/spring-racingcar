@@ -6,4 +6,5 @@ import racingcar.domain.GameHistory;
 
 public interface GameHistoryRepository {
 	void saveAll(List<GameHistory> gameHistories);
+	List<GameHistory> findAll();
 }
