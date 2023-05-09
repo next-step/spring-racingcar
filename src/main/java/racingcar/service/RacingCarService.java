@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import racingcar.behavior.RandomMovingStrategy;
-import racingcar.domain.Car;
 import racingcar.domain.GameHistory;
 import racingcar.domain.GameResult;
 import racingcar.domain.RacingGame;

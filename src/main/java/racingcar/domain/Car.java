@@ -4,7 +4,6 @@ import racingcar.behavior.MovingStrategy;
 import racingcar.util.ErrorMessage;
 
 public class Car {
-	static final int DEFAULT_DISTANCE = 0;
 	private static final int MAX_INPUT_NAME_VALUE = 5;
 	private static final String BLANK = " ";
 

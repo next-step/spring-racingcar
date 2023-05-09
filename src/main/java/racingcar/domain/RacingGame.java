@@ -7,12 +7,10 @@ import racingcar.behavior.MovingStrategy;
 
 public class RacingGame {
 	private final List<Car> cars;
-	private final MovingStrategy movingStrategy;
 	private int round;
 
-	public RacingGame(List<Car> cars, MovingStrategy movingStrategy) {
+	public RacingGame(List<Car> cars) {
 		this.cars = cars;
-		this.movingStrategy = movingStrategy;
 		this.round = 1;
 	}
 

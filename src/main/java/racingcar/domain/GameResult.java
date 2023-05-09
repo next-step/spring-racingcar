@@ -3,7 +3,6 @@ package racingcar.domain;
 import java.time.LocalDateTime;
 
 public class GameResult {
-	private final int id;
 	private final String winners;
 	private final int trialCount;
 
