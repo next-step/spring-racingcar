@@ -10,7 +10,6 @@ import racingcar.domain.GameHistory;
 import racingcar.domain.GameResult;
 
 public class GameHistoryResponseDto {
-	@JsonFormat
 	private final List<RacingCarResponseDto> histories;
 
 	public GameHistoryResponseDto(List<RacingCarResponseDto> histories) {
