@@ -2,8 +2,7 @@ package racingcar.domain;
 
 import java.time.LocalDateTime;
 
-public class
-GameHistory {
+public class GameHistory {
 	private final long id;
 	private final long playResultId;
 	private final String name;

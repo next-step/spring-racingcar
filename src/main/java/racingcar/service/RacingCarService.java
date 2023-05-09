@@ -1,5 +1,6 @@
 package racingcar.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import racingcar.behavior.RandomMovingStrategy;
 import racingcar.domain.GameHistory;
 import racingcar.domain.GameResult;
 import racingcar.domain.RacingGame;
+import racingcar.repository.dao.JdbcGameHistoryDao;
 import racingcar.dto.GameHistoryResponseDto;
 import racingcar.dto.RacingCarRequestDto;
 import racingcar.dto.RacingCarResponseDto;
@@ -21,10 +23,13 @@ import racingcar.repository.GameResultRepository;
 public class RacingCarService {
 	private final GameHistoryRepository gameHistoryRepository;
 	private final GameResultRepository gameResultRepository;
+	private final JdbcGameHistoryDao jdbcGameHistoryDao;
 
-	public RacingCarService(GameHistoryRepository gameHistoryRepository, GameResultRepository gameResultRepository) {
+	public RacingCarService(@Qualifier("gameHistoryDao") GameHistoryRepository gameHistoryRepository,
+		@Qualifier("gameResultDao") GameResultRepository gameResultRepository, JdbcGameHistoryDao jdbcGameHistoryDao) {
 		this.gameHistoryRepository = gameHistoryRepository;
 		this.gameResultRepository = gameResultRepository;
+		this.jdbcGameHistoryDao = jdbcGameHistoryDao;
 	}
 
 	@Transactional
@@ -64,9 +69,6 @@ public class RacingCarService {
 
 	@Transactional(readOnly = true)
 	public GameHistoryResponseDto loadGameHistory() {
-		List<GameResult> results = gameResultRepository.findAll();
-		List<GameHistory> playHistories = gameHistoryRepository.findAll();
-
-		return GameHistoryResponseDto.of(results, playHistories);
+		return jdbcGameHistoryDao.findAllWithGameResults();
 	}
 }

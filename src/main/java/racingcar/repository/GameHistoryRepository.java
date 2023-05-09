@@ -1,10 +1,15 @@
-package racingcar.repository;
+package racingcar.dto;
 
 import java.util.List;
 
-import racingcar.domain.GameHistory;
+public class GameHistoryResponseDto {
+	private final List<RacingCarResponseDto> histories;
 
-public interface GameHistoryRepository {
-	void saveAll(List<GameHistory> gameHistories);
-	List<GameHistory> findAll();
+	public GameHistoryResponseDto(List<RacingCarResponseDto> histories) {
+		this.histories = histories;
+	}
+
+	public List<RacingCarResponseDto> getHistories() {
+		return histories;
+	}
 }
