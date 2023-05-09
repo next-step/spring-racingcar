@@ -39,12 +39,12 @@ public class RacingGame {
 		return finalRound == round;
 	}
 
-	private void run() {
-		cars.forEach(this::moveCar);
+	private void run(MovingStrategy movingStrategy) {
+		cars.forEach(car -> moveCar(car, movingStrategy));
 		nextRound();
 	}
 
-	private void moveCar(Car car) {
+	private void moveCar(Car car, MovingStrategy movingStrategy) {
 		car.move(movingStrategy);
 	}
 
