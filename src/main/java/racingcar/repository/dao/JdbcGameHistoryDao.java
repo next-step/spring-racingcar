@@ -29,8 +29,6 @@ public class JdbcGameHistoryDao implements GameHistoryRepository {
 	private SimpleJdbcInsert jdbcInsert;
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	public JdbcGameHistoryDao() {
-	}
 
 	public JdbcGameHistoryDao(DataSource dataSource) {
 		this.jdbcInsert = new SimpleJdbcInsert(dataSource)
