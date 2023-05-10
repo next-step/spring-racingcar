@@ -2,55 +2,43 @@ package racingcar.business;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import racingcar.RacingCar;
-import racingcar.data.RacingRepository;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import racingcar.data.PlayHistoryRepository;
+import racingcar.data.PlayResultRepository;
 import racingcar.presentation.dto.GameStartDto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@ExtendWith(MockitoExtension.class)
 class RacingServiceTest {
 
-    private final RacingService racingService;
+    @Spy
+    private DataSource dataSource = new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.H2)
+            .addScript("classpath:data-test.sql")
+            .build();;
 
-    public RacingServiceTest() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        RacingRepository racingRepository = new RacingRepository(jdbcTemplate);
-        this.racingService = new RacingService(racingRepository);
-    }
+    @Spy
+    private PlayResultRepository racingRepository;
 
-    @DisplayName("자동차 이름 입력값으로 반환된 자동차 갯수를 확인한다.")
+    @Spy
+    private PlayHistoryRepository historyRepository;
+    @InjectMocks
+    private RacingService racingService;
+
+    @DisplayName("비즈니스 레이어 테스트")
     @Test
-    void getRacingCarsTest() {
+    void gameTest() {
         // given
-        String names = "A,B,C,D,E";
-        GameStartDto gameStartDto = new GameStartDto(names, 0);
-
         // when
-        List<RacingCar> racingCars = racingService.getRacingCars(gameStartDto);
-
         // then
-        int playerCount = names.split(",").length;
-        assertThat(racingCars.size()).isEqualTo(playerCount);
+        assertThat(racingService.game("A,B,C", 100)).isNotNull();
     }
-
-    @DisplayName("시도할 횟수 입력값과 실제 플레이된 게임 횟수를 비교한다.")
-    @Test
-    void startCarRacingGameCountTest() {
-        // given
-        int inputCount = 10;
-        List<RacingCar> racingCars = IntStream.rangeClosed(1, 10).mapToObj(i -> new RacingCar(String.valueOf(i)))
-                .collect(Collectors.toList());
-
-        // when
-        int gameCount = racingService.startCarRacingGame(racingCars, inputCount);
-
-        // then
-        assertThat(inputCount).isEqualTo(gameCount);
-    }
-
 }

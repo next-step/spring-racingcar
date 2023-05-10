@@ -1,61 +1,66 @@
 package racingcar.business;
 
 import org.springframework.stereotype.Service;
-import racingcar.RacingCar;
+import racingcar.business.domain.RacingCars;
+import racingcar.data.PlayHistoryRepository;
+import racingcar.data.PlayResultRepository;
+import racingcar.data.entity.PlayHistory;
+import racingcar.data.entity.PlayResult;
+import racingcar.presentation.dto.GamePlayHistory;
 import racingcar.presentation.dto.GameResultDto;
-import racingcar.presentation.dto.GameStartDto;
-import racingcar.data.RacingRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Service
 public class RacingService {
 
-    private final RacingRepository racingRepository;
+    private final PlayResultRepository playResultRepository;
+    private final PlayHistoryRepository playHistoryRepository;
 
-    public RacingService(RacingRepository racingRepository) {
-        this.racingRepository = racingRepository;
+    public RacingService(PlayResultRepository playResultRepository, PlayHistoryRepository playHistoryRepository) {
+        this.playResultRepository = playResultRepository;
+        this.playHistoryRepository = playHistoryRepository;
     }
 
-    public GameResultDto game(GameStartDto gameStartDto) {
-        List<RacingCar> racingCars = getRacingCars(gameStartDto);
-        int count = gameStartDto.getCount();
-        startCarRacingGame(racingCars, count);
+    public GameResultDto game(String names, int count) {
+        RacingCars racingCars = new RacingCars(names);
+        racingCars.startCarRacingGame(count);
 
-        GameResultDto gameResultDto = calculateGameResult(racingCars);
-        racingRepository.insertGameResult(gameResultDto);
-        return gameResultDto;
+        long gameResultId = insertGameResult(racingCars);
+        insertPlayHistories(racingCars, gameResultId);
+
+        return new GameResultDto(racingCars);
     }
 
-    public int startCarRacingGame(List<RacingCar> racingCars, int count) {
-        return IntStream.rangeClosed(1, count).reduce(0, (acc, n) -> {
-            this.playRound(racingCars);
-            return acc + 1;
-        });
+    private void insertPlayHistories(RacingCars racingCars, long gameResultId) {
+        List<PlayHistory> playHistories = racingCars.getCars().stream()
+                .map(racingCar -> new PlayHistory(gameResultId, racingCar)).collect(Collectors.toList());
+        playHistoryRepository.insertHistory(playHistories);
     }
 
-    public List<RacingCar> getRacingCars(GameStartDto gameStartDto) {
-        return Stream.of(gameStartDto.getNames().split(",")).map(RacingCar::new)
-                .collect(Collectors.toList());
+    private long insertGameResult(RacingCars racingCars) {
+        PlayResult playResult = new PlayResult(racingCars.getWinnersNames());
+        long gameResultId = playResultRepository.insertGameResult(playResult);
+        return gameResultId;
     }
 
-    private GameResultDto calculateGameResult(List<RacingCar> racingCars) {
-        Optional<Integer> maxPosition = racingCars.stream().map(RacingCar::getPosition).max(Integer::compareTo);
-        String winners = racingCars.stream().filter(racingCar -> racingCar.getPosition() == maxPosition.orElseThrow())
-                .map(RacingCar::getName).collect(Collectors.joining(","));
-        return new GameResultDto(String.join(", ", winners), racingCars);
-    }
+    public List<GamePlayHistory> getGameResults() {
+        List<PlayResult> playResults = playResultRepository.getPlayResults();
 
-    private void playRound(List<RacingCar> racingCars) {
-        Random random = new Random();
-        for (RacingCar racingCar : racingCars) {
-            int randomNumber = random.nextInt(10);
-            racingCar.move(randomNumber);
-        }
+        List<Long> ids = playResults.stream().map(PlayResult::getId).collect(Collectors.toList());
+        List<PlayHistory> playHistories = playHistoryRepository.getPlayHistoriesWhereIn(ids);
+
+        return playResults.stream().map(playResult -> {
+
+            GamePlayHistory gamePlayHistory = new GamePlayHistory();
+            gamePlayHistory.setWinners(playResult.getWinners());
+
+            List<GamePlayHistory.RacingCar> racingCars = playHistories.stream().filter(playHistory ->
+                    playResult.getId() == playHistory.getPlayResultId()).map(r ->
+                    gamePlayHistory.new RacingCar(r.getPlayerName(), r.getPosition())).collect(Collectors.toList());
+            gamePlayHistory.setRacingCars(racingCars);
+            return gamePlayHistory;
+        }).collect(Collectors.toList());
     }
 }

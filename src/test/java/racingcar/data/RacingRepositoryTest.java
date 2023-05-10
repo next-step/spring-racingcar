@@ -1,50 +1,42 @@
 package racingcar.data;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import racingcar.RacingCar;
-import racingcar.presentation.dto.GameResultDto;
-
-import java.util.Arrays;
-import java.util.List;
+import racingcar.data.entity.PlayResult;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class RacingRepositoryTest {
 
     @Autowired
-    private RacingRepository racingRepository;
+    private PlayResultRepositoryImpl racingRepository;
 
+    @DisplayName("게임 결과 성공 케이스")
     @Test
     void insertGameResultTest() {
         // given
         String winners = "A";
-        List<RacingCar> racingCars = Arrays.asList(new RacingCar(winners));
-        GameResultDto gameResultDto = new GameResultDto(winners, racingCars);
+        PlayResult playResult = new PlayResult(winners);
 
         // when
-        assertDoesNotThrow(() -> racingRepository.insertGameResult(gameResultDto));
         // then
+        assertDoesNotThrow(() -> racingRepository.insertGameResult(playResult));
     }
 
+    @DisplayName("게임 결과 실패 케이스")
     @Test
     void insertGameResultFailTest() {
         // given
-        String winners = null;
-        List<RacingCar> racingCars = Arrays.asList(new RacingCar("A"));
-        GameResultDto gameResultDto = new GameResultDto(winners, racingCars);
+        PlayResult playResult = new PlayResult(null);
 
         // when
-        assertThrowsExactly(DataIntegrityViolationException.class,
-                () -> racingRepository.insertGameResult(gameResultDto));
         // then
+        assertThrowsExactly(RuntimeException.class,
+                () -> racingRepository.insertGameResult(playResult));
     }
 
 }
