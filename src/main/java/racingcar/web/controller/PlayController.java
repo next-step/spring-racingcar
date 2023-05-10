@@ -34,6 +34,7 @@ public class PlayController {
 
     @PostMapping("/plays")
     public PlayResponseDto plays(@RequestBody PlayRequestDto playRequestDto) {
+        // TODO Play 로직 Service에서 수행하도록 변경하기
         List<PlayResultDto> playResultDtos = playService.play(splitNames(playRequestDto.getNames()), playRequestDto.getCount());
         String winners = joinNames(playService.findWinners(playResultDtos));
 

@@ -51,9 +51,7 @@ public class PlayService {
                 .map(playResult -> playResult.toPlayHistoryDetail(playHistoryId))
                 .collect(Collectors.toList());
 
-        for (PlayHistoryDetail playHistoryDetail : playHistoryDetails) {
-            playHistoryDetailDao.save(playHistoryDetail);
-        }
+        playHistoryDetailDao.saveAll(playHistoryDetails);
 
         return playHistoryId;
     }

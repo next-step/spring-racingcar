@@ -45,6 +45,23 @@ class PlayHistoryDetailDaoTest {
     }
 
     @Test
+    void saveAll() {
+        Long playHistoryId = playHistoryDao.save(new PlayHistory(3, "carA"));
+
+        List<PlayHistoryDetail> givenPlayHistoryDetails = List.of(
+                new PlayHistoryDetail(playHistoryId, "carA", 3),
+                new PlayHistoryDetail(playHistoryId, "carB", 2)
+        );
+        playHistoryDetailDao.saveAll(givenPlayHistoryDetails);
+
+        List<PlayHistoryDetail> foundPlayHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistoryId);
+        assertThat(foundPlayHistoryDetails)
+                .flatExtracting(PlayHistoryDetail::getName).containsExactly("carA", "carB");
+        assertThat(foundPlayHistoryDetails)
+                .flatExtracting(PlayHistoryDetail::getPosition).containsExactly(3, 2);
+    }
+
+    @Test
     void findByPlayHistoryId() {
         Long playHistoryId = playHistoryDao.save(new PlayHistory(3, "carA"));
 
