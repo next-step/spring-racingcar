@@ -2,19 +2,13 @@ package racingcar.facade;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import racingcar.entity.RacingGame;
-import racingcar.entity.RacingPlayer;
 import racingcar.entity.RacingPlayerResponse;
 import racingcar.repository.RacingGameRepository;
-import racingcar.repository.RacingGameRepositoryJDBC;
 import racingcar.repository.RacingPlayerRepository;
-import racingcar.service.CalculateRaceService;
+import racingcar.service.RandomNumberGenerator;
 import racingcar.service.RacingGameService;
 import racingcar.service.RacingPlayerService;
 
@@ -39,7 +33,7 @@ class RacingGameFacadeTest {
     @Autowired
     private RacingPlayerService racingPlayerService;
     @Autowired
-    private CalculateRaceService calculateRaceService;
+    private RandomNumberGenerator randomNumberGenerator;
     @Autowired
     private RacingGameService racingGameService;
 

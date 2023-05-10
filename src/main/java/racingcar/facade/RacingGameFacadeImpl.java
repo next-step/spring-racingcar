@@ -6,7 +6,7 @@ import racingcar.entity.RacingGame;
 import racingcar.entity.RacingGameResponse;
 import racingcar.entity.RacingPlayer;
 import racingcar.entity.RacingPlayerResponse;
-import racingcar.service.CalculateRaceService;
+import racingcar.service.RandomNumberGenerator;
 import racingcar.service.RacingGameService;
 import racingcar.service.RacingPlayerService;
 
@@ -20,14 +20,14 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
 
     private final RacingGameService racingGameService;
     private final RacingPlayerService racingPlayerService;
-    private final CalculateRaceService calculateRaceService;
+    private final RandomNumberGenerator randomNumberGenerator;
 
 
     @Autowired
-    public RacingGameFacadeImpl(RacingGameService racingGameService, RacingPlayerService racingPlayerService, CalculateRaceService calculateRaceService) {
+    public RacingGameFacadeImpl(RacingGameService racingGameService, RacingPlayerService racingPlayerService, RandomNumberGenerator randomNumberGenerator) {
         this.racingGameService = racingGameService;
         this.racingPlayerService = racingPlayerService;
-        this.calculateRaceService = calculateRaceService;
+        this.randomNumberGenerator = randomNumberGenerator;
     }
 
 
@@ -38,7 +38,7 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
 
         RacingGame racingGame = racingGameService.createRacingGame(trialCount);
 
-        List<Integer> positions = calculateRaceService.calculatePositions(nameList, racingGame.getTrialCount());
+        List<Integer> positions = randomNumberGenerator.calculatePositions(nameList.size(), racingGame.getTrialCount());
 
         List<RacingPlayer> racingPlayers = racingPlayerService.createRacingPlayers(nameList, racingGame, positions);
 

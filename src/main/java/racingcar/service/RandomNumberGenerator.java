@@ -8,17 +8,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
-public class CalculateRaceService {
+public class RandomNumberGenerator implements NumberGenerator{
     private final double p = 0.6; // 확률
 
     /**
      * 레이싱 결과물을 구한다.
-     * @param names 플레이어 이름
+     * @param size 리스트 크기
      * @param count 차수
      * @return 레이싱 결과물
      */
-    public List<Integer> calculatePositions(List<String> names, int count) {
-        return IntStream.range(0, names.size()).mapToObj(i -> this.calculatePosition(count)).collect(Collectors.toList());
+    public List<Integer> calculatePositions(int size, int count) {
+        return IntStream.range(0, size).mapToObj(i -> this.calculatePosition(count)).collect(Collectors.toList());
     }
 
     /**

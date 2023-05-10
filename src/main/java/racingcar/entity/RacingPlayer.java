@@ -1,7 +1,7 @@
 package racingcar.entity;
 
-import racingcar.support.GeneratedValue;
-import racingcar.support.IdField;
+import racingcar.utils.annotation.GeneratedValue;
+import racingcar.utils.annotation.IdField;
 
 import javax.validation.constraints.NotNull;
 

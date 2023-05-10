@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class CalculateRaceServiceTest {
+class RandomNumberGeneratorTest {
 
-    private final CalculateRaceService calculateRaceService = new CalculateRaceService();
+    private final RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
 
     @DisplayName("n이 음수가 들어온다면")
     @Nested
@@ -25,7 +25,7 @@ class CalculateRaceServiceTest {
                 int n = -1;
                 double p = 0.6;
                 // when
-                double mean = calculateRaceService.calculateMean(n, p);
+                double mean = randomNumberGenerator.calculateMean(n, p);
 
                 // then
                 Assertions.assertThat(mean).isEqualTo(-0.6);
@@ -45,7 +45,7 @@ class CalculateRaceServiceTest {
                 // when
 
                 // then
-                Assertions.assertThatThrownBy(() -> calculateRaceService.calculateSqrt(n, p)).isInstanceOf(IllegalArgumentException.class);
+                Assertions.assertThatThrownBy(() -> randomNumberGenerator.calculateSqrt(n, p)).isInstanceOf(IllegalArgumentException.class);
             }
         }
     }
@@ -63,7 +63,7 @@ class CalculateRaceServiceTest {
                 int n = 0;
                 double p = 0.6;
                 // when
-                double mean = calculateRaceService.calculateMean(n, p);
+                double mean = randomNumberGenerator.calculateMean(n, p);
 
                 // then
                 Assertions.assertThat(mean).isEqualTo(0);
@@ -80,7 +80,7 @@ class CalculateRaceServiceTest {
                 int n = 0;
                 double p = 0.6;
                 // when
-                double mean = calculateRaceService.calculateSqrt(n, p);
+                double mean = randomNumberGenerator.calculateSqrt(n, p);
 
                 // then
                 Assertions.assertThat(mean).isEqualTo(0);
@@ -103,7 +103,7 @@ class CalculateRaceServiceTest {
                 int n = 37;
                 double p = 0.6;
                 // when
-                double mean = calculateRaceService.calculateMean(n, p);
+                double mean = randomNumberGenerator.calculateMean(n, p);
 
                 // then
                 Assertions.assertThat(mean).isEqualTo(22.2);
@@ -121,7 +121,7 @@ class CalculateRaceServiceTest {
                 int n = 37;
                 double p = 0.6;
                 // when
-                double mean = calculateRaceService.calculateSqrt(n, p);
+                double mean = randomNumberGenerator.calculateSqrt(n, p);
 
                 // then
                 Assertions.assertThat(mean).isEqualTo(2.979932885150268);
@@ -139,7 +139,7 @@ class CalculateRaceServiceTest {
             // given
             int n = 100;
             // when
-            List<Integer> result = IntStream.range(0, 100000).mapToObj(i -> calculateRaceService.calculatePosition(n)).collect(Collectors.toList());
+            List<Integer> result = IntStream.range(0, 100000).mapToObj(i -> randomNumberGenerator.calculatePosition(n)).collect(Collectors.toList());
             // then
 
             long count = result.stream().filter(r -> r > n).count();

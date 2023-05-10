@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import racingcar.entity.BaseEntity;
-import racingcar.support.GeneratedValue;
-import racingcar.support.IdField;
+import racingcar.utils.annotation.GeneratedValue;
+import racingcar.utils.annotation.IdField;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
