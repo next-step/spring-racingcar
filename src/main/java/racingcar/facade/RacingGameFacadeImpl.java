@@ -32,9 +32,7 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
 
 
     @Override
-    public CreateRacingGameResponse createRacingGame(String names, Integer trialCount) {
-
-        List<String> nameList = this.parseName(names);
+    public CreateRacingGameResponse createRacingGame(List<String> nameList, Integer trialCount) {
 
         RacingGame racingGame = racingGameService.createRacingGame(trialCount);
 
@@ -45,12 +43,6 @@ public class RacingGameFacadeImpl implements RacingGameFacade {
         return this.mapRacingGameResponse(racingGame, racingPlayers);
     }
 
-    private List<String> parseName(String names) {
-        if (names == null || names.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return Arrays.stream(names.replace(" ", "").split(",")).collect(Collectors.toList());
-    }
     private CreateRacingGameResponse mapRacingGameResponse(RacingGame racingGame, List<RacingPlayer> racingPlayers) {
         RacingGameResponse response = new RacingGameResponse(racingGame.getId(), racingGame.getTrialCount());
         List<RacingPlayerResponse> responses = racingPlayers.stream().map(p -> new RacingPlayerResponse(p.getId(), p.getName(), p.getPosition(), p.isWinner())).collect(Collectors.toList());

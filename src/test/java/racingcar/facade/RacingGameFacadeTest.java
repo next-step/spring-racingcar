@@ -41,7 +41,7 @@ class RacingGameFacadeTest {
     @Nested
     class minus {
 
-        String names = "드록바, 존테리, 램파드, 에슐리콜, 체흐";
+        List<String> names = List.of("드록바", "존테리", "램파드", "에슐리콜", "체흐");
 
         @DisplayName("에러를 발생시킨다.")
         @Test
@@ -69,7 +69,7 @@ class RacingGameFacadeTest {
             @Test
             void createPlayer() {
                 // given
-                String names = "";
+                List<String> names = List.of();
 
 
                 // when
@@ -87,7 +87,7 @@ class RacingGameFacadeTest {
             @Test
             void createPlayer() {
                 // given
-                String names = "드록바, 존테리, 램파드, 에슐리콜, 체흐";
+                List<String> names = List.of("드록바", "존테리", "램파드", "에슐리콜", "체흐");
 
                 // when
                 CreateRacingGameResponse response = racingGameFacade.createRacingGame(names, trialCount);

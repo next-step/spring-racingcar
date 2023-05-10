@@ -1,6 +1,8 @@
 package racingcar.facade;
 
+import java.util.List;
+
 public interface RacingGameFacade {
 
-    CreateRacingGameResponse createRacingGame(String names, Integer trialCount);
+    CreateRacingGameResponse createRacingGame(List<String> nameList, Integer trialCount);
 }

@@ -10,6 +10,8 @@ import racingcar.facade.CreateRacingGameResponse;
 import racingcar.facade.RacingGameFacade;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,20 @@ public class RacingGameController {
     @PostMapping("/plays")
     public ResponseEntity<ApiCreateRacingGameResponse> createRacingGame(@Valid @RequestBody ApiCreateRacingGameRequest request) {
         Integer count = request.getCount();
-        String names = request.getNames();
-        CreateRacingGameResponse result = racingGameFacade.createRacingGame(names, count);
-        List<String> reponses = result.getPlayers().stream().filter(RacingPlayerResponse::getWinner).map(RacingPlayerResponse::getName).collect(Collectors.toList());
-        String winners = String.join(", ", reponses);
+        List<String> nameList = parseName(request.getNames());
+        CreateRacingGameResponse result = racingGameFacade.createRacingGame(nameList, count);
+        List<String> responses = result.getPlayers().stream().filter(RacingPlayerResponse::getWinner).map(RacingPlayerResponse::getName).collect(Collectors.toList());
+        String winners = String.join(", ", responses);
         List<ApiCreateRacingPlayerResponse> players = result.getPlayers().stream().map(r -> new ApiCreateRacingPlayerResponse(r.getName(), r.getPosition())).collect(Collectors.toList());
 
         return ResponseEntity.ok(new ApiCreateRacingGameResponse(winners, players));
+    }
+
+
+    private List<String> parseName(String names) {
+        if (names == null || names.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(names.replace(" ", "").split(",")).collect(Collectors.toList());
     }
 }
