@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import racingcar.application.GameService;
 import racingcar.application.dto.GameRequest;
 import racingcar.application.dto.GameResponse;
-import racingcar.domain.RacingCars;
-import racingcar.domain.Winners;
-import racingcar.global.NameEmptyException;
+
+import javax.validation.Valid;
 
 @RestController
 public class GameController {
@@ -21,17 +20,8 @@ public class GameController {
     }
 
     @PostMapping("/plays")
-    public ResponseEntity<GameResponse> game(@RequestBody GameRequest gameRequest) {
-        if(gameRequest.isNameEmpty()) {
-            throw new NameEmptyException();
-        }
-
-        RacingCars racingCars = RacingCars.from(gameRequest.getNames(), gameRequest.getCount());
-        racingCars.move();
-        Winners winners = new Winners(racingCars.getWinner());
-
-        gameService.saveGameResult(racingCars, winners);
-        return ResponseEntity.ok(GameResponse.of(winners, racingCars));
+    public ResponseEntity<GameResponse> game(@Valid @RequestBody GameRequest gameRequest) {
+        return ResponseEntity.ok(gameService.saveGameResult(gameRequest));
     }
 
 }
