@@ -28,4 +28,9 @@ public class RacingGameRepositoryJDBC extends BaseRepositoryJDBC<RacingGame, Lon
 
         return super.insert(entity, insertSql, pss);
     }
+
+    @Override
+    public void deleteAll() {
+        super.deleteAll("racing_games");
+    }
 }

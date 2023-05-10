@@ -30,6 +30,10 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
         this.validator = validator;
     }
 
+    protected void deleteAll(String tableName) {
+        jdbcTemplate.update("DELETE FROM " + tableName);
+    }
+
     protected ID getId(T entity) {
         for (Field field : entity.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(IdField.class)) {

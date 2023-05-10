@@ -31,4 +31,9 @@ public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer,
 
         return super.insert(entity, insertSql, pss);
     }
+
+    @Override
+    public void deleteAll() {
+        super.deleteAll("racing_players");
+    }
 }

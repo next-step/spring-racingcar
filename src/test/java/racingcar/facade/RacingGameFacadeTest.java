@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
-@Transactional
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class RacingGameFacadeTest {
 
@@ -36,6 +35,12 @@ class RacingGameFacadeTest {
     private RandomNumberGenerator randomNumberGenerator;
     @Autowired
     private RacingGameService racingGameService;
+
+    @AfterEach
+    void reset() {
+        racingPlayerRepository.deleteAll();
+        racingGameRepository.deleteAll();
+    }
 
     @DisplayName("trialCount가 음수일 때")
     @Nested
