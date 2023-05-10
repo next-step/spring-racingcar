@@ -12,11 +12,11 @@ import racingcar.behavior.RandomMovingStrategy;
 import racingcar.domain.GameHistory;
 import racingcar.domain.GameResult;
 import racingcar.domain.RacingGame;
+import racingcar.repository.GameHistoryRepository;
 import racingcar.repository.dao.JdbcGameHistoryDao;
 import racingcar.dto.GameHistoryResponseDto;
 import racingcar.dto.RacingCarRequestDto;
 import racingcar.dto.RacingCarResponseDto;
-import racingcar.repository.GameHistoryRepository;
 import racingcar.repository.GameResultRepository;
 
 @Service
