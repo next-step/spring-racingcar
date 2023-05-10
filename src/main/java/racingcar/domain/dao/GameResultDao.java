@@ -1,5 +1,7 @@
 package racingcar.domain.dao;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -21,10 +23,15 @@ public class GameResultDao implements GameResultRepository {
 	}
 
 	@Override
-	public int save(GameResult gameResult) {
+	public long save(GameResult gameResult) {
 		SqlParameterSource parameterSource = createSqlParameterSource(gameResult);
 		Object key = simpleJdbcInsert.executeAndReturnKeyHolder(parameterSource).getKeys().get("id");
-		return (int)key;
+		return (long)key;
+	}
+
+	@Override
+	public List<GameResult> findAll() {
+		return null;
 	}
 
 	private SqlParameterSource createSqlParameterSource(GameResult gameResult) {

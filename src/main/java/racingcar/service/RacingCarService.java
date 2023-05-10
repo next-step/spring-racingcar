@@ -1,43 +1,57 @@
 package racingcar.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import racingcar.behavior.RandomMovingStrategy;
-import racingcar.domain.Car;
 import racingcar.domain.GameHistory;
 import racingcar.domain.GameResult;
 import racingcar.domain.RacingGame;
-import racingcar.dto.RacingCarResponseDto;
 import racingcar.repository.GameHistoryRepository;
+import racingcar.repository.dao.JdbcGameHistoryDao;
+import racingcar.dto.GameHistoryResponseDto;
+import racingcar.dto.RacingCarRequestDto;
+import racingcar.dto.RacingCarResponseDto;
 import racingcar.repository.GameResultRepository;
 
 @Service
 public class RacingCarService {
 	private final GameHistoryRepository gameHistoryRepository;
 	private final GameResultRepository gameResultRepository;
+	private final JdbcGameHistoryDao jdbcGameHistoryDao;
 
-	public RacingCarService(GameHistoryRepository gameHistoryRepository, GameResultRepository gameResultRepository) {
+	public RacingCarService(@Qualifier("gameHistoryDao") GameHistoryRepository gameHistoryRepository,
+		@Qualifier("gameResultDao") GameResultRepository gameResultRepository, JdbcGameHistoryDao jdbcGameHistoryDao) {
 		this.gameHistoryRepository = gameHistoryRepository;
 		this.gameResultRepository = gameResultRepository;
+		this.jdbcGameHistoryDao = jdbcGameHistoryDao;
 	}
 
-	public RacingCarResponseDto game(String nameOfCars, int finalRound) {
-		List<Car> initCars = createCars(nameOfCars);
+	@Transactional
+	public RacingCarResponseDto game(RacingCarRequestDto request) {
+		List<String> names = Arrays.stream(request.getNames().split(","))
+			.map(String::trim)
+			.collect(Collectors.toList());
 
-		RacingGame racingGame = RacingGame.of(initCars, new RandomMovingStrategy());
-		racingGame.play(finalRound);
+		RacingGame racingCars = RacingGame.of(names);
+		int playCount = request.getCount();
 
-		int playResultId = saveGameResult(racingGame, finalRound);
-		saveGameHistories(playResultId, initCars);
+		RacingGame racingGame = RacingGame.convertCarsToRacingGame(racingCars.getCars());
+		racingGame.play(playCount, new RandomMovingStrategy());
+		String winners = racingGame.getWinners();
 
-		return new RacingCarResponseDto(racingGame.getWinners(), initCars);
+		long playResultId = saveGameResult(racingGame, playCount);
+		saveGameHistories(playResultId, racingCars);
+
+		return RacingCarResponseDto.from(winners, racingCars);
 	}
 
-	private int saveGameResult(RacingGame racingGame, int round) {
+	private long saveGameResult(RacingGame racingGame, int round) {
 		GameResult gameResult = GameResult.builder()
 			.winners(racingGame.getNameOfWinnerCar())
 			.trialCount(round)
@@ -45,18 +59,16 @@ public class RacingCarService {
 		return gameResultRepository.save(gameResult);
 	}
 
-	private void saveGameHistories(int playerResultId, List<Car> cars) {
-		List<GameHistory> gameHistories = cars.stream()
-			.map(car -> GameHistory.of(playerResultId, car))
+	private void saveGameHistories(long playResultId, RacingGame cars) {
+		List<GameHistory> gameHistories = cars.getCars()
+			.stream()
+			.map(it -> GameHistory.of(playResultId, it))
 			.collect(Collectors.toList());
 		gameHistoryRepository.saveAll(gameHistories);
 	}
 
-	private List<Car> createCars(String nameOfCars) {
-		String[] nameOfCarsArr = nameOfCars.replaceAll("\"", "").split(",");
-		return Arrays.stream(nameOfCarsArr)
-			.map(Car::new)
-			.collect(Collectors.toList());
+	@Transactional(readOnly = true)
+	public GameHistoryResponseDto loadGameHistory() {
+		return jdbcGameHistoryDao.findAllWithGameResults();
 	}
-
 }

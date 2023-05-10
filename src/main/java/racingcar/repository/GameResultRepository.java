@@ -1,7 +1,10 @@
 package racingcar.repository;
 
+import java.util.List;
 import racingcar.domain.GameResult;
 
 public interface GameResultRepository {
-	int save(GameResult gameResult);
+	long save(GameResult gameResult);
+
+	List<GameResult> findAll();
 }
