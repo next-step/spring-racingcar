@@ -8,6 +8,7 @@ import racingcar.domain.GameResult;
 import racingcar.domain.RacingCars;
 import racingcar.domain.RacingGameRepository;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 @Service
@@ -35,6 +36,11 @@ public class GameService {
     private void racingCardMove(RacingCars racingCars, int trialCount) {
         IntStream.range(ZERO, trialCount)
                 .forEach(index -> racingCars.move());
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameResponse> findResult() {
+        return racingGameRepository.findAll();
     }
 
 }
