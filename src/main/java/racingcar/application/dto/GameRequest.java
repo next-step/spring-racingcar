@@ -1,7 +1,10 @@
 package racingcar.application.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class GameRequest {
 
+    @NotBlank
     private final String names;
     private final int count;
 

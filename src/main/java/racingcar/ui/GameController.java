@@ -1,17 +1,16 @@
 package racingcar.ui;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import racingcar.application.GameService;
 import racingcar.application.dto.GameRequest;
 import racingcar.application.dto.GameResponse;
-import racingcar.domain.RacingCars;
-import racingcar.domain.Winners;
-import racingcar.global.NameEmptyException;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
+@RequestMapping("/plays")
 public class GameController {
 
     private final GameService gameService;
@@ -20,18 +19,14 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping("/plays")
-    public ResponseEntity<GameResponse> game(@RequestBody GameRequest gameRequest) {
-        if(gameRequest.isNameEmpty()) {
-            throw new NameEmptyException();
-        }
+    @PostMapping
+    public ResponseEntity<GameResponse> game(@Valid @RequestBody GameRequest gameRequest) {
+        return ResponseEntity.ok(gameService.saveGameResult(gameRequest));
+    }
 
-        RacingCars racingCars = RacingCars.from(gameRequest.getNames(), gameRequest.getCount());
-        racingCars.move();
-        Winners winners = new Winners(racingCars.getWinner());
-
-        gameService.saveGameResult(racingCars, winners);
-        return ResponseEntity.ok(GameResponse.of(winners, racingCars));
+    @GetMapping
+    public ResponseEntity<List<GameResponse>> result() {
+        return ResponseEntity.ok(gameService.findResult());
     }
 
 }

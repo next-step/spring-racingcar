@@ -1,17 +1,16 @@
 package racingcar.application.dto;
 
 import racingcar.domain.RacingCar;
-import racingcar.domain.RacingCars;
-import racingcar.domain.Winners;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameResponse {
 
     private final String winners;
-    private final List<RacingCar> racingCars;
+    private final List<RacingInfo> racingCars;
 
-    public GameResponse(String winners, List<RacingCar> racingCars) {
+    public GameResponse(String winners, List<RacingInfo> racingCars) {
         this.winners = winners;
         this.racingCars = racingCars;
     }
@@ -20,11 +19,13 @@ public class GameResponse {
         return winners;
     }
 
-    public List<RacingCar> getRacingCars() {
+    public List<RacingInfo> getRacingCars() {
         return racingCars;
     }
 
-    public static GameResponse of(Winners winners, RacingCars racingCars) {
-        return new GameResponse(winners.getNames(), racingCars.getRacingCars());
+    public static GameResponse of(String winners, List<RacingCar> racingCars) {
+        return new GameResponse(winners, racingCars.stream()
+                .map(RacingInfo::from)
+                .collect(Collectors.toList()));
     }
 }
