@@ -64,7 +64,7 @@ public class PlayService {
         for (PlayHistory playHistory : playHistorys) {
             List<PlayHistoryDetail> playHistoryDetails = playHistoryDetailDao.findByPlayHistoryId(playHistory.getId());
             List<PlayHistoryDto.RacingCar> racingCars = playHistoryDetails.stream()
-                    .map(PlayHistoryDetail::toPlayHistoryDtoRacingCar)
+                    .map(PlayHistoryDto.RacingCar::new)
                     .collect(Collectors.toList());
 
             results.add(new PlayHistoryDto(playHistory.getWinners(), racingCars));

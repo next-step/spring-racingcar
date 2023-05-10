@@ -2,6 +2,7 @@ package racingcar.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import racingcar.entity.PlayHistoryDetail;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,10 @@ public class PlayHistoryDto {
         private String name;
         private int position;
 
+        public RacingCar(PlayHistoryDetail playHistoryDetail) {
+            this.name = playHistoryDetail.getName();
+            this.position = playHistoryDetail.getPosition();
+        }
     }
 
     public PlayResponseDto toPlayResponseDto() {

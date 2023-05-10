@@ -9,7 +9,6 @@ import racingcar.domain.dto.PlayResultDto;
 import racingcar.web.dto.PlayHistoryDto;
 import racingcar.web.dto.PlayRequestDto;
 import racingcar.web.dto.PlayResponseDto;
-import racingcar.web.dto.PlayResponseDto.RacingCar;
 import racingcar.service.PlayService;
 
 import java.util.List;
@@ -40,8 +39,8 @@ public class PlayController {
 
         playService.savePlayResults(playRequestDto.getCount(), winners, playResultDtos);
 
-        List<RacingCar> racingCars = playResultDtos.stream()
-                .map(PlayResultDto::toPlayResponseDtoRacingCar)
+        List<PlayResponseDto.RacingCar> racingCars = playResultDtos.stream()
+                .map(PlayResponseDto.RacingCar::new)
                 .collect(Collectors.toList());
         return new PlayResponseDto(winners, racingCars);
     }

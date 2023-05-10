@@ -2,6 +2,7 @@ package racingcar.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import racingcar.domain.dto.PlayResultDto;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class PlayResponseDto {
         private String name;
         private int position;
 
+        public RacingCar(PlayResultDto playResultDto) {
+            this.name = playResultDto.getNameValue();
+            this.position = playResultDto.getPositionValue();
+        }
     }
 
 }
