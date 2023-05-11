@@ -1,4 +1,4 @@
-package racingcar.web.dao;
+package racingcar.entity.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -6,9 +6,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import racingcar.web.entity.PlayHistory;
+import racingcar.entity.PlayHistory;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,7 +24,13 @@ public class PlayHistoryDao {
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, playHistoryRowMapper(), id));
     }
 
-    public Long insert(PlayHistory playHistory) {
+    public List<PlayHistory> findAll() {
+        String sql = "SELECT * FROM play_history";
+
+        return jdbcTemplate.query(sql, playHistoryRowMapper());
+    }
+
+    public Long save(PlayHistory playHistory) {
         String sql = "INSERT INTO play_history (trial_count, winners) VALUES (?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

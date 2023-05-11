@@ -1,4 +1,4 @@
-package racingcar.web.entity;
+package racingcar.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

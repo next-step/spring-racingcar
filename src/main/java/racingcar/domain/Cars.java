@@ -1,6 +1,7 @@
 package racingcar.domain;
 
-import racingcar.strategy.MovingStrategy;
+import racingcar.domain.dto.PlayResultDto;
+import racingcar.domain.strategy.MovingStrategy;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class Cars {
         cars.forEach(car -> car.move(movingStrategy));
     }
 
-    public List<PlayResult> getPlayResults() {
+    public List<PlayResultDto> getPlayResults() {
         return cars.stream().map(Car::getPlayResult).collect(Collectors.toUnmodifiableList());
     }
 

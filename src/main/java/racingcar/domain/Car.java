@@ -1,6 +1,7 @@
 package racingcar.domain;
 
-import racingcar.strategy.MovingStrategy;
+import racingcar.domain.dto.PlayResultDto;
+import racingcar.domain.strategy.MovingStrategy;
 
 import java.util.Objects;
 
@@ -24,8 +25,8 @@ public class Car {
         }
     }
 
-    public PlayResult getPlayResult() {
-        return new PlayResult(position, name);
+    public PlayResultDto getPlayResult() {
+        return new PlayResultDto(position, name);
     }
 
     @Override

@@ -8,3 +8,18 @@
 - [x] Dao에서 id가 존재하지 않는 경우에 대한 예외 처리 고민
 - [x] carName split 로직 책임 객체 고민
 - [x] PlayService 에서 랜덤 로직 분리하고 테스트 작성
+
+## Step 2 리팩토링 요구사항
+- [x] PlayService 관련
+  - [x] MovingStrategy 테스트용 클래스 만들어서 Component로 등록
+  - [x] MovingStrategy 에 따른 PlayResult 반환 값 테스트
+
+## Step 2 미션 요구사항
+- [x] 게임 플레이 이력 조회 API 구현
+  - [x] ResponseDto, Controller, test 구현
+  - [x] Service 로직, dao, test 구현
+- [x] console application 출력 방식 변경
+  - [x] 중간 과정 출력 로직 제거
+  - [x] 결과 출력 방식을 '우승자, player 별 최종 이동거리' 로 변경
+- [x] 중복 코드 제거
+  - [x] PlayService 활용해 중복 코드 제거하기

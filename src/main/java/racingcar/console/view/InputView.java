@@ -1,4 +1,4 @@
-package racingcar.view;
+package racingcar.console.view;
 
 import java.util.Scanner;
 
@@ -19,7 +19,7 @@ public class InputView {
     }
 
     public static int nextInt() {
-        return scanner.nextInt();
+        return Integer.parseInt(scanner.nextLine());
     }
 
     public static String nextLine() {
