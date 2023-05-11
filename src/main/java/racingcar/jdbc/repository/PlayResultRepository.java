@@ -4,7 +4,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import racingcar.RacingCar;
 import racingcar.jdbc.PlayCarResult;
 import racingcar.jdbc.PlayResult;
 import racingcar.jdbc.PlayRacingDao;
@@ -15,7 +14,7 @@ import java.util.List;
 @Repository
 public class PlayResultRepository implements PlayRacingDao {
 
-    private SimpleJdbcInsert insertActor;
+    private final SimpleJdbcInsert insertActor;
     private final JdbcTemplate jdbcTemplate;
     private final PlayCarResultRepository playCarResultRepository;
 
@@ -31,22 +30,15 @@ public class PlayResultRepository implements PlayRacingDao {
     public void insert(PlayResult playResult) {
         BeanPropertySqlParameterSource parameters = new BeanPropertySqlParameterSource(playResult);
         long id = insertActor.executeAndReturnKey(parameters).longValue();
-        for (RacingCar racingCar : playResult.getRacingCars()) {
-            playCarResultRepository.insert(new PlayCarResult(racingCar.getName(), racingCar.getPosition(), id, LocalDateTime.now()));
-        }
+        playResult.getRacingCars().stream().map(racingCar ->
+                playCarResultRepository.insert(new PlayCarResult(racingCar.getName(), racingCar.getPosition(), id, LocalDateTime.now())));
     }
 
     @Override
     public String findWinnerById(Long id) {
         String sql = "select winners from play_result where play_id = ?";
-        return jdbcTemplate.queryForObject(
-                sql,
-                (resultSet, rowNum) -> {
-                    PlayResult playResult = new PlayResult(
-                            resultSet.getString("winners")
-                    );
-                    return playResult.getWinners();
-                }, id);
+        return jdbcTemplate.queryForObject(sql,
+                (resultSet, rowNum) -> resultSet.getString("winners"), id);
     }
 
     @Override

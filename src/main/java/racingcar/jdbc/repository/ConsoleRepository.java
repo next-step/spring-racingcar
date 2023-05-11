@@ -7,9 +7,11 @@ import racingcar.jdbc.PlayRacingDao;
 import java.util.List;
 
 public class ConsoleRepository implements PlayRacingDao {
+
     @Override
     public void insert(PlayResult playResult) {
     }
+
     @Override
     public String findWinnerById(Long id) {
         return null;
@@ -24,4 +26,5 @@ public class ConsoleRepository implements PlayRacingDao {
     public int count() {
         return 0;
     }
+
 }

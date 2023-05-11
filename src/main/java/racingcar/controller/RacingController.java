@@ -23,7 +23,7 @@ public class RacingController {
 
     @GetMapping
     public ResponseEntity<List<RacingResponse>> get() {
-        List<RacingResponse> responses = racingService.getPlayGameList();
+        List<RacingResponse> responses = racingService.getPlayGame();
         return ResponseEntity.ok().body(responses);
     }
 }

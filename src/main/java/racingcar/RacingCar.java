@@ -1,6 +1,7 @@
 package racingcar;
 
 public class RacingCar {
+
     private final String name;
     private int position;
 
@@ -22,4 +23,5 @@ public class RacingCar {
             this.position++;
         }
     }
+
 }

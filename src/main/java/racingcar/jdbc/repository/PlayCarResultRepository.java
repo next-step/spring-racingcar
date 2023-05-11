@@ -13,7 +13,7 @@ import java.util.Map;
 @Repository
 public class PlayCarResultRepository {
 
-    private SimpleJdbcInsert insertActor;
+    private final SimpleJdbcInsert insertActor;
     private final JdbcTemplate jdbcTemplate;
 
     public PlayCarResultRepository(DataSource dataSource, JdbcTemplate jdbcTemplate) {
@@ -23,22 +23,19 @@ public class PlayCarResultRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final RowMapper<PlayCarResult> actorRowMapper = (resultSet, rowNum) -> {
-        PlayCarResult playCarResult = new PlayCarResult(
-                resultSet.getString("name"),
-                resultSet.getInt("position")
-        );
-        return playCarResult;
-    };
+    private final RowMapper<PlayCarResult> actorRowMapper =
+            (resultSet, rowNum) -> new PlayCarResult(resultSet.getString("name"), resultSet.getInt("position"));
+
+
 
     public PlayCarResult insert(PlayCarResult playCarResult) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", playCarResult.getName());
         parameters.put("position", playCarResult.getPosition());
-        parameters.put("play_result_id", playCarResult.getPlay_result_id());
+        parameters.put("play_result_id", playCarResult.getPlayResultId());
         parameters.put("created_at", playCarResult.getCreatedAt());
         long id = insertActor.executeAndReturnKey(parameters).longValue();
-        return new PlayCarResult(id, playCarResult.getName(), playCarResult.getPosition(), playCarResult.getPlay_result_id(), playCarResult.getCreatedAt());
+        return new PlayCarResult(id, playCarResult.getName(), playCarResult.getPosition(), playCarResult.getPlayResultId(), playCarResult.getCreatedAt());
     }
 
     public List<PlayCarResult> findByPlayResultId(long playResultId) {

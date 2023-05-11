@@ -31,4 +31,5 @@ public class RacingCarConsoleApplication {
         System.out.println();
         System.out.println("최종 우승자: " + String.join(", ", winners));
     }
+
 }

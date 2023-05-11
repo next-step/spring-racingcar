@@ -11,4 +11,5 @@ public interface PlayRacingDao {
     List<PlayCarResult> getPlayCarResult(Long id);
 
     int count();
+
 }

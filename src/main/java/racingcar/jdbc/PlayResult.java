@@ -3,14 +3,14 @@ package racingcar.jdbc;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import racingcar.RacingCar;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 public class PlayResult {
-    private long play_id;
+
+    private long playId;
     private int trialCount;
     private String winners;
     private List<RacingCar> racingCars;

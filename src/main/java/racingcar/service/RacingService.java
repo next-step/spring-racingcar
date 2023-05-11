@@ -63,7 +63,7 @@ public class RacingService {
         }
     }
 
-    public List<RacingResponse> getPlayGameList() {
+    public List<RacingResponse> getPlayGame() {
         List<RacingResponse> list = new ArrayList<>();
         int count = playRacingDao.count();
         for (int i = 1; i <= count; i++) {
@@ -74,4 +74,5 @@ public class RacingService {
         }
         return list;
     }
+
 }
