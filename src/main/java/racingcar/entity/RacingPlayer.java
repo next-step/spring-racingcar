@@ -4,28 +4,34 @@ import racingcar.utils.annotation.GeneratedValue;
 import racingcar.utils.annotation.IdField;
 
 import javax.validation.constraints.NotNull;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class RacingPlayer extends BaseEntity {
 
     @IdField
     @GeneratedValue
     private Long id;
-    private Long racingGameId;
-    @NotNull
+    private final Long racingGameId;
     private final String name;
-    @NotNull
     private final Integer position;
-    @NotNull
     private final Boolean isWinner;
 
-    public RacingPlayer(String name, Integer position, Boolean isWinner) {
+    //생성함수
+
+    public RacingPlayer(String name, int position, boolean isWinner, long racingGameId) {
         this.name = name;
         this.position = position;
+        this.racingGameId = racingGameId;
         this.isWinner = isWinner;
     }
 
-    public void injectRacingGameId(Long racingGameId) {
+    private RacingPlayer(long id, String name, int position, boolean isWinner, long racingGameId) {
+        this.id = id;
         this.racingGameId = racingGameId;
+        this.name = name;
+        this.position = position;
+        this.isWinner = isWinner;
     }
 
     public Long getRacingGameId() {
@@ -51,5 +57,8 @@ public class RacingPlayer extends BaseEntity {
     @Override
     public boolean isNew() {
         return id == null;
+    }
+
+    public static class MockFactory {
     }
 }

@@ -1,16 +1,16 @@
-package racingcar.facade;
+package racingcar.service.response;
 
 import racingcar.entity.RacingGameResponse;
 import racingcar.entity.RacingPlayerResponse;
 
 import java.util.List;
 
-public class CreateRacingGameResponse {
+public class PlayRacingGameResponse {
 
     RacingGameResponse game;
     List<RacingPlayerResponse> players;
 
-    public CreateRacingGameResponse(RacingGameResponse game, List<RacingPlayerResponse> players) {
+    public PlayRacingGameResponse(RacingGameResponse game, List<RacingPlayerResponse> players) {
         this.game = game;
         this.players = players;
     }

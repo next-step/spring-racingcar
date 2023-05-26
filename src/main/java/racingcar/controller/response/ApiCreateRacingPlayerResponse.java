@@ -1,4 +1,4 @@
-package racingcar.controller;
+package racingcar.controller.response;
 
 public class ApiCreateRacingPlayerResponse {
 
