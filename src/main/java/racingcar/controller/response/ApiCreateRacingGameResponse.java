@@ -1,7 +1,4 @@
-package racingcar.controller;
-
-import racingcar.entity.RacingGameResponse;
-import racingcar.entity.RacingPlayerResponse;
+package racingcar.controller.response;
 
 import java.util.List;
 

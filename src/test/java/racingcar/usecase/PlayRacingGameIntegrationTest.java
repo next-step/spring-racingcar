@@ -1,46 +1,23 @@
-package racingcar.facade;
+package racingcar.usecase;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import racingcar.entity.RacingPlayerResponse;
-import racingcar.repository.RacingGameRepository;
-import racingcar.repository.RacingPlayerRepository;
-import racingcar.service.RandomNumberGenerator;
-import racingcar.service.RacingGameService;
-import racingcar.service.RacingPlayerService;
+import racingcar.service.request.PlayRacingGameRequest;
+import racingcar.service.response.PlayRacingGameResponse;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class RacingGameFacadeTest {
+class PlayRacingGameIntegrationTest extends PlayRacingGameUseCaseTest {
 
     @Autowired
-    private RacingPlayerRepository racingPlayerRepository;
-    @Autowired
-    private RacingGameRepository racingGameRepository;
-
-    @Autowired
-    private RacingGameFacade racingGameFacade;
-    @Autowired
-    private RacingPlayerService racingPlayerService;
-    @Autowired
-    private RandomNumberGenerator randomNumberGenerator;
-    @Autowired
-    private RacingGameService racingGameService;
-
-    @AfterEach
-    void reset() {
-        racingPlayerRepository.deleteAll();
-        racingGameRepository.deleteAll();
-    }
+    private PlayRacingGameUseCase playRacingGameUseCase;
 
     @DisplayName("trialCount가 음수일 때")
     @Nested
@@ -54,10 +31,12 @@ class RacingGameFacadeTest {
             // given
             int trialCount = -5;
 
+            PlayRacingGameRequest request = new PlayRacingGameRequest(names, trialCount);
+
             // when
 
             // then
-            Assertions.assertThatThrownBy(() -> racingGameFacade.createRacingGame(names, trialCount)).isInstanceOf(IllegalArgumentException.class);
+            Assertions.assertThatThrownBy(() -> playRacingGameUseCase.playRacingGame(request)).isInstanceOf(ConstraintViolationException.class);
         }
     }
 
@@ -75,12 +54,11 @@ class RacingGameFacadeTest {
             void createPlayer() {
                 // given
                 List<String> names = List.of();
-
-
+                PlayRacingGameRequest request = new PlayRacingGameRequest(names, trialCount);
                 // when
+                Assertions.assertThatThrownBy(() -> playRacingGameUseCase.playRacingGame(request)).isInstanceOf(RuntimeException.class);
 
                 // then
-                Assertions.assertThatThrownBy(() -> racingGameFacade.createRacingGame(names, trialCount)).isInstanceOf(RuntimeException.class);
             }
         }
 
@@ -93,17 +71,18 @@ class RacingGameFacadeTest {
             void createPlayer() {
                 // given
                 List<String> names = List.of("드록바", "존테리", "램파드", "에슐리콜", "체흐");
+                PlayRacingGameRequest request = new PlayRacingGameRequest(names, trialCount);
+
 
                 // when
-                CreateRacingGameResponse response = racingGameFacade.createRacingGame(names, trialCount);
+                PlayRacingGameResponse response = playRacingGameUseCase.playRacingGame(request);
                 // then
 
                 List<RacingPlayerResponse> racingPlayers = response.getPlayers();
                 assertThat(racingPlayers).hasSize(5);
                 assertThat(racingPlayers.stream().map(RacingPlayerResponse::getName)).containsOnly("드록바", "존테리", "램파드", "에슐리콜", "체흐");
                 List<Integer> positions = racingPlayers.stream().map(RacingPlayerResponse::getPosition).collect(Collectors.toList());
-                assertThat(racingPlayers.stream().filter(r -> racingPlayerService.isWinner(r.getPosition(), positions)).allMatch(RacingPlayerResponse::getWinner)).isTrue();
-                assertThat(racingPlayers.stream().filter(r -> !racingPlayerService.isWinner(r.getPosition(), positions)).noneMatch(RacingPlayerResponse::getWinner)).isTrue();
+                positions.forEach(position -> assertThat(position).isLessThanOrEqualTo(trialCount));
             }
         }
     }

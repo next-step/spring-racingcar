@@ -1,4 +1,4 @@
-package racingcar.controller;
+package racingcar.controller.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -6,8 +6,8 @@ import java.util.List;
 
 public class ApiCreateRacingGameRequest {
 
-    @NotBlank private String names;
-    @NotNull private Integer count;
+    private final String names;
+    private final Integer count;
 
     public String getNames() {
         return names;
