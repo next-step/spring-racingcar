@@ -16,9 +16,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 public abstract class PlayRacingGameMockTest extends ServiceTest {
 
@@ -29,11 +26,5 @@ public abstract class PlayRacingGameMockTest extends ServiceTest {
 
     @Spy
     RandomNumberGenerator randomNumberGenerator;
-
-    @BeforeEach
-    void setUp() {
-//        given(racingGameRepository.save(any(RacingGame.class))).willReturn(mock(RacingGame.class));
-//        given(racingPlayerRepository.save(any(RacingPlayer.class))).willReturn(mock(RacingPlayer.class));
-    }
 
 }
