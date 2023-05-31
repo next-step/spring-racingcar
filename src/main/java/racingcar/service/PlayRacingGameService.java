@@ -43,9 +43,7 @@ public class PlayRacingGameService implements PlayRacingGameUseCase {
         List<String> nameList = request.getNameList();
         int trialCount = request.getTrialCount();
 
-        RacingGame racingGame = RacingGame.create(trialCount);
-
-        racingGameRepository.save(racingGame);
+        RacingGame racingGame = racingGameRepository.save(RacingGame.create(trialCount));
 
         List<Integer> positions = randomNumberGenerator.calculatePositions(nameList.size(), racingGame.getTrialCount());
 
@@ -54,7 +52,6 @@ public class PlayRacingGameService implements PlayRacingGameUseCase {
         racingGame.updateWinnerCondition(condition);
 
         List<RacingPlayer> racingPlayers = this.createRacingPlayers(nameList, racingGame, positions);
-
 
         racingPlayers.forEach(racingPlayerRepository::save);
 
