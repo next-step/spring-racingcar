@@ -29,7 +29,7 @@ public class RacingGameController {
     }
 
     @GetMapping("/plays")
-    public ResponseEntity<List<ApiGetGamePlayListResponse>> createRacingGame() {
+    public ResponseEntity<List<ApiGetGamePlayListResponse>> getRacingGameList() {
 
         GetGamePlayListResponse response = getGamePlayListUseCase.getGamePlayList();
 

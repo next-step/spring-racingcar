@@ -45,7 +45,8 @@ public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer,
             int position = rs.getInt("position");
             boolean isWinner = rs.getBoolean("is_winner");
             LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
-            return RacingPlayer.MappingFactory.generate(id, name, position, isWinner, racingGameId, createdDate);
+            RacingGame racingGame = RacingGame.get(racingGameId);
+            return RacingPlayer.MappingFactory.generate(id, name, position, isWinner, racingGame, createdDate);
         }));
     }
 
