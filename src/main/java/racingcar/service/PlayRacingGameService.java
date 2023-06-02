@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import racingcar.entity.RacingGame;
-import racingcar.usecase.response.RacingGameResponse;
 import racingcar.entity.RacingPlayer;
-import racingcar.usecase.response.RacingPlayerResponse;
 import racingcar.repository.RacingGameRepository;
 import racingcar.repository.RacingPlayerRepository;
 import racingcar.usecase.request.PlayRacingGameRequest;
@@ -53,18 +51,12 @@ public class PlayRacingGameService implements PlayRacingGameUseCase {
 
         racingPlayers.forEach(racingPlayerRepository::save);
 
-        return this.mapRacingGameResponse(racingGame, racingPlayers);
+        return new PlayRacingGameResponse(racingGame, racingPlayers);
     }
 
     private List<RacingPlayer> createRacingPlayers(List<String> nameList, RacingGame racingGame, List<Integer> positions) {
         return IntStream.range(0, nameList.size())
                 .mapToObj(i -> racingGame.createRacingPlayer(nameList.get(i), positions.get(i)))
                 .collect(Collectors.toList());
-    }
-
-    private PlayRacingGameResponse mapRacingGameResponse(RacingGame racingGame, List<RacingPlayer> racingPlayers) {
-        RacingGameResponse response = new RacingGameResponse(racingGame.getId(), racingGame.getTrialCount());
-        List<RacingPlayerResponse> responses = racingPlayers.stream().map(p -> new RacingPlayerResponse(p.getId(), p.getName(), p.getPosition(), p.isWinner())).collect(Collectors.toList());
-        return new PlayRacingGameResponse(response, responses);
     }
 }

@@ -1,15 +1,17 @@
 package racingcar.usecase.response;
 
+import racingcar.entity.RacingPlayer;
+
 import java.util.List;
 
 public class GetGamePlayListResponse {
-    List<RacingPlayerResponse> racingPlayerResponseList;
+    List<RacingPlayer> racingPlayerList;
 
-    public GetGamePlayListResponse(List<RacingPlayerResponse> racingPlayerResponseList) {
-        this.racingPlayerResponseList = racingPlayerResponseList;
+    public GetGamePlayListResponse(List<RacingPlayer> racingPlayerList) {
+        this.racingPlayerList = racingPlayerList;
     }
 
-    public List<RacingPlayerResponse> getRacingPlayerResponseList() {
-        return racingPlayerResponseList;
+    public List<RacingPlayer> getRacingPlayerList() {
+        return racingPlayerList;
     }
 }

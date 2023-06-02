@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import racingcar.controller.request.ApiCreateRacingGameRequest;
 import racingcar.controller.response.ApiCreateRacingGameResponse;
 import racingcar.controller.response.ApiCreateRacingGameResponse.PlayerResponse;
+import racingcar.entity.RacingPlayer;
 import racingcar.usecase.GetGamePlayListUseCase;
 import racingcar.usecase.response.GetGamePlayListResponse;
-import racingcar.usecase.response.RacingPlayerResponse;
 import racingcar.usecase.request.PlayRacingGameRequest;
 import racingcar.usecase.response.PlayRacingGameResponse;
 import racingcar.usecase.PlayRacingGameUseCase;
@@ -42,7 +42,7 @@ public class RacingGameController {
     }
 
     private ApiCreateRacingGameResponse convertResponse(PlayRacingGameResponse result) {
-        List<String> responses = result.getPlayers().stream().filter(RacingPlayerResponse::getWinner).map(RacingPlayerResponse::getName).collect(Collectors.toList());
+        List<String> responses = result.getPlayers().stream().filter(RacingPlayer::isWinner).map(RacingPlayer::getName).collect(Collectors.toList());
         String winners = String.join(", ", responses);
         List<ApiCreateRacingGameResponse.PlayerResponse> players = result.getPlayers().stream().map(r -> new ApiCreateRacingGameResponse.PlayerResponse(r.getName(), r.getPosition())).collect(Collectors.toList());
 
