@@ -107,9 +107,9 @@ public class PlayRacingGameServiceTest extends PlayRacingGameMockTest {
             PlayRacingGameResponse response = playRacingGameService.playRacingGame(request);
 
             //then
-            assertThat(response.getPlayers().size()).isEqualTo(1);
-            assertThat(response.getPlayers()).extracting("name").containsExactly("드록바");
-            assertThat(response.getPlayers()).extracting("isWinner").contains(true);
+            assertThat(response.getPlayerList().size()).isEqualTo(1);
+            assertThat(response.getPlayerList()).extracting("name").containsExactly("드록바");
+            assertThat(response.getPlayerList()).extracting("isWinner").contains(true);
         }
 
 
@@ -128,9 +128,9 @@ public class PlayRacingGameServiceTest extends PlayRacingGameMockTest {
             PlayRacingGameResponse response = playRacingGameService.playRacingGame(request);
 
             //then
-            assertThat(response.getPlayers().size()).isEqualTo(3);
-            assertThat(response.getPlayers()).extracting("name").containsExactly("드록바", "존테리", "램파드");
-            assertThat(response.getPlayers()).extracting("isWinner").contains(true);
+            assertThat(response.getPlayerList().size()).isEqualTo(3);
+            assertThat(response.getPlayerList()).extracting("name").containsExactly("드록바", "존테리", "램파드");
+            assertThat(response.getPlayerList()).extracting("isWinner").contains(true);
         }
 
         private RacingGame getRacingGame(int trialCount) {
