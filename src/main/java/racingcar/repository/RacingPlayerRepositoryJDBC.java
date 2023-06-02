@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
+import racingcar.entity.RacingGame;
 import racingcar.entity.RacingPlayer;
 
 import javax.validation.Validator;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer, Long> implements RacingPlayerRepository {
@@ -30,6 +33,20 @@ public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer,
         };
 
         return super.insert(entity, insertSql, pss);
+    }
+
+
+    @Override
+    public List<RacingPlayer> findAll() {
+        return super.findAll("racing_players", ((rs, rowNum) -> {
+            long id = rs.getLong("id");
+            long racingGameId = rs.getLong("racing_game_id");
+            String name = rs.getString("name");
+            int position = rs.getInt("position");
+            boolean isWinner = rs.getBoolean("is_winner");
+            LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
+            return RacingPlayer.MappingFactory.generate(id, name, position, isWinner, racingGameId, createdDate);
+        }));
     }
 
     @Override

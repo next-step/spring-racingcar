@@ -4,6 +4,8 @@ import racingcar.utils.annotation.GeneratedValue;
 import racingcar.utils.annotation.IdField;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 
 public class RacingGame extends BaseEntity {
@@ -16,6 +18,12 @@ public class RacingGame extends BaseEntity {
     private Predicate<Integer> isWinner;
 
     // 생성 함수
+    private RacingGame(long id, int trialCount, LocalDateTime createdDate) {
+        this.id = id;
+        this.trialCount = trialCount;
+        this.setCreatedDate(createdDate);
+    }
+
     private RacingGame(int trialCount) {
         this.trialCount = trialCount;
     }
@@ -64,6 +72,11 @@ public class RacingGame extends BaseEntity {
 
         public static RacingGame generate(Long id, RacingGame racingGame) {
             return new RacingGame(id, racingGame.trialCount, racingGame.isWinner);
+        }
+    }
+    public static class MappingFactory {
+        public static RacingGame generate(Long id, Integer trialCount, LocalDateTime createdDate) {
+            return new RacingGame(id, trialCount, createdDate);
         }
     }
 }
