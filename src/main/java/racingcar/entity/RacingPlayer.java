@@ -13,31 +13,31 @@ public class RacingPlayer extends BaseEntity {
     @IdField
     @GeneratedValue
     private Long id;
-    private final Long racingGameId;
+    private final RacingGame racingGame;
     private final String name;
     private final Integer position;
     private final Boolean isWinner;
 
     //생성함수
 
-    public RacingPlayer(String name, int position, boolean isWinner, long racingGameId) {
+    public RacingPlayer(String name, int position, boolean isWinner, RacingGame racingGame) {
         this.name = name;
         this.position = position;
-        this.racingGameId = racingGameId;
+        this.racingGame = racingGame;
         this.isWinner = isWinner;
     }
 
-    private RacingPlayer(long id, String name, int position, boolean isWinner, long racingGameId) {
+    private RacingPlayer(long id, String name, int position, boolean isWinner, RacingGame racingGame) {
         this.id = id;
-        this.racingGameId = racingGameId;
+        this.racingGame = racingGame;
         this.name = name;
         this.position = position;
         this.isWinner = isWinner;
     }
 
-    private RacingPlayer(long id, String name, int position, boolean isWinner, long racingGameId, LocalDateTime createdDate) {
+    private RacingPlayer(long id, String name, int position, boolean isWinner, RacingGame racingGame, LocalDateTime createdDate) {
         this.id = id;
-        this.racingGameId = racingGameId;
+        this.racingGame = racingGame;
         this.name = name;
         this.position = position;
         this.isWinner = isWinner;
@@ -45,7 +45,7 @@ public class RacingPlayer extends BaseEntity {
     }
 
     public Long getRacingGameId() {
-        return racingGameId;
+        return this.racingGame.getId();
     }
 
     public String getName() {
@@ -73,8 +73,8 @@ public class RacingPlayer extends BaseEntity {
     }
 
     public static class MappingFactory {
-        public static RacingPlayer generate(long id, String name, int position, boolean isWinner, long racingGameId, LocalDateTime createdDate) {
-            return new RacingPlayer(id, name, position, isWinner, racingGameId, createdDate);
+        public static RacingPlayer generate(long id, String name, int position, boolean isWinner, RacingGame racingGame, LocalDateTime createdDate) {
+            return new RacingPlayer(id, name, position, isWinner, racingGame, createdDate);
         }
     }
 }

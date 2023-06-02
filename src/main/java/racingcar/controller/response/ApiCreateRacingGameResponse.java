@@ -36,6 +36,14 @@ public class ApiCreateRacingGameResponse {
         public Integer getPosition() {
             return position;
         }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "name='" + name + '\'' +
+                    ", position=" + position +
+                    '}';
+        }
     }
 
 }

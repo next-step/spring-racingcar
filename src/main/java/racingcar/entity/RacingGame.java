@@ -13,11 +13,14 @@ public class RacingGame extends BaseEntity {
     @IdField
     @GeneratedValue
     private Long id;
-    private final Integer trialCount;
+    private Integer trialCount;
 
     private Predicate<Integer> isWinner;
 
     // 생성 함수
+    private RacingGame(long id) {
+        this.id = id;
+    }
     private RacingGame(long id, int trialCount, LocalDateTime createdDate) {
         this.id = id;
         this.trialCount = trialCount;
@@ -37,8 +40,12 @@ public class RacingGame extends BaseEntity {
     public static RacingGame create(int trialCount) {
         return new RacingGame(trialCount);
     }
+    public static RacingGame get(long gameId) {
+        return new RacingGame(gameId);
+    }
+
     public RacingPlayer createRacingPlayer(String name, int position) {
-        return new RacingPlayer(name, position, this.isWinner(position), this.id);
+        return new RacingPlayer(name, position, this.isWinner(position), this);
     }
 
     public void updateWinnerCondition(int condition) {
