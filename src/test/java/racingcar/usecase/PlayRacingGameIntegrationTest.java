@@ -3,9 +3,9 @@ package racingcar.usecase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import racingcar.entity.RacingPlayerResponse;
-import racingcar.service.request.PlayRacingGameRequest;
-import racingcar.service.response.PlayRacingGameResponse;
+import racingcar.usecase.response.RacingPlayerResponse;
+import racingcar.usecase.request.PlayRacingGameRequest;
+import racingcar.usecase.response.PlayRacingGameResponse;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;

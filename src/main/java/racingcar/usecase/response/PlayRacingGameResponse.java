@@ -1,14 +1,11 @@
-package racingcar.service.response;
-
-import racingcar.entity.RacingGameResponse;
-import racingcar.entity.RacingPlayerResponse;
+package racingcar.usecase.response;
 
 import java.util.List;
 
 public class PlayRacingGameResponse {
 
-    RacingGameResponse game;
-    List<RacingPlayerResponse> players;
+    private final RacingGameResponse game;
+    private final List<RacingPlayerResponse> players;
 
     public PlayRacingGameResponse(RacingGameResponse game, List<RacingPlayerResponse> players) {
         this.game = game;
