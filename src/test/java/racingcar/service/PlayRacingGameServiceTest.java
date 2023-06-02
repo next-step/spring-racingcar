@@ -1,6 +1,5 @@
 package racingcar.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,14 +8,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import racingcar.ServiceTest;
 import racingcar.entity.RacingGame;
-import racingcar.entity.RacingPlayer;
-import racingcar.service.request.PlayRacingGameRequest;
-import racingcar.service.response.PlayRacingGameResponse;
+import racingcar.usecase.request.PlayRacingGameRequest;
+import racingcar.usecase.response.PlayRacingGameResponse;
 
-import javax.validation.ConstraintViolation;
-import javax.xml.validation.ValidatorHandler;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

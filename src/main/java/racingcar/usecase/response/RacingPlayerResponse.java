@@ -1,4 +1,4 @@
-package racingcar.entity;
+package racingcar.usecase.response;
 
 import javax.validation.constraints.NotNull;
 

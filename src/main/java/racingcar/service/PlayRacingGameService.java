@@ -1,22 +1,20 @@
 package racingcar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import racingcar.entity.RacingGame;
-import racingcar.entity.RacingGameResponse;
+import racingcar.usecase.response.RacingGameResponse;
 import racingcar.entity.RacingPlayer;
-import racingcar.entity.RacingPlayerResponse;
+import racingcar.usecase.response.RacingPlayerResponse;
 import racingcar.repository.RacingGameRepository;
 import racingcar.repository.RacingPlayerRepository;
-import racingcar.service.request.PlayRacingGameRequest;
-import racingcar.service.response.PlayRacingGameResponse;
+import racingcar.usecase.request.PlayRacingGameRequest;
+import racingcar.usecase.response.PlayRacingGameResponse;
 import racingcar.usecase.PlayRacingGameUseCase;
 import racingcar.utils.generator.RandomNumberGenerator;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

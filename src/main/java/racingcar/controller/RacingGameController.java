@@ -1,16 +1,15 @@
 package racingcar.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import racingcar.controller.request.ApiCreateRacingGameRequest;
 import racingcar.controller.response.ApiCreateRacingGameResponse;
-import racingcar.controller.response.ApiCreateRacingPlayerResponse;
-import racingcar.entity.RacingPlayerResponse;
-import racingcar.service.request.PlayRacingGameRequest;
-import racingcar.service.response.PlayRacingGameResponse;
-import racingcar.service.PlayRacingGameService;
+import racingcar.controller.response.ApiCreateRacingGameResponse.PlayerResponse;
+import racingcar.usecase.GetGamePlayListUseCase;
+import racingcar.usecase.response.GetGamePlayListResponse;
+import racingcar.usecase.response.RacingPlayerResponse;
+import racingcar.usecase.request.PlayRacingGameRequest;
+import racingcar.usecase.response.PlayRacingGameResponse;
 import racingcar.usecase.PlayRacingGameUseCase;
 
 import java.util.Arrays;
@@ -22,9 +21,11 @@ import java.util.stream.Collectors;
 public class RacingGameController {
     
     private final PlayRacingGameUseCase playRacingGameUseCase;
+    private final GetGamePlayListUseCase getGamePlayListUseCase;
 
-    public RacingGameController(PlayRacingGameUseCase playRacingGameUseCase) {
+    public RacingGameController(PlayRacingGameUseCase playRacingGameUseCase, GetGamePlayListUseCase getGamePlayListUseCase) {
         this.playRacingGameUseCase = playRacingGameUseCase;
+        this.getGamePlayListUseCase = getGamePlayListUseCase;
     }
 
     @PostMapping("/plays")
@@ -43,7 +44,7 @@ public class RacingGameController {
     private ApiCreateRacingGameResponse convertResponse(PlayRacingGameResponse result) {
         List<String> responses = result.getPlayers().stream().filter(RacingPlayerResponse::getWinner).map(RacingPlayerResponse::getName).collect(Collectors.toList());
         String winners = String.join(", ", responses);
-        List<ApiCreateRacingPlayerResponse> players = result.getPlayers().stream().map(r -> new ApiCreateRacingPlayerResponse(r.getName(), r.getPosition())).collect(Collectors.toList());
+        List<ApiCreateRacingGameResponse.PlayerResponse> players = result.getPlayers().stream().map(r -> new ApiCreateRacingGameResponse.PlayerResponse(r.getName(), r.getPosition())).collect(Collectors.toList());
 
         return new ApiCreateRacingGameResponse(winners, players);
     }

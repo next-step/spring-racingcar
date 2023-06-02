@@ -1,9 +1,5 @@
-package racingcar.service.request;
+package racingcar.usecase.request;
 
-import racingcar.entity.RacingGameResponse;
-import racingcar.entity.RacingPlayerResponse;
-
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 

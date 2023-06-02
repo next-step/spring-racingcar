@@ -5,20 +5,37 @@ import java.util.List;
 public class ApiCreateRacingGameResponse {
 
     String winners;
-    List<ApiCreateRacingPlayerResponse> racingCars;
+    List<PlayerResponse> racingCars;
 
+    public ApiCreateRacingGameResponse(String winners, List<PlayerResponse> racingCars) {
+        this.winners = winners;
+        this.racingCars = racingCars;
+    }
 
     public String getWinners() {
         return winners;
     }
 
-    public List<ApiCreateRacingPlayerResponse> getRacingCars() {
+    public List<PlayerResponse> getRacingCars() {
         return racingCars;
     }
 
-    public ApiCreateRacingGameResponse(String winners, List<ApiCreateRacingPlayerResponse> racingCars) {
-        this.winners = winners;
-        this.racingCars = racingCars;
+    public static class PlayerResponse {
+        String name;
+        Integer position;
+
+        public PlayerResponse(String name, Integer position) {
+            this.name = name;
+            this.position = position;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Integer getPosition() {
+            return position;
+        }
     }
 
 }
