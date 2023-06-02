@@ -2,6 +2,7 @@ package racingcar.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import racingcar.entity.BaseEntity;
@@ -16,6 +17,7 @@ import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,10 +32,26 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
         this.validator = validator;
     }
 
+    protected List<T> findAll(String tableName, RowMapper rowMapper) {
+        return jdbcTemplate.query("SELECT * FROM " + tableName, rowMapper);
+    }
+
+
+    /**
+     * 테이블의 모든 데이터들을 삭제한다.
+     *
+     * @param tableName 테이블 이름
+     */
     protected void deleteAll(String tableName) {
         jdbcTemplate.update("DELETE FROM " + tableName);
     }
 
+    /**
+     * 엔티티에 id 어노테이션이 존재한다면 id를 리턴한다.
+     *
+     * @param entity 단일 엔티티
+     * @return 엔티티의 id
+     */
     protected ID getId(T entity) {
         for (Field field : entity.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(IdField.class)) {
@@ -50,6 +68,12 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
         throw new RuntimeException("No ID field found");
     }
 
+    /**
+     * 엔티티에 id 어노테이션이 존재한다면 id를 설정한다.
+     *
+     * @param entity 단일 엔티티
+     * @param id     엔티티의 id
+     */
     protected void setId(T entity, ID id) {
         for (Field field : entity.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(IdField.class)) {
@@ -73,6 +97,7 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
      * @param entity 단일 엔티티
      * @return 저장된 엔티티
      */
+    @Override
     public T save(T entity) {
         this.validate(entity);
         if (entity.isNew()) {
@@ -84,9 +109,10 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
 
     /**
      * 객체를 저장한다.
-     * @param entity 단일 엔티티
+     *
+     * @param entity    단일 엔티티
      * @param insertSql insert 쿼리
-     * @param pss sql과 entity 매핑
+     * @param pss       sql과 entity 매핑
      * @return 저장된 엔티티
      */
     protected T insert(T entity, String insertSql, PreparedStatementSetter pss) {
@@ -97,9 +123,17 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
             throw new IllegalArgumentException("현재 지원하지 않는 기능입니다.");
         }
     }
-    protected T insertGeneratedValue(T entity, String insertSql, PreparedStatementSetter pss) {
-        entity.setCreatedDate(LocalDateTime.now());
 
+
+    /**
+     * 객체를 저장하고 자동 생성된 키를 등록한다.
+     *
+     * @param entity    단일 엔티티
+     * @param insertSql insert 쿼리
+     * @param pss       sql과 entity 매핑
+     * @return 저장된 엔티티
+     */
+    protected T insertGeneratedValue(T entity, String insertSql, PreparedStatementSetter pss) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -124,6 +158,7 @@ public abstract class BaseRepositoryJDBC<T extends BaseEntity, ID extends Serial
 
     /**
      * 객체의 유효성을 검사한다.
+     *
      * @param entity 단일 엔티티
      */
     private void validate(T entity) {
