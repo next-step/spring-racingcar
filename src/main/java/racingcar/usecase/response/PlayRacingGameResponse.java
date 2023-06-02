@@ -19,7 +19,7 @@ public class PlayRacingGameResponse {
         return game;
     }
 
-    public List<RacingPlayer> getPlayers() {
+    public List<RacingPlayer> getPlayerList() {
         return players;
     }
 }

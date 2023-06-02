@@ -34,7 +34,7 @@ public class RacingGameRepositoryJDBC extends BaseRepositoryJDBC<RacingGame, Lon
     @Override
     public List<RacingGame> findAll() {
         return super.findAll("racing_games", ((rs, rowNum) -> {
-            long id = rs.getLong("id");
+            long id = rs.getLong("racing_game_id");
             int trialCount = rs.getInt("trial_count");
             LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
             return RacingGame.MappingFactory.generate(id, trialCount, createdDate);

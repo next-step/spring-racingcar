@@ -78,7 +78,7 @@ class PlayRacingGameIntegrationTest extends PlayRacingGameUseCaseTest {
                 PlayRacingGameResponse response = playRacingGameUseCase.playRacingGame(request);
                 // then
 
-                List<RacingPlayer> racingPlayers = response.getPlayers();
+                List<RacingPlayer> racingPlayers = response.getPlayerList();
                 assertThat(racingPlayers).hasSize(5);
                 assertThat(racingPlayers.stream().map(RacingPlayer::getName)).containsOnly("드록바", "존테리", "램파드", "에슐리콜", "체흐");
                 List<Integer> positions = racingPlayers.stream().map(RacingPlayer::getPosition).collect(Collectors.toList());

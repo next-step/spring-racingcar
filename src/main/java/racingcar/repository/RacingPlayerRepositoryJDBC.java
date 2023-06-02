@@ -39,7 +39,7 @@ public class RacingPlayerRepositoryJDBC extends BaseRepositoryJDBC<RacingPlayer,
     @Override
     public List<RacingPlayer> findAll() {
         return super.findAll("racing_players", ((rs, rowNum) -> {
-            long id = rs.getLong("id");
+            long id = rs.getLong("racing_player_id");
             long racingGameId = rs.getLong("racing_game_id");
             String name = rs.getString("name");
             int position = rs.getInt("position");

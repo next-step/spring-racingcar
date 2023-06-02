@@ -8,6 +8,8 @@ import racingcar.usecase.GetGamePlayListUseCase;
 import racingcar.usecase.response.GetGamePlayListResponse;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GetGamePlayListService implements GetGamePlayListUseCase {
@@ -23,6 +25,8 @@ public class GetGamePlayListService implements GetGamePlayListUseCase {
     @Override
     public GetGamePlayListResponse getGamePlayList() {
         List<RacingPlayer> playerList = racingPlayerRepository.findAll();
-        return new GetGamePlayListResponse(playerList);
+        Map<Long, List<RacingPlayer>> gameIdToPlayerListMap = playerList.stream().collect(Collectors.groupingBy(RacingPlayer::getRacingGameId));
+        List<GetGamePlayListResponse.GameWithPlayer> gameWithPlayerList = gameIdToPlayerListMap.entrySet().stream().map(entry -> new GetGamePlayListResponse.GameWithPlayer(entry.getKey(), entry.getValue())).collect(Collectors.toList());
+        return new GetGamePlayListResponse(gameWithPlayerList);
     }
 }
