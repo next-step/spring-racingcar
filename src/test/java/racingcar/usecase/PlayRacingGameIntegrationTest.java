@@ -3,7 +3,7 @@ package racingcar.usecase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import racingcar.usecase.response.RacingPlayerResponse;
+import racingcar.entity.RacingPlayer;
 import racingcar.usecase.request.PlayRacingGameRequest;
 import racingcar.usecase.response.PlayRacingGameResponse;
 
@@ -78,10 +78,10 @@ class PlayRacingGameIntegrationTest extends PlayRacingGameUseCaseTest {
                 PlayRacingGameResponse response = playRacingGameUseCase.playRacingGame(request);
                 // then
 
-                List<RacingPlayerResponse> racingPlayers = response.getPlayers();
+                List<RacingPlayer> racingPlayers = response.getPlayers();
                 assertThat(racingPlayers).hasSize(5);
-                assertThat(racingPlayers.stream().map(RacingPlayerResponse::getName)).containsOnly("드록바", "존테리", "램파드", "에슐리콜", "체흐");
-                List<Integer> positions = racingPlayers.stream().map(RacingPlayerResponse::getPosition).collect(Collectors.toList());
+                assertThat(racingPlayers.stream().map(RacingPlayer::getName)).containsOnly("드록바", "존테리", "램파드", "에슐리콜", "체흐");
+                List<Integer> positions = racingPlayers.stream().map(RacingPlayer::getPosition).collect(Collectors.toList());
                 positions.forEach(position -> assertThat(position).isLessThanOrEqualTo(trialCount));
             }
         }
