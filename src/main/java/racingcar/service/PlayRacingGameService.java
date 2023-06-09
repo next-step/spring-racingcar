@@ -10,6 +10,7 @@ import racingcar.repository.RacingPlayerRepository;
 import racingcar.usecase.request.PlayRacingGameRequest;
 import racingcar.usecase.response.PlayRacingGameResponse;
 import racingcar.usecase.PlayRacingGameUseCase;
+import racingcar.utils.generator.NumberGenerator;
 import racingcar.utils.generator.RandomNumberGenerator;
 
 import javax.validation.Valid;
@@ -21,15 +22,15 @@ import java.util.stream.IntStream;
 @Validated
 public class PlayRacingGameService implements PlayRacingGameUseCase {
 
-    private final RandomNumberGenerator randomNumberGenerator;
+    private final NumberGenerator numberGenerator;
     private final RacingGameRepository racingGameRepository;
     private final RacingPlayerRepository racingPlayerRepository;
 
 
     @Autowired
-    public PlayRacingGameService(RacingPlayerRepository racingPlayerRepository, RandomNumberGenerator randomNumberGenerator, RacingGameRepository racingGameRepository) {
+    public PlayRacingGameService(RacingPlayerRepository racingPlayerRepository, RandomNumberGenerator numberGenerator, RacingGameRepository racingGameRepository) {
         this.racingPlayerRepository = racingPlayerRepository;
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.numberGenerator = numberGenerator;
         this.racingGameRepository = racingGameRepository;
     }
 
@@ -40,7 +41,7 @@ public class PlayRacingGameService implements PlayRacingGameUseCase {
         int trialCount = request.getTrialCount();
         RacingGame racingGame = RacingGame.create(trialCount);
 
-        List<Integer> positions = randomNumberGenerator.calculatePositions(nameList.size(), racingGame.getTrialCount());
+        List<Integer> positions = numberGenerator.calculatePositions(nameList.size(), racingGame.getTrialCount());
 
         int condition = positions.stream().max(Integer::compareTo).orElse(0);
 
