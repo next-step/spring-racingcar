@@ -1,4 +1,4 @@
-package racingcar.service;
+package racingcar.utils.generator;
 
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class RandomNumberGenerator implements NumberGenerator{
      * @param p 확률
      * @return 평균
      */
-    public double calculateMean(int n, double p) {
+    private double calculateMean(int n, double p) {
         return n * p;
     }
 
@@ -46,7 +46,7 @@ public class RandomNumberGenerator implements NumberGenerator{
      * @param p 확률
      * @return 표준편차
      */
-    public double calculateSqrt(int n, double p) {
+    private double calculateSqrt(int n, double p) {
         double sqrt = Math.sqrt(n * p * (1 - p));
 
         if (Double.isNaN(sqrt)) {

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import racingcar.entity.RacingGame;
 
 import javax.validation.Validator;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class RacingGameRepositoryJDBC extends BaseRepositoryJDBC<RacingGame, Long> implements RacingGameRepository {
@@ -27,6 +29,16 @@ public class RacingGameRepositoryJDBC extends BaseRepositoryJDBC<RacingGame, Lon
         };
 
         return super.insert(entity, insertSql, pss);
+    }
+
+    @Override
+    public List<RacingGame> findAll() {
+        return super.findAll("racing_games", ((rs, rowNum) -> {
+            long id = rs.getLong("racing_game_id");
+            int trialCount = rs.getInt("trial_count");
+            LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
+            return RacingGame.MappingFactory.generate(id, trialCount, createdDate);
+        }));
     }
 
     @Override

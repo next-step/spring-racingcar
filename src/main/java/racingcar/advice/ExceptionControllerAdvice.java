@@ -39,7 +39,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public String exHandler(RuntimeException e) {
-
         return e.getMessage();
     }
 
